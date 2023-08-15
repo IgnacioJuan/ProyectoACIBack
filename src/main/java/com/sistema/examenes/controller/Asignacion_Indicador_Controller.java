@@ -124,4 +124,14 @@ public class Asignacion_Indicador_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/listarasig_indi/{id}")
+    public ResponseEntity<List<Asignacion_Indicador>> obtenerAsignacion(@PathVariable("id") Long id) {
+        try {
+
+            return new ResponseEntity<>(Service.listarAsignacion(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

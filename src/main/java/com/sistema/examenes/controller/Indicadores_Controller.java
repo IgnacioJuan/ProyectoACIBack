@@ -159,4 +159,14 @@ public class Indicadores_Controller {
     public List<IndicadorEvidenciasProjectionFull> obtenerDatosSubcriteriosFull() {
         return Service.obtenerDatosIndicadoresFull();
     }
+
+    @GetMapping("/indicadorespormodelo/{id_modelo}")
+    public ResponseEntity<List<Indicador>> indicadoresPorModelo(
+            @PathVariable("id_modelo") Long id_modelo) {
+        try {
+            return new ResponseEntity<>(Service.indicadoresPorModelo(id_modelo), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

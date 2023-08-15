@@ -29,4 +29,9 @@ public class Asignacion_Indicador_ServiceImpl extends GenericServiceImpl<Asignac
     public List<Asignacion_Indicador> findByModelo(Modelo modelo) {
         return repository.findByModelo(modelo);
     }
+
+    @Override
+    public List<Asignacion_Indicador> listarAsignacion(Long id_modelo) {
+        return repository.listarAsignacion(id_modelo);
+    }
 }

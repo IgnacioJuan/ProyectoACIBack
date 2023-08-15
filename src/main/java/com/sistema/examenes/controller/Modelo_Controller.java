@@ -14,7 +14,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/modelo")
-public class Modelo_Controller {
+public class  Modelo_Controller {
     @Autowired
     Modelo_Service Service;
 
@@ -100,7 +100,23 @@ public class Modelo_Controller {
             }
         }
     }
-
+    @PutMapping("/modificar/{id}")
+    public ResponseEntity<Modelo> modificar(@PathVariable Long id, @RequestBody Modelo p) {
+        Modelo a = Service.findById(id);
+        if (a == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            try {
+                a.setFecha_final_act(p.getFecha_final_act());
+                a.setNombre(p.getNombre());
+                a.setFecha_fin(p.getFecha_fin());
+                a.setFecha_inicio(p.getFecha_inicio());
+                return new ResponseEntity<>(Service.save(a), HttpStatus.CREATED);
+            } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+    }
     @GetMapping("/listarModeloExcepto/{id}")
     public ResponseEntity<List<Modelo>> listarModeloExcepto(@PathVariable("id") Long id) {
         try {

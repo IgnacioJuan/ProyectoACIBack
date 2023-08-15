@@ -21,9 +21,11 @@ public interface Asignacion_Admin_repository extends JpaRepository<Asignacion_Ad
             "WHERE aa.visible=CAST(:veri AS BOOLEAN) AND aa.id_modelo=:id_modelo ORDER BY u.id;", nativeQuery = true)
     List<AsignacionProjection> asignacionAdmin(Long id_modelo, String veri);
 
-    @Query(value = "SELECT * from asignacion_admin where criterio_id_criterio = :id_usuario and visible =true", nativeQuery = true)
-    Asignacion_Admin listarAsignacion_AdminPorUsuario(Long id_usuario);
+    @Query(value = "SELECT * from asignacion_admin where usuario_id = ?1 and id_modelo = ?2 and visible =true ", nativeQuery = true)
+    Asignacion_Admin listarAsignacion_AdminPorUsuario(Long id_usuario,Long id_modelo);
+    @Query(value = "SELECT * from asignacion_admin where criterio_id_criterio = ?1 and id_modelo = ?2 AND visible=true", nativeQuery = true)
+    Asignacion_Admin listarAsignacion_AdminPorUsuarioCriterio(Long id_criterio, Long id_modelo);
 
-    @Query(value = "SELECT * from asignacion_admin where criterio_id_criterio = :id_criterio and usuario_id = :id_usuario and id_modelo = :id_modelo", nativeQuery = true)
-    Asignacion_Admin listarAsignacion_AdminPorUsuarioCriterio(Long id_criterio, Long id_usuario,Long id_modelo);
+    @Query(value = "SELECT * from asignacion_admin where criterio_id_criterio = ?1 and id_modelo = ?2 and usuario_id = ?3", nativeQuery = true)
+    Asignacion_Admin asignacion_existente(Long id_criterio, Long id_modelo,Long id_usuario);
 }

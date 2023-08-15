@@ -9,8 +9,7 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
-@Table(name = "asignacion_admin", uniqueConstraints = {
-        @UniqueConstraint(columnNames = { "usuario_id", "criterio_id_criterio" }) })
+@Table(name = "asignacion_admin")
 public class Asignacion_Admin implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

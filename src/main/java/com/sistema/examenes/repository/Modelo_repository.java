@@ -12,7 +12,7 @@ public interface Modelo_repository extends JpaRepository<Modelo, Long> {
     @Query(value = "SELECT * from modelo order by id_modelo desc", nativeQuery = true)
     List<Modelo> listarModelo();
 
-    @Query(value = "SELECT * FROM modelo WHERE id_modelo = (SELECT MAX(id_modelo) FROM modelo)", nativeQuery = true)
+    @Query(value = "SELECT * FROM modelo WHERE id_modelo = (SELECT MAX(id_modelo) FROM modelo) AND visible =true", nativeQuery = true)
     public Modelo listarModeloMaximo();
 
     // SELECT id_modelo, fecha_fin, fecha_final_act, fecha_inicio, nombre, visible,

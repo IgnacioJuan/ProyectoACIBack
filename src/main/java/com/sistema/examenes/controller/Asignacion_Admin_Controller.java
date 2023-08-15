@@ -21,8 +21,15 @@ public class Asignacion_Admin_Controller {
     @PostMapping("/crear")
     public ResponseEntity<Asignacion_Admin> crear(@RequestBody Asignacion_Admin r) {
         try {
+            Long criterio = r.getCriterio().getId_criterio(); // Obtener el ID del criterio
+            Long modelo = r.getId_modelo();
+            Long usuario=r.getUsuario().getId();
+            Asignacion_Admin asignacionExistente = Service.asignacion_existente(criterio, modelo,usuario);
+            if (asignacionExistente != null) {
+                asignacionExistente.setVisible(true);
+                return new ResponseEntity<>(Service.save(asignacionExistente), HttpStatus.OK);
+            }
             r.setVisible(true);
-
             return new ResponseEntity<>(Service.save(r), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -91,8 +98,8 @@ public class Asignacion_Admin_Controller {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             try {
-                a.setUsuario(p.getUsuario());
-                a.setCriterio(p.getCriterio());
+                //a.setUsuario(p.getUsuario());
+              //  a.setCriterio(p.getCriterio());
                 a.setVisible(p.isVisible());
                 return new ResponseEntity<>(Service.save(a), HttpStatus.CREATED);
             } catch (Exception e) {
@@ -102,22 +109,21 @@ public class Asignacion_Admin_Controller {
         }
     }
 
-    @GetMapping("/listarAsignacion_AdminPorUsuario/{id_usuario}")
+    @GetMapping("/listarAsignacion_AdminPorUsuario/{id_usuario}/{id_modelo}")
     public ResponseEntity<Asignacion_Admin> listarAsignacion_AdminPorUsuario(
-            @PathVariable("id_usuario") Long id_usuario) {
+            @PathVariable("id_usuario") Long id_usuario, @PathVariable("id_modelo") Long id_modelo) {
         try {
-            return new ResponseEntity<>(Service.listarAsignacion_AdminPorUsuario(id_usuario), HttpStatus.OK);
+            return new ResponseEntity<>(Service.listarAsignacion_AdminPorUsuario(id_usuario,id_modelo), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/listarAsignacion_AdminPorUsuarioCriterio/{id_criterio}/{id_usuario}")
+    @GetMapping("/listarAsignacion_AdminPorUsuarioCriterio/{id_criterio}/{id_modelo}")
     public ResponseEntity<Asignacion_Admin> listarAsignacion_AdminPorUsuarioCriterio(
-            @PathVariable("id_criterio") Long id_criterio, @PathVariable("id_usuario") Long id_usuario
-            , @PathVariable("id_modelo") Long id_modelo) {
+            @PathVariable("id_criterio") Long id_criterio,  @PathVariable("id_modelo") Long id_modelo) {
         try {
-            return new ResponseEntity<>(Service.listarAsignacion_AdminPorUsuarioCriterio(id_criterio, id_usuario,id_modelo),
+            return new ResponseEntity<>(Service.listarAsignacion_AdminPorUsuarioCriterio(id_criterio, id_modelo),
                     HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -131,7 +137,7 @@ public class Asignacion_Admin_Controller {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             try {
-                a.setVisible(true);
+                a.setVisible(false);
                 return new ResponseEntity<>(Service.save(a), HttpStatus.CREATED);
             } catch (Exception e) {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

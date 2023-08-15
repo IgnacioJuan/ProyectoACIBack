@@ -16,7 +16,7 @@ public interface Notificacion_repository extends JpaRepository<Notificacion, Lon
     @Query(value = "DELETE FROM notificacion WHERE id=:id", nativeQuery = true)
     void borrar(Long id);
 
-    @Query(value = "SELECT * FROM notificacion WHERE DATE(fecha)=CAST(:fec AS DATE)", nativeQuery = true)
+    @Query(value = "SELECT * FROM notificacion WHERE DATE(fecha)<CAST(:fec AS DATE)", nativeQuery = true)
     List<Notificacion> listarNot(String fec);
     @Query(value = "SELECT * FROM notificacion WHERE rol=:roluser ORDER BY fecha DESC LIMIT(20)", nativeQuery = true)
     List<Notificacion> all(String roluser);

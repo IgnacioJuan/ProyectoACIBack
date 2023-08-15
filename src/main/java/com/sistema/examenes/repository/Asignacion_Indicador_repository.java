@@ -15,4 +15,7 @@ public interface Asignacion_Indicador_repository extends JpaRepository<Asignacio
 
     // metodo para lista asignacion_indicador por objeto modelo
     List<Asignacion_Indicador> findByModelo(Modelo modelo);
+
+    @Query(value = "SELECT indicador_id_indicador FROM asignacion_indicador WHERE modelo_id_modelo=:id_modelo", nativeQuery = true)
+    List<Asignacion_Indicador> listarAsignacion(Long id_modelo);
 }

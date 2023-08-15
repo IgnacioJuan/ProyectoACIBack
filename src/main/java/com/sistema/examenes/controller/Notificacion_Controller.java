@@ -77,18 +77,20 @@ public class Notificacion_Controller {
 
         }
     }
-    @Scheduled(cron = "0 0 9 * * ?")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void eliminarNotificacionesAntiguas() {
         LocalDate hoy = LocalDate.now();
         LocalDate fechaLimite = hoy.minusDays(30);
         String fecha=String.valueOf(fechaLimite);
+
         List<Notificacion> notificacionesAntiguas = service.listarNotifi(fecha);
+        System.out.println("notificaciones traidas "+notificacionesAntiguas);
         for (Notificacion notificacion : notificacionesAntiguas) {
             service.eliminar(notificacion.getId());
         }
     }
 //@Scheduled(cron = "segundo minuto hora día-del-mes mes día-de-la-semana")
-    @Scheduled(cron = "0 0 13 * * ?") // Ejecutar todos los días a las 1 PM
+    @Scheduled(cron = "0 0 10 * * ?") // Ejecutar todos los días a las 10 AM 13PM
     public void CrearNotificaciones() {
         List<Actividad> actividades = act.findByAll();
         for (Actividad actividad : actividades) {
