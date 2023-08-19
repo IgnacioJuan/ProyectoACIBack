@@ -134,4 +134,10 @@ public class Asignacion_Indicador_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping("/eliminarasi/{id_modelo}")
+    public ResponseEntity<Void> eliminarasig(@PathVariable Long id_modelo) {
+        Service.eliminarasignacion(id_modelo);
+        return ResponseEntity.noContent().build();
+    }
 }

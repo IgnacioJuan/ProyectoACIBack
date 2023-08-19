@@ -4,8 +4,10 @@ import com.sistema.examenes.entity.Asignacion_Indicador;
 import com.sistema.examenes.entity.Modelo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface Asignacion_Indicador_repository extends JpaRepository<Asignacion_Indicador, Long> {
@@ -18,4 +20,8 @@ public interface Asignacion_Indicador_repository extends JpaRepository<Asignacio
 
     @Query(value = "SELECT * FROM asignacion_indicador WHERE modelo_id_modelo=:id_modelo", nativeQuery = true)
     List<Asignacion_Indicador> listarAsignacion(Long id_modelo);
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM asignacion_indicador WHERE modelo_id_modelo=:id", nativeQuery = true)
+    void eliminarasignacion(Long id);
 }

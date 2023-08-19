@@ -10,4 +10,5 @@ public interface Asignacion_Indicador_Service extends GenericService<Asignacion_
 
     public List<Asignacion_Indicador> findByModelo(Modelo modelo);
     List<Asignacion_Indicador> listarAsignacion(Long id_modelo);
+    public void eliminarasignacion(Long id);
 }

@@ -1,6 +1,7 @@
 package com.sistema.examenes.controller;
 
 import com.sistema.examenes.entity.Modelo;
+import com.sistema.examenes.projection.ModelIndiProjection;
 import com.sistema.examenes.projection.ModeloVistaProjection;
 import com.sistema.examenes.projection.SubcriterioIndicadoresProjectionFull;
 import com.sistema.examenes.services.Modelo_Service;
@@ -121,6 +122,15 @@ public class  Modelo_Controller {
     public ResponseEntity<List<Modelo>> listarModeloExcepto(@PathVariable("id") Long id) {
         try {
             return new ResponseEntity<>(Service.listarModeloExcepto(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/listmodelindi/{id_modelo}")
+    public ResponseEntity<List<ModelIndiProjection>> listindiModelo(@PathVariable("id_modelo") Long id_modelo) {
+        try {
+            return new ResponseEntity<>(Service.listindiModelo(id_modelo), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

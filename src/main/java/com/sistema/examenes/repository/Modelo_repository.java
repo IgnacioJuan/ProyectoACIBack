@@ -2,6 +2,7 @@ package com.sistema.examenes.repository;
 
 import com.sistema.examenes.entity.Modelo;
 import com.sistema.examenes.projection.IndicadorEvidenciasProjectionFull;
+import com.sistema.examenes.projection.ModelIndiProjection;
 import com.sistema.examenes.projection.ModeloVistaProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -40,4 +41,11 @@ public interface Modelo_repository extends JpaRepository<Modelo, Long> {
             "GROUP by m.id_modelo " +
             "order by m.id_modelo desc", nativeQuery = true)
     List<ModeloVistaProjection> obtenerModeloVista();
+    @Query(value = "SELECT cri.nombre AS crite, sub.nombre AS sub, i.id_indicador AS id_indi, i.nombre AS ind_nombre, " +
+            "CASE WHEN ai.visible IS NOT NULL THEN ai.visible ELSE false END AS visi " +
+            "FROM criterio cri JOIN subcriterio sub ON sub.id_criterio = cri.id_criterio AND cri.visible=true " +
+            "JOIN indicador i ON i.subcriterio_id_subcriterio = sub.id_subcriterio AND sub.visible=true " +
+            "LEFT JOIN asignacion_indicador ai ON ai.indicador_id_indicador = i.id_indicador AND i.visible=true " +
+            "AND ai.modelo_id_modelo =:id_modelo ORDER BY cri.nombre,sub.nombre,i.id_indicador;", nativeQuery = true)
+    List<ModelIndiProjection> listindiModelo(Long id_modelo);
 }

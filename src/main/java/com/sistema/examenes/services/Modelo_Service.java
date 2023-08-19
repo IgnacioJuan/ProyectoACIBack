@@ -1,6 +1,7 @@
 package com.sistema.examenes.services;
 
 import com.sistema.examenes.entity.Modelo;
+import com.sistema.examenes.projection.ModelIndiProjection;
 import com.sistema.examenes.projection.ModeloVistaProjection;
 import com.sistema.examenes.projection.SubcriterioIndicadoresProjectionFull;
 
@@ -14,4 +15,5 @@ public interface Modelo_Service extends GenericService<Modelo, Long> {
     public List<Modelo> listarModeloExcepto(Long id_modelo);
 
     public List<ModeloVistaProjection> obtenerDatosModelo();
+    public List<ModelIndiProjection> listindiModelo(Long id_modelo);
 }
