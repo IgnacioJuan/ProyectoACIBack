@@ -31,15 +31,6 @@ public interface Indicador_repository extends JpaRepository<Indicador, Long> {
             "WHERE mo.id_modelo=(SELECT MAX(id_modelo) FROM modelo) AND i.visible=true GROUP BY cri.nombre", nativeQuery = true)
     public List<IndicadoresProjection> Indicadores();
 
-    // SELECT
-    // i.*
-    // FROM public.modelo m join public.asignacion_indicador a ON a.modelo_id_modelo
-    // = m.id_modelo
-    // JOIN public.indicador i on a.indicador_id_indicador = i.id_indicador
-    // JOIN public.subcriterio s ON s.id_subcriterio = i.subcriterio_id_subcriterio
-    // JOIN public.criterio c ON c.id_criterio = s.id_criterio
-    // WHERE c.id_criterio=1 and m.id_modelo=1
-    // ORDER BY i.nombre
 
     @Query(value = "SELECT i.* FROM public.modelo m join public.asignacion_indicador a ON a.modelo_id_modelo = m.id_modelo JOIN public.indicador i on a.indicador_id_indicador = i.id_indicador JOIN public.subcriterio s ON s.id_subcriterio = i.subcriterio_id_subcriterio JOIN public.criterio c ON c.id_criterio = s.id_criterio WHERE c.id_criterio= :id_criterio and m.id_modelo= :id_modelo ORDER BY i.nombre", nativeQuery = true)
     List<Indicador> listarIndicadorPorCriterioModelo(Long id_criterio, Long id_modelo);

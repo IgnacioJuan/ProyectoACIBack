@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.sistema.examenes.repository.Asignacion_Indicador_repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = { "*" })
@@ -106,8 +107,13 @@ public class Asignacion_Indicador_Controller {
     @PostMapping("/crearAsignacion")
     public ResponseEntity<Asignacion_Indicador> crearAsignacion(@RequestBody Asignacion_Indicador r) {
         try {
-            r.setVisible(true);
-            return new ResponseEntity<>(Service.save(r), HttpStatus.CREATED);
+            boolean existe = Service.existeIndicador(r.getIndicador().getId_indicador(),r.getModelo().getId_modelo());
+            if (existe) {
+                return new ResponseEntity<>(r, HttpStatus.OK);
+            } else {
+                r.setVisible(true);
+                return new ResponseEntity<>(Service.save(r), HttpStatus.CREATED);
+            }
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -135,9 +141,17 @@ public class Asignacion_Indicador_Controller {
         }
     }
 
-    @DeleteMapping("/eliminarasi/{id_modelo}")
-    public ResponseEntity<Void> eliminarasig(@PathVariable Long id_modelo) {
-        Service.eliminarasignacion(id_modelo);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/eliminarasi/{id_modelo}/{id_asig}")
+    public ResponseEntity<String> eliminarasig(@PathVariable Long id_modelo, @PathVariable Long id_asig) {
+        boolean existe = Service.existeCriterio(id_modelo, id_asig);
+        if (existe) {
+            String nombre=Service.nombreCriterio(id_asig);
+            String mensaje = "El criterio: "+nombre+" ya está asignado a un responsable por lo que necesita tener indicadores";
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensaje);
+        } else {
+            Service.eliminarasignacion(id_modelo, id_asig);
+            return ResponseEntity.noContent().build();
+        }
     }
+
 }
