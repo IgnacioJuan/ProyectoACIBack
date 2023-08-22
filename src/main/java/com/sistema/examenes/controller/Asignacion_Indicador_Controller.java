@@ -146,8 +146,13 @@ public class Asignacion_Indicador_Controller {
         boolean existe = Service.existeCriterio(id_modelo, id_asig);
         if (existe) {
             String nombre=Service.nombreCriterio(id_asig);
+            if(Service.contar(id_modelo,nombre)==1){
             String mensaje = "El criterio: "+nombre+" ya está asignado a un responsable por lo que necesita tener indicadores";
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensaje);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(mensaje);}
+            else{
+                Service.eliminarasignacion(id_modelo, id_asig);
+                return ResponseEntity.noContent().build();
+            }
         } else {
             Service.eliminarasignacion(id_modelo, id_asig);
             return ResponseEntity.noContent().build();

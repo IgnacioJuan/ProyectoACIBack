@@ -54,4 +54,9 @@ public class Asignacion_Indicador_ServiceImpl extends GenericServiceImpl<Asignac
     public String nombreCriterio(Long id_indi) {
         return repository.nombreCriterio(id_indi);
     }
+
+    @Override
+    public Integer contar(Long id_modelo, String nombre) {
+        return repository.contar(id_modelo,nombre);
+    }
 }

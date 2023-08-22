@@ -14,4 +14,5 @@ public interface Asignacion_Indicador_Service extends GenericService<Asignacion_
     public  Boolean existeIndicador(Long id_indi, Long id_modelo);
     public  Boolean existeCriterio(Long id_modelo,Long id_indi);
     public String nombreCriterio(Long id_indi);
+    public Integer contar(Long id_modelo, String nombre);
 }

@@ -42,4 +42,10 @@ public interface Asignacion_Indicador_repository extends JpaRepository<Asignacio
             "WHERE ai.indicador_id_indicador=:id_asig", nativeQuery = true)
     String nombreCriterio(@Param("id_asig") Long id_asig);
 
+    @Query(value = "SELECT COUNT(ai.indicador_id_indicador) FROM asignacion_indicador ai " +
+            "JOIN indicador i ON i.id_indicador=ai.indicador_id_indicador " +
+            "JOIN subcriterio s ON s.id_subcriterio=i.subcriterio_id_subcriterio " +
+            "JOIN criterio cri ON cri.id_criterio=s.id_criterio " +
+            "WHERE ai.modelo_id_modelo=:id_modelo AND cri.nombre=:nombre", nativeQuery = true)
+    Integer contar(Long id_modelo, String nombre);
 }
