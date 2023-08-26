@@ -20,7 +20,6 @@ public class Persona_Controller {
     @PostMapping("/crear")
     public ResponseEntity<Persona> crear(@RequestBody Persona r) {
         try {
-
             return new ResponseEntity<>(Service.save(r), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -35,7 +34,6 @@ public class Persona_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
     @GetMapping("/buscarpersona/{username}")
     public ResponseEntity<Persona> obtenerPersona(@PathVariable("username") String username) {
@@ -94,4 +92,6 @@ public class Persona_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 }

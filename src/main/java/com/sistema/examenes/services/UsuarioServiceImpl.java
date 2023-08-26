@@ -4,6 +4,7 @@ import com.sistema.examenes.entity.Usuario;
 import com.sistema.examenes.projection.ResponsableProjection;
 import com.sistema.examenes.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +44,15 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implem
     @Override
     public List<Usuario> listaAdminDatos() {
         return usuarioRepository.listaAdminDatos();
+    }
+
+    @Override
+    public Boolean listapersonasusuario(Long usuarioId) {
+        return usuarioRepository.listapersonasusuario(usuarioId);
+    }
+
+    @Override
+    public void actualizarPersonaIdEnUsuario(Long usuarioId) {
+        usuarioRepository.actualizarPersonaIdEnUsuario(usuarioId);
     }
 }

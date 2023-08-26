@@ -2,6 +2,7 @@ package com.sistema.examenes.repository;
 
 
 import com.sistema.examenes.entity.Persona;
+import com.sistema.examenes.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,5 +16,4 @@ public interface Persona_repository extends JpaRepository<Persona, Long> {
     public Persona obtenerPersonaUsuario(Long id);
 
     public Persona findByCedula(String cedula);
-
 }

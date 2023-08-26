@@ -5,7 +5,10 @@ import java.util.List;
 
 import com.sistema.examenes.projection.ResponsableProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+
+import javax.transaction.Transactional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
         @Query(value = "SELECT *\n" +
@@ -70,4 +73,23 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
                         "WHERE ur.rol_rolid = 1\n" +
                         "AND u.visible=true;", nativeQuery = true)
         public List<Usuario> listaAdminDatos();
+
+
+        @Query(value = "SELECT CASE WHEN u.persona_id_persona is NULL THEN true ELSE false END\n" +
+                       "FROM usuarios u\n" +
+                       "LEFT JOIN persona p ON u.persona_id_persona = p.id_persona\n" +
+                       "WHERE u.visible = true AND u.id =:usuarioId", nativeQuery = true)
+        public Boolean listapersonasusuario(Long usuarioId);
+        @Modifying
+        @Transactional
+        @Query(value = "UPDATE usuarios\n" +
+                "SET persona_id_persona = (\n" +
+                "       SELECT id_persona\n" +
+                        "FROM persona\n" +
+                        "ORDER BY id_persona DESC\n" +
+                        "LIMIT 1\n" +
+                ")\n" +
+                "WHERE id =:usuarioId\n" , nativeQuery = true)
+        void actualizarPersonaIdEnUsuario(Long usuarioId);
+
 }
