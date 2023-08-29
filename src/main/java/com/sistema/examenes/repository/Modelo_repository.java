@@ -60,8 +60,8 @@ public interface Modelo_repository extends JpaRepository<Modelo, Long> {
             "join subcriterio sub on i.subcriterio_id_subcriterio = sub.id_subcriterio AND sub.visible = true\n" +
             "join criterio cri on cri.id_criterio = sub.id_criterio AND sub.visible = true\n" +
             "LEFT JOIN asignacion_indicador ai ON ai.indicador_id_indicador = i.id_indicador AND i.visible = true\n" +
-            "wHERE ai.modelo_id_modelo =:id_modelo ORDER BY cri.id_criterio, sub.id_subcriterio, i.id_indicador", nativeQuery = true)
-    List<criteriosdesprojection> listicritedes(Long id_modelo);
+            "wHERE ai.modelo_id_modelo =:id_modelo AND cri.nombre=:nombre ORDER BY cri.id_criterio, sub.id_subcriterio, i.id_indicador", nativeQuery = true)
+    List<criteriosdesprojection> listicritedes(Long id_modelo,String nombre);
 
 
 @Query(value = "\n" +

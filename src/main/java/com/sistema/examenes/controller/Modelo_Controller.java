@@ -136,10 +136,11 @@ public class  Modelo_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/listcritedes/{id_modelo}")
-    public ResponseEntity<List<criteriosdesprojection>> listcritedescarga(@PathVariable("id_modelo") Long id_modelo) {
+    @GetMapping("/listcritedes/{id_modelo}/{nombre}")
+    public ResponseEntity<List<criteriosdesprojection>> listcritedescarga(@PathVariable("id_modelo") Long id_modelo,
+                                                                          @PathVariable("nombre") String nombre) {
         try {
-            return new ResponseEntity<>(Service.listicritedes(id_modelo), HttpStatus.OK);
+            return new ResponseEntity<>(Service.listicritedes(id_modelo,nombre), HttpStatus.OK);
         } catch (Exception e) {
             System.out.println("erroor john"+e.getCause());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

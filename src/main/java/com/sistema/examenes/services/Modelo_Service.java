@@ -17,7 +17,7 @@ public interface Modelo_Service extends GenericService<Modelo, Long> {
 
     public List<ModeloVistaProjection> obtenerDatosModelo();
     public List<ModelIndiProjection> listindiModelo(Long id_modelo);
-    public List<criteriosdesprojection> listicritedes(Long id_modelo);
+    public List<criteriosdesprojection> listicritedes(Long id_modelo,String nombre);
     public List<criteriosdesprojection> listicrinom(Long id_modelo, String nomcrite);
 
 }
