@@ -1,6 +1,7 @@
 package com.sistema.examenes.services;
 
 import com.sistema.examenes.entity.Indicador;
+import com.sistema.examenes.projection.IndiColProjection;
 import com.sistema.examenes.projection.IndicadorEvidenciasProjection;
 import com.sistema.examenes.projection.IndicadorEvidenciasProjectionFull;
 import com.sistema.examenes.projection.IndicadoresProjection;
@@ -28,8 +29,8 @@ public class Indicador_ServiceImpl extends GenericServiceImpl<Indicador, Long> i
     }
 
     @Override
-    public List<IndicadoresProjection> indicadores() {
-        return repository.Indicadores();
+    public List<IndicadoresProjection> indicadores(Long id_modelo) {
+        return repository.Indicadores(id_modelo);
     }
 
     @Override
@@ -62,5 +63,10 @@ public class Indicador_ServiceImpl extends GenericServiceImpl<Indicador, Long> i
     @Override
     public List<Indicador> indicadoresPorModelo(Long id_modelo) {
         return repository.indicadoresPorModelo(id_modelo);
+    }
+
+    @Override
+    public List<IndiColProjection> indicadorval(Long id_modelo) {
+        return repository.indicadorval(id_modelo);
     }
 }

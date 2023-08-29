@@ -2,6 +2,7 @@ package com.sistema.examenes.services;
 
 import com.sistema.examenes.entity.Criterio;
 import com.sistema.examenes.projection.CriterioSubcriteriosProjection;
+import com.sistema.examenes.projection.ValoresProjection;
 import com.sistema.examenes.repository.Criterio_repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
@@ -52,5 +53,10 @@ public class Criterio_ServiceImpl extends GenericServiceImpl<Criterio, Long> imp
     }
     public List<CriterioSubcriteriosProjection> obtenerDatosCriterios() {
         return repository.obtenerCriteriosConCantidadSubcriterios();
+    }
+
+    @Override
+    public List<ValoresProjection> listarvalores(Long id_modelo) {
+        return repository.listarvalores(id_modelo);
     }
 }

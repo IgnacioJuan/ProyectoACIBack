@@ -1,10 +1,7 @@
 package com.sistema.examenes.controller;
 
 import com.sistema.examenes.entity.Indicador;
-import com.sistema.examenes.projection.IndicadorEvidenciasProjection;
-import com.sistema.examenes.projection.IndicadorEvidenciasProjectionFull;
-import com.sistema.examenes.projection.IndicadoresProjection;
-import com.sistema.examenes.projection.SubcriterioIndicadoresProjection;
+import com.sistema.examenes.projection.*;
 import com.sistema.examenes.services.Indicador_Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,10 +36,10 @@ public class Indicadores_Controller {
         }
     }
 
-    @GetMapping("/listarindi")
-    public ResponseEntity<List<IndicadoresProjection>> listaIndi() {
+    @GetMapping("/listarindi/{id_modelo}")
+    public ResponseEntity<List<IndicadoresProjection>> listaIndi(@PathVariable("id_modelo") Long id_modelo) {
         try {
-            return new ResponseEntity<>(Service.indicadores(), HttpStatus.OK);
+            return new ResponseEntity<>(Service.indicadores(id_modelo), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -165,6 +162,15 @@ public class Indicadores_Controller {
             @PathVariable("id_modelo") Long id_modelo) {
         try {
             return new ResponseEntity<>(Service.indicadoresPorModelo(id_modelo), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/indicadorval/{id_modelo}")
+    public ResponseEntity<List<IndiColProjection>> indicadorval(@PathVariable("id_modelo") Long id_modelo) {
+        try {
+            return new ResponseEntity<>(Service.indicadorval(id_modelo), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

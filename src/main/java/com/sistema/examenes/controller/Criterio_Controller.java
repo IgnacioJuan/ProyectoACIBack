@@ -4,6 +4,7 @@ import com.sistema.examenes.entity.Criterio;
 import com.sistema.examenes.entity.Indicador;
 import com.sistema.examenes.entity.Subcriterio;
 import com.sistema.examenes.projection.CriterioSubcriteriosProjection;
+import com.sistema.examenes.projection.ValoresProjection;
 import com.sistema.examenes.services.Criterio_Service;
 import com.sistema.examenes.services.Indicador_Service;
 import com.sistema.examenes.services.Subcriterio_Service;
@@ -94,7 +95,14 @@ public class Criterio_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @GetMapping("/listarvalores/{id_modelo}")
+    public ResponseEntity<List<ValoresProjection>> listarvalores(@PathVariable("id_modelo") Long id_modelo) {
+        try {
+            return new ResponseEntity<>(Service.listarvalores(id_modelo), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/buscar/{id}")
     public ResponseEntity<Criterio> getById(@PathVariable("id") Long id) {
         try {

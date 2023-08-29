@@ -2,6 +2,7 @@ package com.sistema.examenes.repository;
 
 import com.sistema.examenes.entity.Criterio;
 import com.sistema.examenes.projection.CriterioSubcriteriosProjection;
+import com.sistema.examenes.projection.ValoresProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -52,5 +53,12 @@ public interface Criterio_repository extends JpaRepository<Criterio, Long> {
                 "WHERE c.visible = true", nativeQuery = true)
         List<CriterioSubcriteriosProjection> obtenerCriteriosConCantidadSubcriterios();
 
-
+        @Query(value = "SELECT cri.nombre AS \"Nomcriterio\",CAST(SUM(i.peso) AS NUMERIC(10, 2)) as \"Ponderacio\",\n" +
+                "CAST(SUM(i.porc_utilida_obtenida) AS NUMERIC(10, 2)) AS \"VlObtenido\",\n" +
+                "CAST(SUM(i.peso) - SUM(i.porc_utilida_obtenida) AS NUMERIC(10, 2)) AS \"Vlobtener\"\n" +
+                "FROM indicador i JOIN subcriterio sub ON sub.id_subcriterio=i.subcriterio_id_subcriterio\n" +
+                "JOIN criterio cri ON cri.id_criterio =sub.id_criterio\n" +
+                "JOIN asignacion_admin aa ON aa.criterio_id_criterio=cri.id_criterio AND aa.visible=true\n" +
+                "AND aa.id_modelo=?1 GROUP BY cri.nombre", nativeQuery = true)
+        List<ValoresProjection> listarvalores(Long id_modelo);
 }

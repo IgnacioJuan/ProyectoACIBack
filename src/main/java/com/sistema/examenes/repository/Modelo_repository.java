@@ -46,6 +46,7 @@ public interface Modelo_repository extends JpaRepository<Modelo, Long> {
             "FROM criterio cri JOIN subcriterio sub ON sub.id_criterio = cri.id_criterio AND cri.visible=true " +
             "JOIN indicador i ON i.subcriterio_id_subcriterio = sub.id_subcriterio AND sub.visible=true " +
             "LEFT JOIN asignacion_indicador ai ON ai.indicador_id_indicador = i.id_indicador AND i.visible=true " +
-            "AND ai.modelo_id_modelo =:id_modelo ORDER BY cri.nombre,sub.nombre,i.id_indicador;", nativeQuery = true)
+            "AND ai.modelo_id_modelo =:id_modelo ORDER BY cri.id_criterio,sub.id_subcriterio,i.id_indicador;", nativeQuery = true)
     List<ModelIndiProjection> listindiModelo(Long id_modelo);
+
 }
