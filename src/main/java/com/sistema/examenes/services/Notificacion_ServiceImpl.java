@@ -1,5 +1,6 @@
 package com.sistema.examenes.services;
 
+import com.sistema.examenes.entity.Actividad;
 import com.sistema.examenes.entity.Notificacion;
 import com.sistema.examenes.repository.Notificacion_repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ public class Notificacion_ServiceImpl extends GenericServiceImpl<Notificacion,Lo
         return notificacionRepository.listarUserNoti(user);
     }
 
+
     @Override
     public void eliminar(Long id) {
         notificacionRepository.borrar(id);
@@ -41,4 +43,10 @@ public class Notificacion_ServiceImpl extends GenericServiceImpl<Notificacion,Lo
     public List<Notificacion> all(String roluser) {
         return notificacionRepository.all(roluser);
     }
+
+    @Override
+    public List<Notificacion> all2(String roluser) {
+        return notificacionRepository.all2(roluser);
+    }
+
 }

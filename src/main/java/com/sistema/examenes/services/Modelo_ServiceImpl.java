@@ -4,6 +4,7 @@ import com.sistema.examenes.entity.Actividad;
 import com.sistema.examenes.entity.Modelo;
 import com.sistema.examenes.projection.ModelIndiProjection;
 import com.sistema.examenes.projection.ModeloVistaProjection;
+import com.sistema.examenes.projection.criteriosdesprojection;
 import com.sistema.examenes.repository.Modelo_repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
@@ -46,5 +47,11 @@ public class Modelo_ServiceImpl extends GenericServiceImpl<Modelo, Long> impleme
         return repository.listindiModelo(id_modelo);
     }
 
-    ;
+    @Override
+    public List<criteriosdesprojection> listicritedes(Long id_modelo) {return repository.listicritedes(id_modelo);
+    }
+    @Override
+    public List<criteriosdesprojection> listicrinom(Long id_modelo,String nomcrite ) {return repository.listicrinom(id_modelo,nomcrite);
+    }
+
 }

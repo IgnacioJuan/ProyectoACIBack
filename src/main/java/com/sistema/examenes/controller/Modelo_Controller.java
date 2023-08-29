@@ -4,6 +4,7 @@ import com.sistema.examenes.entity.Modelo;
 import com.sistema.examenes.projection.ModelIndiProjection;
 import com.sistema.examenes.projection.ModeloVistaProjection;
 import com.sistema.examenes.projection.SubcriterioIndicadoresProjectionFull;
+import com.sistema.examenes.projection.criteriosdesprojection;
 import com.sistema.examenes.services.Modelo_Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -135,7 +136,27 @@ public class  Modelo_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @GetMapping("/listcritedes/{id_modelo}")
+    public ResponseEntity<List<criteriosdesprojection>> listcritedescarga(@PathVariable("id_modelo") Long id_modelo) {
+        try {
+            return new ResponseEntity<>(Service.listicritedes(id_modelo), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println("erroor john"+e.getCause());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/listcritedesNOM/{id_modelo}/{nombre}")
+    public ResponseEntity<List<criteriosdesprojection>> listarCriterios(
+            @PathVariable("id_modelo") Long id_modelo,
+            @PathVariable("nombre") String nombre) {
+        try {
+            List<criteriosdesprojection> criterios =Service.listicrinom(id_modelo, nombre);
+            return new ResponseEntity<>(criterios, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/datosModelo")
     public List<ModeloVistaProjection> obtenerDatosModelo() {
         return Service.obtenerDatosModelo();
