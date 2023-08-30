@@ -205,4 +205,13 @@ public class UsuarioController {
         }
     }
 
+    @GetMapping("/listarsoloResponsables")
+    public ResponseEntity<List<Usuario>> solloresonsables() {
+        try {
+
+            return new ResponseEntity<>(uR.listaSOLORESPONSABLES(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
