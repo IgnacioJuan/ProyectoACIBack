@@ -44,4 +44,9 @@ public class UsuarioServiceImpl extends GenericServiceImpl<Usuario, Long> implem
     public List<Usuario> listaAdminDatos() {
         return usuarioRepository.listaAdminDatos();
     }
+    @Override
+    public List<Usuario> listaSOLORESPONSABLES() {
+        return usuarioRepository.listaSOLORESPONSABLES();
+    }
+
 }

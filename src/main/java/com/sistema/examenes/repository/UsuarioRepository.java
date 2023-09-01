@@ -70,4 +70,16 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
                         "WHERE ur.rol_rolid = 1\n" +
                         "AND u.visible=true;", nativeQuery = true)
         public List<Usuario> listaAdminDatos();
+
+
+        @Query(value = "SELECT u.*,per.*\n" +
+                "  FROM usuarios u \n" +
+                "  JOIN usuariorol ur ON u.id = ur.usuario_id\n" +
+                "  join persona per on per.id_persona=u.persona_id_persona\n" +
+                " wheRE ur.rol_rolid = 3 AND u.visible=true", nativeQuery = true)
+        public List<Usuario> listaSOLORESPONSABLES();
+
+
+
+
 }
