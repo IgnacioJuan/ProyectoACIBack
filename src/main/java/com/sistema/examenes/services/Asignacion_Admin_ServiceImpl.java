@@ -3,6 +3,7 @@ package com.sistema.examenes.services;
 import com.sistema.examenes.entity.Asignacion_Admin;
 import com.sistema.examenes.entity.Asignacion_Admin;
 import com.sistema.examenes.projection.AsignacionProjection;
+import com.sistema.examenes.projection.NombreAsigProjection;
 import com.sistema.examenes.repository.Asignacion_Admin_repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
@@ -44,5 +45,10 @@ public class Asignacion_Admin_ServiceImpl extends GenericServiceImpl<Asignacion_
     @Override
     public Asignacion_Admin asignacion_existente(Long id_criterio, Long id_modelo, Long id_usuario) {
         return repository.asignacion_existente(id_criterio,id_modelo,id_usuario);
+    }
+
+    @Override
+    public NombreAsigProjection listarnombre_Admin(Long id_modelo, Long id_criterio) {
+        return repository.listarnombre_Admin(id_modelo,id_criterio);
     }
 }

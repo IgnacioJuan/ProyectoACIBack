@@ -13,7 +13,12 @@ import java.util.Date;
 import java.util.List;
 
 public interface Ponderacion_repository extends JpaRepository<Ponderacion, Long> {
-    @Query(value = "SELECT * from ponderacion where visible =true", nativeQuery = true)
+    @Query(value = "SELECT p.* from ponderacion p\n" +
+            "JOIN modelo m ON m.id_modelo = p.modelo_id_modelo\n" +
+            "JOIN indicador i ON i.id_indicador=p.indicador_id_indicador\n" +
+            "JOIN subcriterio s ON s.id_subcriterio=i.subcriterio_id_subcriterio\n" +
+            "JOIN criterio cri ON cri.id_criterio = s.id_criterio where p.visible =true\n" +
+            "ORDER BY  cri.id_criterio;", nativeQuery = true)
     List<Ponderacion> listarPonderacion();
 
     @Modifying
@@ -29,7 +34,11 @@ public interface Ponderacion_repository extends JpaRepository<Ponderacion, Long>
     List<Ponderacion> listarPorFecha(@Param("fecha") String fecha);
 
 
-    @Query(value = "SELECT p.* FROM ponderacion p JOIN modelo m ON m.id_modelo = p.modelo_id_modelo WHERE p.fecha = TO_DATE(?1, 'YYYY-MM-DD') AND p.contador = ?2", nativeQuery = true)
+    @Query(value = "SELECT p.* FROM ponderacion p JOIN modelo m ON m.id_modelo = p.modelo_id_modelo\n" +
+            "JOIN indicador i ON i.id_indicador=p.indicador_id_indicador\n" +
+            "JOIN subcriterio s ON s.id_subcriterio=i.subcriterio_id_subcriterio\n" +
+            "JOIN criterio cri ON cri.id_criterio = s.id_criterio " +
+            "WHERE p.fecha = TO_DATE(?1, 'YYYY-MM-DD') AND p.contador = ?2 ORDER BY cri.id_criterio", nativeQuery = true)
     List<Ponderacion> listarPonderacionPorFecha(String fecha, Long contador);
 
     @Query(value = "SELECT p.* FROM ponderacion p JOIN modelo m ON p.modelo_id_modelo = m.id_modelo WHERE m.id_modelo = :id_modelo", nativeQuery = true)

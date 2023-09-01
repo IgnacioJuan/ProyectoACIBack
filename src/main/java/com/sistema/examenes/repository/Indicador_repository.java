@@ -13,7 +13,9 @@ public interface Indicador_repository extends JpaRepository<Indicador, Long> {
     @Query(value = "SELECT * from indicador where subcriterio_id_subcriterio = :id_subcriterio", nativeQuery = true)
     List<Indicador> listarIndicadorPorSubcriterio(Long id_subcriterio);
 
-    @Query(value = "SELECT * from indicador where visible =true", nativeQuery = true)
+    @Query(value = "SELECT i.* from indicador i JOIN subcriterio s ON s.id_subcriterio=i.subcriterio_id_subcriterio\n" +
+            "JOIN criterio cri ON cri.id_criterio = s.id_criterio " +
+            "where i.visible =true ORDER BY  cri.id_criterio, s.id_subcriterio, i.id_indicador", nativeQuery = true)
     List<Indicador> listarIndicador();
 
     @Query(value = "SELECT *  FROM indicador i JOIN subcriterio s ON s.id_subcriterio = i.subcriterio_id_subcriterio JOIN criterio c ON c.id_criterio = s.id_criterio "
@@ -29,7 +31,11 @@ public interface Indicador_repository extends JpaRepository<Indicador, Long> {
     public List<IndicadoresProjection> Indicadores(Long id_modelo);
 
 
-    @Query(value = "SELECT i.* FROM public.modelo m join public.asignacion_indicador a ON a.modelo_id_modelo = m.id_modelo JOIN public.indicador i on a.indicador_id_indicador = i.id_indicador JOIN public.subcriterio s ON s.id_subcriterio = i.subcriterio_id_subcriterio JOIN public.criterio c ON c.id_criterio = s.id_criterio WHERE c.id_criterio= :id_criterio and m.id_modelo= :id_modelo ORDER BY i.nombre", nativeQuery = true)
+    @Query(value = "SELECT i.* FROM public.modelo m join public.asignacion_indicador a ON " +
+            "a.modelo_id_modelo = m.id_modelo JOIN public.indicador i on a.indicador_id_indicador = i.id_indicador AND a.visible=true " +
+            "JOIN public.subcriterio s ON s.id_subcriterio = i.subcriterio_id_subcriterio JOIN public.criterio c " +
+            "ON c.id_criterio = s.id_criterio WHERE c.id_criterio= :id_criterio and m.id_modelo= :id_modelo " +
+            "ORDER BY i.id_indicador", nativeQuery = true)
     List<Indicador> listarIndicadorPorCriterioModelo(Long id_criterio, Long id_modelo);
 
     @Query("SELECT DISTINCT i FROM Indicador i " +
@@ -74,17 +80,17 @@ public interface Indicador_repository extends JpaRepository<Indicador, Long> {
             "AND i.visible = true")
     List<Indicador> indicadoresPorModelo(Long id_modelo);
 
-    @Query(value = "SELECT COUNT(ai.indicador_id_indicador) AS indica,\n" +
-            "CASE WHEN i.porc_obtenido > 75 THEN 'verde'\n" +
-            "WHEN i.porc_obtenido > 50 AND i.porc_obtenido <= 75 THEN 'amarillo'\n" +
-            "WHEN i.porc_obtenido > 25 AND i.porc_obtenido <= 50 THEN 'naranja'\n" +
-            "ELSE 'rojo'END as color,\n" +
-            "ROUND(COUNT(ai.indicador_id_indicador) * 100.0 / (SELECT COUNT(indicador_id_indicador) FROM asignacion_indicador\n" +
-            "WHERE modelo_id_modelo=:id_modelo AND visible =true), 2) AS porcentaje\n" +
-            "FROM asignacion_indicador ai JOIN indicador i ON i.id_indicador=ai.indicador_id_indicador AND ai.visible=true\n" +
-            "JOIN subcriterio s ON s.id_subcriterio = i.subcriterio_id_subcriterio AND i.visible=true\n" +
-            "JOIN criterio cri ON cri.id_criterio = s.id_criterio JOIN ponderacion po ON po.indicador_id_indicador=i.id_indicador\n" +
-            "JOIN modelo mo ON po.modelo_id_modelo=mo.id_modelo\n" +
+    @Query(value = "SELECT COUNT(ai.indicador_id_indicador) AS indica, " +
+            "CASE WHEN i.porc_obtenido > 75 THEN 'verde' " +
+            "WHEN i.porc_obtenido > 50 AND i.porc_obtenido <= 75 THEN 'amarillo' " +
+            "WHEN i.porc_obtenido > 25 AND i.porc_obtenido <= 50 THEN 'naranja' " +
+            "ELSE 'rojo'END as color, " +
+            "ROUND(COUNT(ai.indicador_id_indicador) * 100.0 / (SELECT COUNT(indicador_id_indicador) FROM asignacion_indicador " +
+            "WHERE modelo_id_modelo=:id_modelo AND visible =true), 2) AS porcentaje " +
+            "FROM asignacion_indicador ai JOIN indicador i ON i.id_indicador=ai.indicador_id_indicador AND ai.visible=true " +
+            "JOIN subcriterio s ON s.id_subcriterio = i.subcriterio_id_subcriterio AND i.visible=true " +
+            "JOIN criterio cri ON cri.id_criterio = s.id_criterio " +
+            "JOIN modelo mo ON ai.modelo_id_modelo=mo.id_modelo " +
             "WHERE mo.id_modelo=:id_modelo AND i.visible=true GROUP BY i.porc_obtenido", nativeQuery = true)
     List<IndiColProjection> indicadorval(Long id_modelo);
 }

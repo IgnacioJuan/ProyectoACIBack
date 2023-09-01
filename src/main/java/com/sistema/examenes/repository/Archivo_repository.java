@@ -26,4 +26,16 @@ public interface Archivo_repository extends JpaRepository<Archivo_s, Long> {
             "JOIN modelo mo ON mo.id_modelo = po.modelo_id_modelo\n" +
             "WHERE mo.id_modelo = (SELECT MAX(id_modelo) FROM modelo) GROUP BY idper, resp, correo, archiv, activid, ini, finish, enlac;",nativeQuery = true)
     List<ArchivoProjection> listararchi();
+
+    @Query(value = "SELECT ar.* FROM  " +
+            "archivo ar JOIN actividad ac ON ar.id_actividad=ac.id_actividad AND ar.visible=true " +
+            "JOIN evidencia ev ON ev.id_evidencia=ac.id_evidencia AND ev.visible=true " +
+            "JOIN indicador i on ev.indicador_id_indicador = i.id_indicador AND i.visible=true " +
+            "JOIN asignacion_indicador a ON a.indicador_id_indicador = i.id_indicador AND a.visible=true " +
+            "JOIN modelo m ON a.modelo_id_modelo = m.id_modelo " +
+            "JOIN subcriterio s ON s.id_subcriterio = i.subcriterio_id_subcriterio AND s.visible=true " +
+            "JOIN criterio c ON c.id_criterio = s.id_criterio AND c.visible=true " +
+            "WHERE c.id_criterio=:id_criterio and m.id_modelo=:id_modelo AND ev.indicador_id_indicador=:id_indicador " +
+            "ORDER BY i.id_indicador",nativeQuery = true)
+    List<Archivo_s> archivoporindicador(Long id_criterio,Long id_modelo,Long id_indicador);
 }

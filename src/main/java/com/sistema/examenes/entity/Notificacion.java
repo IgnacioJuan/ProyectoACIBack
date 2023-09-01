@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Date;
 @Entity
 @Getter
@@ -15,7 +16,7 @@ public class Notificacion {
     private Long id;
     private Long usuario;
     private String rol;
-
+    @Size(max = 600)
     private String mensaje;
 
     @Column(name = "fecha", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")

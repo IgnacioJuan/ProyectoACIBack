@@ -2,6 +2,7 @@ package com.sistema.examenes.repository;
 
 import com.sistema.examenes.entity.Asignacion_Admin;
 import com.sistema.examenes.projection.AsignacionProjection;
+import com.sistema.examenes.projection.NombreAsigProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import java.util.List;
@@ -27,4 +28,10 @@ public interface Asignacion_Admin_repository extends JpaRepository<Asignacion_Ad
 
     @Query(value = "SELECT * from asignacion_admin where criterio_id_criterio = ?1 and id_modelo = ?2 and usuario_id = ?3", nativeQuery = true)
     Asignacion_Admin asignacion_existente(Long id_criterio, Long id_modelo,Long id_usuario);
+    @Query(value = "SELECT per.primer_nombre ||' '|| per.segundo_nombre||' '||per.primer_apellido||' '||per.segundo_apellido AS nombreaa FROM persona per\n" +
+            "JOIN usuarios u ON u.persona_id_persona=per.id_persona\n" +
+            "JOIN asignacion_admin aa ON aa.usuario_id=u.id AND aa.visible=true\n" +
+            "JOIN modelo mo ON mo.id_modelo=aa.id_modelo\n" +
+            "WHERE aa.id_modelo=:id_modelo AND aa.criterio_id_criterio=:id_criterio", nativeQuery = true)
+    NombreAsigProjection listarnombre_Admin(Long id_modelo, Long id_criterio);
 }

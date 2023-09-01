@@ -40,5 +40,10 @@ public class Archivo_ServiceImpl extends GenericServiceImpl<Archivo_s, Long> imp
         return repository.listararchi();
     }
 
+    @Override
+    public List<Archivo_s> archivoporindicador(Long id_criterio, Long id_modelo, Long id_indicador) {
+        return repository.archivoporindicador(id_criterio,id_modelo,id_indicador);
+    }
+
 
 }

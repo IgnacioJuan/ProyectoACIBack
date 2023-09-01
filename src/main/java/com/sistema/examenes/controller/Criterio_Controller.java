@@ -4,6 +4,7 @@ import com.sistema.examenes.entity.Criterio;
 import com.sistema.examenes.entity.Indicador;
 import com.sistema.examenes.entity.Subcriterio;
 import com.sistema.examenes.projection.CriterioSubcriteriosProjection;
+import com.sistema.examenes.projection.IdCriterioProjection;
 import com.sistema.examenes.projection.ValoresProjection;
 import com.sistema.examenes.services.Criterio_Service;
 import com.sistema.examenes.services.Indicador_Service;
@@ -28,10 +29,7 @@ public class Criterio_Controller {
     Subcriterio_Service subcriterioService;
     @Autowired
     Indicador_Service indicadorService;
-    @PostConstruct
-    public void iniciarServidor() {
-        obtenerDatos();
-    }
+
     @GetMapping("/datos")
     public ResponseEntity<String> obtenerDatos() {
         List<Criterio> criterios = Service.listar();
@@ -46,7 +44,7 @@ public class Criterio_Controller {
             Set<Subcriterio> indicadoresSet = new HashSet<>(subcriterios);
             criterio.setLista_subcriterios((indicadoresSet));
         }
-        System.out.println("criterios "+criterios.toString());
+
         return new ResponseEntity<>(criterios.toString(), HttpStatus.OK);
     }
 
@@ -112,6 +110,14 @@ public class Criterio_Controller {
         }
     }
 
+    @GetMapping("/idcriterio/{nombre}")
+    public ResponseEntity<IdCriterioProjection> getidCrite(@PathVariable("nombre") String nombre) {
+        try {
+            return new ResponseEntity<>(Service.idcriterio(nombre), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @PutMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id) {
         Criterio criterio = Service.findById(id);

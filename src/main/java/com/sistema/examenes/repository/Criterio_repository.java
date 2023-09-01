@@ -2,6 +2,7 @@ package com.sistema.examenes.repository;
 
 import com.sistema.examenes.entity.Criterio;
 import com.sistema.examenes.projection.CriterioSubcriteriosProjection;
+import com.sistema.examenes.projection.IdCriterioProjection;
 import com.sistema.examenes.projection.ValoresProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -61,4 +62,6 @@ public interface Criterio_repository extends JpaRepository<Criterio, Long> {
                 "JOIN asignacion_admin aa ON aa.criterio_id_criterio=cri.id_criterio AND aa.visible=true\n" +
                 "AND aa.id_modelo=?1 GROUP BY cri.nombre", nativeQuery = true)
         List<ValoresProjection> listarvalores(Long id_modelo);
+        @Query(value = "SELECT id_criterio FROM criterio WHERE nombre=:nombre", nativeQuery = true)
+        public IdCriterioProjection idcriterio(String nombre);
 }

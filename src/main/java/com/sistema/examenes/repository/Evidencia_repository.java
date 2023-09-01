@@ -21,16 +21,25 @@ public interface Evidencia_repository extends JpaRepository<Evidencia, Long> {
             "               LEFT JOIN asignacion_evidencia ae ON e.id_evidencia = ae.evidencia_id_evidencia \n" +
             "               WHERE ae.id_asignacion_evidencia IS NULL AND e.visible=true",nativeQuery = true)*/
 
-    @Query(value = "SELECT e.* FROM evidencia e " +
+    @Query(value = "SELECT DISTINCT e.id_evidencia, e.*, c.id_criterio FROM evidencia e " +
             "JOIN indicador i ON e.indicador_id_indicador = i.id_indicador " +
             "JOIN subcriterio sc ON i.subcriterio_id_subcriterio = sc.id_subcriterio " +
             "JOIN criterio c ON sc.id_criterio = c.id_criterio " +
             "JOIN asignacion_admin aa ON c.id_criterio = aa.criterio_id_criterio " +
             "WHERE aa.usuario_id =:idUser AND e.visible = true " +
-            "AND e.id_evidencia NOT IN (SELECT evidencia_id_evidencia FROM asignacion_evidencia)", nativeQuery = true)
+            "AND e.id_evidencia NOT IN (SELECT evidencia_id_evidencia FROM asignacion_evidencia) " +
+            "ORDER BY c.id_criterio,e.id_evidencia", nativeQuery = true)
     List<Evidencia> listarEvidenciaAsigna(Long idUser);
 
-
+    @Query(value = "SELECT DISTINCT e.id_evidencia, e.*, c.id_criterio FROM evidencia e " +
+            "JOIN indicador i ON e.indicador_id_indicador = i.id_indicador " +
+            "JOIN subcriterio sc ON i.subcriterio_id_subcriterio = sc.id_subcriterio " +
+            "JOIN criterio c ON sc.id_criterio = c.id_criterio " +
+            "JOIN asignacion_admin aa ON c.id_criterio = aa.criterio_id_criterio " +
+            "WHERE c.id_criterio=:idcriterio AND e.visible = true " +
+            "AND e.id_evidencia NOT IN (SELECT evidencia_id_evidencia FROM asignacion_evidencia) " +
+            "ORDER BY c.id_criterio,e.id_evidencia", nativeQuery = true)
+    List<Evidencia> evidenciacriterio(Long idcriterio);
 
 
     // SELECT evidencia.*

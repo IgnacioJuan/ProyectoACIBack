@@ -12,5 +12,5 @@ public interface Evidencia_Service extends GenericService<Evidencia, Long> {
     public List<Evidencia> listarEvidenciaAsigna(Long idUsuario) ;
 
     List<Evidencia> listarEvidenciaPorIndicador(Long id_indicador);
-    
+    List<Evidencia> evidenciacriterio(Long idcriterio);
 }

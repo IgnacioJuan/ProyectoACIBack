@@ -39,4 +39,9 @@ public class Evidencia_ServiceImpl extends GenericServiceImpl<Evidencia, Long> i
         return repository.listarEvidenciaPorIndicador(id_indicador);
 
     }
+
+    @Override
+    public List<Evidencia> evidenciacriterio(Long idcriterio) {
+        return repository.evidenciacriterio(idcriterio);
+    }
 }

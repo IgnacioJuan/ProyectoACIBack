@@ -81,6 +81,17 @@ public class Archivo_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/archivoindi/{id_criterio}/{id_modelo}/{id_indicador}")
+    public ResponseEntity<List<Archivo_s>> archivoindi(@PathVariable("id_criterio") Long id_criterio,
+                                                       @PathVariable("id_modelo")Long id_modelo,
+                                                       @PathVariable("id_indicador")Long id_indicador) {
+        try {
+            return new ResponseEntity<>(archivoservis.archivoporindicador(id_criterio,id_modelo,id_indicador), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/listararchi")
     public ResponseEntity<List<ArchivoProjection>> listaarchi() {
         try {

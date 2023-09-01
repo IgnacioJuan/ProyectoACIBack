@@ -2,6 +2,7 @@ package com.sistema.examenes.services;
 
 import com.sistema.examenes.entity.Criterio;
 import com.sistema.examenes.projection.CriterioSubcriteriosProjection;
+import com.sistema.examenes.projection.IdCriterioProjection;
 import com.sistema.examenes.projection.ValoresProjection;
 
 import java.util.List;
@@ -24,4 +25,5 @@ public interface Criterio_Service extends GenericService<Criterio, Long> {
     //Lista de criterios para el flujo
     public List<CriterioSubcriteriosProjection> obtenerDatosCriterios();
     public List<ValoresProjection>  listarvalores(Long id_modelo);
+    IdCriterioProjection idcriterio(String nombre);
 }

@@ -54,9 +54,9 @@ public interface Modelo_repository extends JpaRepository<Modelo, Long> {
             "SELECT cri.nombre AS criterionomj,sub.nombre AS subcrierioj,i.id_indicador AS id_indicardorj,\n" +
             "i.nombre AS ind_nombrej, CASE WHEN ai.visible IS NOT NULL THEN ai.visible ELSE false END AS visi,\n" +
             "arc.nombre AS archivo_nombre,arc.enlace AS archivo_enlace FROM archivo arc join actividad ac \n" +
-            "on ac.id_actividad = arc.id_actividad\n" +
-            "join evidencia ev on ev.id_evidencia=ac.id_evidencia\n" +
-            "join indicador i on ev.indicador_id_indicador=i.id_indicador\n" +
+            "on ac.id_actividad = arc.id_actividad AND arc.visible=true AND ac.visible=true " +
+            "join evidencia ev on ev.id_evidencia=ac.id_evidencia AND ev.visible=true " +
+            "join indicador i on ev.indicador_id_indicador=i.id_indicador AND i.visible=true " +
             "join subcriterio sub on i.subcriterio_id_subcriterio = sub.id_subcriterio AND sub.visible = true\n" +
             "join criterio cri on cri.id_criterio = sub.id_criterio AND sub.visible = true\n" +
             "LEFT JOIN asignacion_indicador ai ON ai.indicador_id_indicador = i.id_indicador AND i.visible = true\n" +

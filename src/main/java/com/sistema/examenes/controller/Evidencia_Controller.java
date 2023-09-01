@@ -55,7 +55,14 @@ public class Evidencia_Controller {
         }
     }
 
-    
+    @GetMapping("/evicriterio/{idcriterio}")
+    public ResponseEntity<List<Evidencia>> evidenciaindicador(@PathVariable("idcriterio") Long idcriterio) {
+        try {
+            return new ResponseEntity<>(Service.evidenciacriterio(idcriterio), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @GetMapping("/buscar/{id}")
     public ResponseEntity<Evidencia> getById(@PathVariable("id") Long id) {
