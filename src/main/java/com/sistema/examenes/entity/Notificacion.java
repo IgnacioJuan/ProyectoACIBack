@@ -16,7 +16,7 @@ public class Notificacion {
     private Long id;
     private Long usuario;
     private String rol;
-    @Size(max = 600)
+    @Column(name = "mensaje", length = 10000)
     private String mensaje;
 
     @Column(name = "fecha", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")

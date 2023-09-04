@@ -9,11 +9,12 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface Asignacion_Evidencia_repository extends JpaRepository<Asignacion_Evidencia, Long> {
-    @Query(value = "SELECT ae.* from asignacion_evidencia ae JOIN evidencia e ON e.id_evidencia=ae.evidencia_id_evidencia AND ae.visible =true " +
-            "JOIN indicador i ON e.indicador_id_indicador = i.id_indicador " +
-            "JOIN ponderacion po ON i.id_indicador = po.indicador_id_indicador " +
-            "JOIN modelo mo ON mo.id_modelo=po.modelo_id_modelo " +
-            "AND mo.id_modelo = (SELECT MAX(id_modelo) FROM modelo) ORDER BY ae.id_asignacion_evidencia, ae.usuario_id;",nativeQuery = true)
+    @Query(value = "SELECT ae.* from asignacion_evidencia ae JOIN evidencia e ON e.id_evidencia=ae.evidencia_id_evidencia AND ae.visible =true\n" +
+            "JOIN indicador i ON e.indicador_id_indicador = i.id_indicador\n" +
+            "JOIN asignacion_indicador po ON i.id_indicador = po.indicador_id_indicador\n" +
+            "JOIN modelo mo ON mo.id_modelo=po.modelo_id_modelo\n" +
+            "AND mo.id_modelo = (SELECT MAX(id_modelo) FROM modelo) \n" +
+            "WHERE ae.visible=true ORDER BY ae.usuario_id,ae.evidencia_id_evidencia;",nativeQuery = true)
     List<Asignacion_Evidencia> listarAsignacionEvidencia();
 
     @Query(value =

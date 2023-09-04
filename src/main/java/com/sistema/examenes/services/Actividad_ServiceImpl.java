@@ -32,13 +32,13 @@ public class Actividad_ServiceImpl extends GenericServiceImpl<Actividad, Long> i
     }
 
     @Override
-    public List<ActivAprobadaProjection> actividadAtrasada() {
-        return  repository.actividadRechazada();
+    public List<ActivAprobadaProjection> actividadAtrasada(Long id_modelo) {
+        return  repository.actividadRechazada(id_modelo);
     }
 
     @Override
-    public List<ActivAprobadaProjection> actividadApr() {
-        return repository.actividadAprobada();
+    public List<ActivAprobadaProjection> actividadApr(Long id_modelo) {
+        return repository.actividadAprobada(id_modelo);
     }
 
     @Override
@@ -73,8 +73,8 @@ public class Actividad_ServiceImpl extends GenericServiceImpl<Actividad, Long> i
     }
 
     @Override
-    public List<ActividadesProjection> actividadCont() {
-        return repository.actividadCont();
+    public List<ActividadesProjection> actividadCont(Long id_modelo) {
+        return repository.actividadCont(id_modelo);
     }
 
     public List<Actividad> listaActByUsuario(Long id) {

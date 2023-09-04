@@ -90,6 +90,12 @@ public class Notificacion_Controller {
         LocalDate fechaLimite = hoy.minusDays(30);
         String fecha=String.valueOf(fechaLimite);
 
+        java.sql.Date fe=service.fechaeliminar();
+        LocalDate fechaLocal = fe.toLocalDate();
+        LocalDate fechaNueva = fechaLocal.plusDays(15);
+        String fecha1=String.valueOf(fechaNueva);
+        System.out.println("Fecha elim"+fe+" fecha 2"+fecha1);
+
         List<Notificacion> notificacionesAntiguas = service.listarNotifi(fecha);
         System.out.println("notificaciones traidas "+notificacionesAntiguas);
         for (Notificacion notificacion : notificacionesAntiguas) {

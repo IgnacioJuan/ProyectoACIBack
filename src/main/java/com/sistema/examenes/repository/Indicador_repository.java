@@ -23,11 +23,11 @@ public interface Indicador_repository extends JpaRepository<Indicador, Long> {
             "WHERE c.id_criterio = :criterio GROUP BY i.id_indicador,s.id_subcriterio, c.id_criterio, c.nombre ORDER BY i.id_indicador", nativeQuery = true)
     public List<Indicador> obtenerIndicadores(Long criterio);
 
-    @Query(value = "SELECT cri.nombre as nombre, SUM(i.porc_utilida_obtenida) as total\n" +
-            "FROM indicador i JOIN subcriterio s ON s.id_subcriterio = i.subcriterio_id_subcriterio\n" +
-            "JOIN criterio cri ON cri.id_criterio = s.id_criterio JOIN ponderacion po ON po.indicador_id_indicador=i.id_indicador\n" +
-            "JOIN modelo mo ON po.modelo_id_modelo=mo.id_modelo\n" +
-            "WHERE mo.id_modelo=:id_modelo AND i.visible=true GROUP BY cri.nombre", nativeQuery = true)
+    @Query(value = "SELECT cri.nombre as nombre, SUM(i.porc_utilida_obtenida) as total " +
+            "FROM indicador i JOIN subcriterio s ON s.id_subcriterio = i.subcriterio_id_subcriterio " +
+            "JOIN criterio cri ON cri.id_criterio = s.id_criterio JOIN asignacion_indicador po ON po.indicador_id_indicador=i.id_indicador\n" +
+            "JOIN modelo mo ON po.modelo_id_modelo=mo.id_modelo " +
+            "WHERE mo.id_modelo=:id_modelo AND i.visible=true GROUP BY cri.id_criterio", nativeQuery = true)
     public List<IndicadoresProjection> Indicadores(Long id_modelo);
 
 
@@ -91,6 +91,6 @@ public interface Indicador_repository extends JpaRepository<Indicador, Long> {
             "JOIN subcriterio s ON s.id_subcriterio = i.subcriterio_id_subcriterio AND i.visible=true " +
             "JOIN criterio cri ON cri.id_criterio = s.id_criterio " +
             "JOIN modelo mo ON ai.modelo_id_modelo=mo.id_modelo " +
-            "WHERE mo.id_modelo=:id_modelo AND i.visible=true GROUP BY i.porc_obtenido", nativeQuery = true)
+            "WHERE mo.id_modelo=:id_modelo AND i.visible=true GROUP BY color", nativeQuery = true)
     List<IndiColProjection> indicadorval(Long id_modelo);
 }

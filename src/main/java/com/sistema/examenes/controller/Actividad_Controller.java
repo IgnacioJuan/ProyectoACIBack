@@ -58,20 +58,20 @@ public class Actividad_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/actividadatrasa")
-    public ResponseEntity<List<ActivAprobadaProjection>> actividadAtra() {
+    @GetMapping("/actividadatrasa/{id_modelo}")
+    public ResponseEntity<List<ActivAprobadaProjection>> actividadAtra(@PathVariable("id_modelo") Long id_modelo) {
 
         try {
-            return new ResponseEntity<>(Service.actividadAtrasada(), HttpStatus.OK);
+            return new ResponseEntity<>(Service.actividadAtrasada(id_modelo), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/actividadaprobada")
-    public ResponseEntity<List<ActivAprobadaProjection>> actividadApro() {
+    @GetMapping("/actividadaprobada/{id_modelo}")
+    public ResponseEntity<List<ActivAprobadaProjection>> actividadApro(@PathVariable("id_modelo") Long id_modelo) {
 
         try {
-            return new ResponseEntity<>(Service.actividadApr(), HttpStatus.OK);
+            return new ResponseEntity<>(Service.actividadApr(id_modelo), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -95,10 +95,10 @@ public class Actividad_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/listaractiv")
-    public ResponseEntity<List<ActividadesProjection>> obtactiv() {
+    @GetMapping("/listaractiv/{id_modelo}")
+    public ResponseEntity<List<ActividadesProjection>> obtactiv(@PathVariable("id_modelo")Long id_modelo) {
         try {
-            return new ResponseEntity<>(Service.actividadCont(), HttpStatus.OK);
+            return new ResponseEntity<>(Service.actividadCont(id_modelo), HttpStatus.OK);
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage().toString());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

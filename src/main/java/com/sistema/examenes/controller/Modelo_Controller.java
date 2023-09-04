@@ -11,6 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -19,13 +23,37 @@ import java.util.List;
 public class  Modelo_Controller {
     @Autowired
     Modelo_Service Service;
-
+    /*@PostConstruct
+    public void init() throws ParseException {
+        Modelo r=new Modelo();
+        String inicio = "05/10/2025";
+        String fina = "10/09/2025";
+        String fin = "10/06/2026";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        Date ini=dateFormat.parse(inicio);
+        Date fini=dateFormat.parse(fin);
+        Date finia=dateFormat.parse(fina);
+        r.setFecha_fin(ini);
+        r.setFecha_inicio(fini);
+        r.setFecha_final_act(finia);
+        r.setVisible(true);
+        r.setNombre("Modelo 2");
+        r.setUsuario(null);
+        crear(r);
+    }*/
     @PostMapping("/crear")
     public ResponseEntity<Modelo> crear(@RequestBody Modelo r) {
-        try {
-            r.setVisible(true);
 
-            return new ResponseEntity<>(Service.save(r), HttpStatus.CREATED);
+        try {
+            //Convierto a fecha sql para poder consultar
+            java.sql.Date fechaSqli = new java.sql.Date(r.getFecha_inicio().getTime());
+            java.sql.Date fechaSqlf = new java.sql.Date(r.getFecha_fin().getTime());
+            boolean existe =Service.existefecha(fechaSqli.toString(),fechaSqlf.toString());
+            if (existe) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }else{
+                    r.setVisible(true);
+            return new ResponseEntity<>(Service.save(r), HttpStatus.CREATED);}
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -95,8 +123,10 @@ public class  Modelo_Controller {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             try {
+
                 a.setFecha_final_act(p.getFecha_final_act());
                 return new ResponseEntity<>(Service.save(a), HttpStatus.CREATED);
+
             } catch (Exception e) {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
@@ -109,11 +139,18 @@ public class  Modelo_Controller {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
             try {
+                java.sql.Date fechaSqli = new java.sql.Date(p.getFecha_inicio().getTime());
+                java.sql.Date fechaSqlf = new java.sql.Date(p.getFecha_fin().getTime());
+                boolean existe =Service.fechaeditar(fechaSqli.toString(),fechaSqlf.toString());
+
+                if (existe) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+                }else{
                 a.setFecha_final_act(p.getFecha_final_act());
                 a.setNombre(p.getNombre());
                 a.setFecha_fin(p.getFecha_fin());
                 a.setFecha_inicio(p.getFecha_inicio());
-                return new ResponseEntity<>(Service.save(a), HttpStatus.CREATED);
+                return new ResponseEntity<>(Service.save(a), HttpStatus.CREATED);}
             } catch (Exception e) {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }

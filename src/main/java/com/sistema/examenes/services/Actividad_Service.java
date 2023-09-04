@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface Actividad_Service extends GenericService<Actividad, Long>{
     public List<Actividad> listar() ;
-    public List<ActivAprobadaProjection> actividadAtrasada();
-    public List<ActivAprobadaProjection> actividadApr();
+    public List<ActivAprobadaProjection> actividadAtrasada(Long id_modelo);
+    public List<ActivAprobadaProjection> actividadApr(Long id_modelo);
     public List<Actividad> listaAtrasada();
     public List<Actividad> listaCumplida();
     public List<Actividad> listarporusuario(String username);
@@ -19,7 +19,7 @@ public interface Actividad_Service extends GenericService<Actividad, Long>{
     public List<Actividad>listarporEvidencia(Long idEvidencia );
     public List<Actividad> listaEvidAtrasada();
     public List<Actividad> actividadUsu(Long id);
-    public List<ActividadesProjection> actividadCont();
+    public List<ActividadesProjection> actividadCont(Long id_modelo);
     public List<Actividad> listaActByUsuario(Long id);
 
 
