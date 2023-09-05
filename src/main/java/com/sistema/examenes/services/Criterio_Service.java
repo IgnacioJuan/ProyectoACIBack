@@ -26,4 +26,5 @@ public interface Criterio_Service extends GenericService<Criterio, Long> {
     public List<CriterioSubcriteriosProjection> obtenerDatosCriterios();
     public List<ValoresProjection>  listarvalores(Long id_modelo);
     IdCriterioProjection idcriterio(String nombre);
+
 }

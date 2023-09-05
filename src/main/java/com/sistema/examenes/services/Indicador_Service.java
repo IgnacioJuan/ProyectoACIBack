@@ -1,5 +1,6 @@
 package com.sistema.examenes.services;
 
+import com.sistema.examenes.entity.Criterio;
 import com.sistema.examenes.entity.Indicador;
 import com.sistema.examenes.projection.*;
 
@@ -15,6 +16,10 @@ public interface Indicador_Service extends GenericService<Indicador, Long> {
     List<Indicador> listarIndicadorPorCriterioModelo(Long id_criterio, Long id_modelo);
 
     List<Indicador> indicadoresPorCriterios(List<Long> id_criterio);
+    List<Indicador> indicadoresPorCriteriosPruebaCuali(List<Long> id_criterio);
+    List<Indicador> indicadoresPorCriteriosPruebaCuanti(List<Long> id_criterio);
+    List<Indicador> indicadoresPorCriteriosCuali();
+    List<Indicador> indicadoresPorCriteriosCuanti();
     public List<IndicadorEvidenciasProjection> obtenerDatosIndicadores(Long id_subcriterio);
     public List<IndicadorEvidenciasProjectionFull> obtenerDatosIndicadoresFull();
     List<Indicador> indicadoresPorModelo(Long id_modelo);

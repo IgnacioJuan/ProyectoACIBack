@@ -1,5 +1,6 @@
 package com.sistema.examenes.services;
 
+import com.sistema.examenes.entity.Criterio;
 import com.sistema.examenes.entity.Indicador;
 import com.sistema.examenes.projection.IndiColProjection;
 import com.sistema.examenes.projection.IndicadorEvidenciasProjection;
@@ -52,6 +53,20 @@ public class Indicador_ServiceImpl extends GenericServiceImpl<Indicador, Long> i
     public List<Indicador> indicadoresPorCriterios(List<Long> id_criterio) {
         return repository.indicadoresPorCriterios(id_criterio);
     }
+    @Override
+    public List<Indicador> indicadoresPorCriteriosPruebaCuali(List<Long> id_criterio) {
+        return repository.indicadoresPorCriteriosPruebaCuali(id_criterio);
+    }
+    @Override
+    public List<Indicador> indicadoresPorCriteriosPruebaCuanti(List<Long> id_criterio) {
+        return repository.indicadoresPorCriteriosPruebaCuanti(id_criterio);
+    }
+
+    @Override
+    public List<Indicador> indicadoresPorCriteriosCuali() {return repository.indicadoresPorCriteriosCuali();}
+    @Override
+    public List<Indicador> indicadoresPorCriteriosCuanti() {return repository.indicadoresPorCriteriosCuanti();}
+
     @Override
     public List<IndicadorEvidenciasProjection> obtenerDatosIndicadores(Long id_subcriterio){
         return repository.obtenerIndicadoresConCantidadEvidencia(id_subcriterio);
