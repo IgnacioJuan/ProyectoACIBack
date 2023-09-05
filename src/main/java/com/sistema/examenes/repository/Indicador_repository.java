@@ -2,6 +2,7 @@ package com.sistema.examenes.repository;
 
 import java.util.List;
 
+import com.sistema.examenes.entity.Criterio;
 import com.sistema.examenes.projection.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -45,6 +46,50 @@ public interface Indicador_repository extends JpaRepository<Indicador, Long> {
             "WHERE ai.modelo.id_modelo = (SELECT MAX(m.id_modelo) FROM Modelo m) " +
             "AND (c.id_criterio IN :idCriterios OR COALESCE(:idCriterios, NULL) IS NULL)")
     List<Indicador> indicadoresPorCriterios(List<Long> idCriterios);
+
+    @Query("SELECT DISTINCT i FROM Indicador i " +
+            "JOIN i.subcriterio s " +
+            "JOIN s.criterio c " +
+            "JOIN Asignacion_Indicador ai ON ai.indicador = i " +
+            "WHERE ai.modelo.id_modelo = (SELECT MAX(m.id_modelo) FROM Modelo m) " +
+            "AND (c.id_criterio IN :idCriterios OR COALESCE(:idCriterios, NULL) IS NULL) AND i.tipo='cualitativa'")
+    List<Indicador> indicadoresPorCriteriosPruebaCuali(List<Long> idCriterios);
+
+    @Query("SELECT DISTINCT i FROM Indicador i " +
+            "JOIN i.subcriterio s " +
+            "JOIN s.criterio c " +
+            "JOIN Asignacion_Indicador ai ON ai.indicador = i " +
+            "WHERE ai.modelo.id_modelo = (SELECT MAX(m.id_modelo) FROM Modelo m) " +
+            "AND (c.id_criterio IN :idCriterios OR COALESCE(:idCriterios, NULL) IS NULL) AND i.tipo='cuantitativa'")
+    List<Indicador> indicadoresPorCriteriosPruebaCuanti(List<Long> idCriterios);
+
+    @Query(value ="SELECT DISTINCT m.id_modelo, c.nombre, s.nombre, \n" +
+            "i.nombre, e.nombre, i.valor_obtenido, i.porc_obtenido, i.porc_utilida_obtenida, \n" +
+            "de.observacion \n" +
+            "FROM criterio c \n" +
+            "LEFT JOIN subcriterio s ON c.id_criterio= s.id_criterio \n" +
+            "LEFT JOIN indicador i ON s.id_subcriterio = i.subcriterio_id_subcriterio \n" +
+            "LEFT JOIN asignacion_indicador ai ON i.id_indicador = ai.indicador_id_indicador \n" +
+            "LEFT JOIN modelo m ON ai.modelo_id_modelo = m.id_modelo \n" +
+            "LEFT JOIN evidencia e ON i.id_indicador = e.indicador_id_indicador \n" +
+            "LEFT JOIN detalle_evaluacion de ON e.id_evidencia = de.evidencia_id_evidencia \n" +
+            "WHERE ai.modelo_id_modelo = (SELECT MAX(m.id_modelo) FROM Modelo m) AND i.tipo='cualitativa' \n" +
+            "ORDER BY m.id_modelo ", nativeQuery = true)
+    List<Indicador> indicadoresPorCriteriosCuali();
+
+    @Query(value ="SELECT DISTINCT m.id_modelo, c.nombre, s.nombre, \n" +
+            "i.nombre, e.nombre, i.valor_obtenido, i.porc_obtenido, i.porc_utilida_obtenida, \n" +
+            "de.observacion \n" +
+            "FROM criterio c \n" +
+            "LEFT JOIN subcriterio s ON c.id_criterio= s.id_criterio \n" +
+            "LEFT JOIN indicador i ON s.id_subcriterio = i.subcriterio_id_subcriterio \n" +
+            "LEFT JOIN asignacion_indicador ai ON i.id_indicador = ai.indicador_id_indicador \n" +
+            "LEFT JOIN modelo m ON ai.modelo_id_modelo = m.id_modelo \n" +
+            "LEFT JOIN evidencia e ON i.id_indicador = e.indicador_id_indicador \n" +
+            "LEFT JOIN detalle_evaluacion de ON e.id_evidencia = de.evidencia_id_evidencia \n" +
+            "WHERE ai.modelo_id_modelo = (SELECT MAX(m.id_modelo) FROM Modelo m) AND i.tipo='cuantitativa' \n" +
+            "ORDER BY m.id_modelo ", nativeQuery = true)
+    List<Indicador> indicadoresPorCriteriosCuanti();
 
     @Query(value = "SELECT i.id_indicador,i.nombre, i.descripcion, i.peso, i.estandar, i.tipo ," +
             "i.valor_obtenido,i.porc_obtenido,i.porc_utilida_obtenida, i.visible, " +

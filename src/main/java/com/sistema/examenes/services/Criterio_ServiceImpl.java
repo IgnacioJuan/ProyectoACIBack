@@ -19,7 +19,6 @@ public class Criterio_ServiceImpl extends GenericServiceImpl<Criterio, Long> imp
 
     @Override
     public CrudRepository<Criterio, Long> getDao() {
-
         return repository;
     }
 
@@ -65,4 +64,5 @@ public class Criterio_ServiceImpl extends GenericServiceImpl<Criterio, Long> imp
     public IdCriterioProjection idcriterio(String nombre) {
         return repository.idcriterio(nombre);
     }
+
 }
