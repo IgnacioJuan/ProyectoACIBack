@@ -54,4 +54,14 @@ public class Modelo_ServiceImpl extends GenericServiceImpl<Modelo, Long> impleme
     public List<criteriosdesprojection> listicrinom(Long id_modelo,String nomcrite ) {return repository.listicrinom(id_modelo,nomcrite);
     }
 
+    @Override
+    public Boolean existefecha(String inicio, String fin) {
+        return repository.existefecha(inicio,fin);
+    }
+
+    @Override
+    public Boolean fechaeditar(String inicio, String fin) {
+        return repository.fechaeditar(inicio,fin);
+    }
+
 }

@@ -59,7 +59,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
                 "JOIN usuariorol ur ON u.id = ur.usuario_id LEFT JOIN (SELECT usuario_id, COUNT(DISTINCT evidencia_id_evidencia) as count_evidencias\n" +
                 "  FROM asignacion_evidencia ae_inner JOIN evidencia e_inner ON e_inner.id_evidencia = ae_inner.evidencia_id_evidencia\n" +
                 "  JOIN indicador i_inner ON i_inner.id_indicador = e_inner.indicador_id_indicador\n" +
-                "  JOIN ponderacion po_inner ON po_inner.indicador_id_indicador = i_inner.id_indicador\n" +
+                "  JOIN asignacion_indicador po_inner ON po_inner.indicador_id_indicador = i_inner.id_indicador\n" +
                 "  JOIN (SELECT MAX(id_modelo) AS max_id_modelo FROM modelo) max_mo ON po_inner.modelo_id_modelo = max_mo.max_id_modelo\n" +
                 "  WHERE ae_inner.visible = true GROUP BY usuario_id) ae ON u.id = ae.usuario_id\n" +
                 "WHERE ur.rol_rolid = 3 GROUP BY u.id, per.primer_nombre, per.primer_apellido, u.username, ae.count_evidencias;", nativeQuery = true)

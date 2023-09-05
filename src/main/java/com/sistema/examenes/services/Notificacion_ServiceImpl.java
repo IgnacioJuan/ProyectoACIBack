@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -47,6 +48,11 @@ public class Notificacion_ServiceImpl extends GenericServiceImpl<Notificacion,Lo
     @Override
     public List<Notificacion> all2(String roluser) {
         return notificacionRepository.all2(roluser);
+    }
+
+    @Override
+    public Date fechaeliminar() {
+        return notificacionRepository.fechaeliminar();
     }
 
 }

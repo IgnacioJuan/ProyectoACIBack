@@ -14,7 +14,7 @@ public interface Modelo_repository extends JpaRepository<Modelo, Long> {
     @Query(value = "SELECT * from modelo order by id_modelo desc", nativeQuery = true)
     List<Modelo> listarModelo();
 
-    @Query(value = "SELECT * FROM modelo WHERE id_modelo = (SELECT MAX(id_modelo) FROM modelo) AND visible =true", nativeQuery = true)
+    @Query(value = "SELECT * FROM modelo WHERE id_modelo = (SELECT MAX(id_modelo) FROM modelo)", nativeQuery = true)
     public Modelo listarModeloMaximo();
 
     // SELECT id_modelo, fecha_fin, fecha_final_act, fecha_inicio, nombre, visible,
@@ -50,8 +50,7 @@ public interface Modelo_repository extends JpaRepository<Modelo, Long> {
             "AND ai.modelo_id_modelo =:id_modelo ORDER BY cri.id_criterio,sub.id_subcriterio,i.id_indicador;", nativeQuery = true)
     List<ModelIndiProjection> listindiModelo(Long id_modelo);
 
-    @Query(value = "\n" +
-            "SELECT cri.nombre AS criterionomj,sub.nombre AS subcrierioj,i.id_indicador AS id_indicardorj,\n" +
+    @Query(value = "SELECT cri.nombre AS criterionomj,sub.nombre AS subcrierioj,i.id_indicador AS id_indicardorj,\n" +
             "i.nombre AS ind_nombrej, CASE WHEN ai.visible IS NOT NULL THEN ai.visible ELSE false END AS visi,\n" +
             "arc.nombre AS archivo_nombre,arc.enlace AS archivo_enlace FROM archivo arc join actividad ac \n" +
             "on ac.id_actividad = arc.id_actividad AND arc.visible=true AND ac.visible=true " +
@@ -65,16 +64,26 @@ public interface Modelo_repository extends JpaRepository<Modelo, Long> {
 
 
 @Query(value = "\n" +
-        "SELECT cri.nombre AS criterionomj,sub.nombre AS subcrierioj,i.id_indicador AS id_indicardorj,\n" +
-        "i.nombre AS ind_nombrej,CASE WHEN ai.visible IS NOT NULL THEN ai.visible ELSE false END AS visi, \n" +
-        "arc.nombre AS archivo_nombre,arc.enlace AS archivo_enlace\n" +
-        "FROM archivo arc JOIN actividad ac ON ac.id_actividad = arc.id_actividad\n" +
-        "JOIN evidencia ev ON ev.id_evidencia = ac.id_evidencia\n" +
-        "JOIN indicador i ON ev.indicador_id_indicador = i.id_indicador\n" +
-        "JOIN subcriterio sub ON i.subcriterio_id_subcriterio = sub.id_subcriterio AND sub.visible = true\n" +
-        "JOIN criterio cri ON cri.id_criterio = sub.id_criterio AND sub.visible = true\n" +
-        "LEFT JOIN asignacion_indicador ai ON ai.indicador_id_indicador = i.id_indicador AND i.visible = true\n" +
+        "SELECT cri.nombre AS criterionomj,sub.nombre AS subcrierioj,i.id_indicador AS id_indicardorj, " +
+        "i.nombre AS ind_nombrej,CASE WHEN ai.visible IS NOT NULL THEN ai.visible ELSE false END AS visi, " +
+        "arc.nombre AS archivo_nombre,arc.enlace AS archivo_enlace " +
+        "FROM archivo arc JOIN actividad ac ON ac.id_actividad = arc.id_actividad " +
+        "JOIN evidencia ev ON ev.id_evidencia = ac.id_evidencia " +
+        "JOIN indicador i ON ev.indicador_id_indicador = i.id_indicador " +
+        "JOIN subcriterio sub ON i.subcriterio_id_subcriterio = sub.id_subcriterio AND sub.visible = true " +
+        "JOIN criterio cri ON cri.id_criterio = sub.id_criterio AND sub.visible = true " +
+        "LEFT JOIN asignacion_indicador ai ON ai.indicador_id_indicador = i.id_indicador AND i.visible = true " +
         "WHERE ai.modelo_id_modelo =:id_modelo AND cri.nombre =:nomcrite ORDER BY cri.id_criterio, sub.id_subcriterio, i.id_indicador", nativeQuery = true)
 List<criteriosdesprojection> listicrinom(Long id_modelo, String nomcrite);
+    @Query(value = "SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END " +
+            "FROM modelo WHERE fecha_inicio <=CAST(:fin AS DATE) " +
+            "AND fecha_fin >=CAST(:inicio AS DATE) " +
+            "AND id_modelo=(SELECT MAX(id_modelo) FROM modelo)", nativeQuery = true)
+    Boolean existefecha(String inicio,String fin);
 
+    @Query(value = "SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END " +
+            "FROM modelo WHERE fecha_inicio <=CAST(:fin AS DATE) AND fecha_fin >=CAST(:inicio AS DATE) " +
+            "AND id_modelo=(SELECT MAX(id_modelo) FROM modelo " +
+            "WHERE id_modelo < (SELECT MAX(id_modelo) FROM modelo))", nativeQuery = true)
+    Boolean fechaeditar(String inicio,String fin);
 }
