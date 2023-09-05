@@ -7,4 +7,5 @@ import java.util.List;
 public interface Asignacion_Evidencia_Service extends GenericService<Asignacion_Evidencia, Long>{
     public List<Asignacion_Evidencia> listar() ;
     public List<Asignacion_Evidencia> listarporUsuario (String usuario  ) ;
+    Boolean verificarAsignacionUsuario(Long id_usuario, Long id_evidencia,Long id_modelo);
 }

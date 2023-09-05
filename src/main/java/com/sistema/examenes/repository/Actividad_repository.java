@@ -10,7 +10,12 @@ import java.util.List;
 
 public interface Actividad_repository extends JpaRepository<Actividad, Long> {
 
-    @Query(value = "SELECT * from actividad where visible =true", nativeQuery = true)
+    @Query(value = "SELECT ac.* FROM actividad ac " +
+            "JOIN evidencia e ON e.id_evidencia=ac.id_evidencia AND ac.visible=true " +
+            "JOIN asignacion_indicador ai ON ai.indicador_id_indicador=e.indicador_id_indicador " +
+            "JOIN modelo mo ON mo.id_modelo=ai.modelo_id_modelo " +
+            "WHERE ac.fecha_inicio>= mo.fecha_inicio AND ac.fecha_fin<=mo.fecha_fin " +
+            "AND ai.modelo_id_modelo=(SELECT MAX(id_modelo) FROM modelo)", nativeQuery = true)
     List<Actividad> listarActividad();
 
 
@@ -67,7 +72,8 @@ List<ActivAprobadaProjection> actividadRechazada(Long id_modelo);
             "JOIN modelo mo ON mo.id_modelo = po.modelo_id_modelo " +
             "JOIN usuarios u ON u.id = ac.usuario_id " +
             "JOIN persona per ON u.persona_id_persona = per.id_persona " +
-            "WHERE mo.id_modelo =:id_modelo " +
+            "WHERE mo.id_modelo =:id_modelo AND ac.fecha_inicio BETWEEN mo.fecha_inicio " +
+            "AND mo.fecha_fin AND ac.fecha_fin  BETWEEN mo.fecha_inicio AND mo.fecha_fin " +
             "AND ac.visible = true " +
             "GROUP BY per.primer_nombre, per.primer_apellido;", nativeQuery = true)
     List<ActividadesProjection> actividadCont(Long id_modelo);

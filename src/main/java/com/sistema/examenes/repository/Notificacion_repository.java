@@ -26,6 +26,6 @@ public interface Notificacion_repository extends JpaRepository<Notificacion, Lon
 
     @Query(value = "SELECT DISTINCT ON (mensaje)* FROM notificacion WHERE usuario=:user ORDER BY mensaje, fecha DESC;",nativeQuery = true)
     List<Notificacion> listarulNoti(Long user);
-    @Query(value = "SELECT DATE(fecha_fin) FROM modelo WHERE id_modelo=(SELECT MAX(id_modelo) FROM modelo)", nativeQuery = true)
+    @Query(value = "SELECT DATE(fecha_fin) FROM modelo WHERE id_modelo=(SELECT MAX(id_modelo) FROM modelo WHERE id_modelo < (SELECT MAX(id_modelo) FROM modelo))", nativeQuery = true)
     Date fechaeliminar();
 }

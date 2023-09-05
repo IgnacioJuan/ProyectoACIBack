@@ -86,20 +86,20 @@ public class Notificacion_Controller {
     }
     @Scheduled(cron = "0 0 0 * * ?")
     public void eliminarNotificacionesAntiguas() {
-        LocalDate hoy = LocalDate.now();
-        LocalDate fechaLimite = hoy.minusDays(30);
-        String fecha=String.valueOf(fechaLimite);
-
         java.sql.Date fe=service.fechaeliminar();
+        if(fe!=null){
         LocalDate fechaLocal = fe.toLocalDate();
         LocalDate fechaNueva = fechaLocal.plusDays(15);
         String fecha1=String.valueOf(fechaNueva);
-        System.out.println("Fecha elim"+fe+" fecha 2"+fecha1);
-
-        List<Notificacion> notificacionesAntiguas = service.listarNotifi(fecha);
+        String fechael=fecha1;
+            System.out.println("Fecha el "+fechael);
+        List<Notificacion> notificacionesAntiguas = service.listarNotifi(fechael);
         System.out.println("notificaciones traidas "+notificacionesAntiguas);
         for (Notificacion notificacion : notificacionesAntiguas) {
             service.eliminar(notificacion.getId());
+        }
+       } else {
+            System.out.println("Sin fecha");
         }
     }
 //@Scheduled(cron = "segundo minuto hora día-del-mes mes día-de-la-semana")

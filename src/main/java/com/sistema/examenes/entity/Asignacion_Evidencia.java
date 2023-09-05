@@ -17,6 +17,8 @@ public class Asignacion_Evidencia implements Serializable {
     private Long id_asignacion_evidencia;
 
     private boolean visible;
+    @Column(name = "id_modelo")
+    private Long id_modelo;
     @ManyToOne(fetch = FetchType.EAGER)
     private Evidencia evidencia;
 

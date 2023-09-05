@@ -25,4 +25,14 @@ public interface Asignacion_Evidencia_repository extends JpaRepository<Asignacio
                     "AND evidencia.visible = true\n" +
                     "AND usuarios.username= :usuario", nativeQuery = true)
     List<Asignacion_Evidencia> listarporAsignacionUsuario(@Param("usuario") String usuario);
+    @Query(value = "SELECT CASE WHEN COUNT(*) > 0 THEN true ELSE false END FROM asignacion_evidencia ae " +
+                    "JOIN evidencia e ON e.id_evidencia=ae.evidencia_id_evidencia AND ae.visible=true AND e.visible=true " +
+                    "JOIN indicador i ON i.id_indicador=e.indicador_id_indicador " +
+                    "JOIN subcriterio s ON s.id_subcriterio=i.subcriterio_id_subcriterio " +
+                    "JOIN criterio cri ON cri.id_criterio = s.id_criterio " +
+                    "JOIN asignacion_admin aa ON aa.criterio_id_criterio=cri.id_criterio AND aa.visible=true " +
+                    "WHERE aa.usuario_id=:id_usuario " +
+                    "AND ae.evidencia_id_evidencia=:id_evidencia " +
+                    "AND aa.id_modelo=:id_modelo", nativeQuery = true)
+    Boolean verificarAsignacionUsuario(Long id_usuario, Long id_evidencia,Long id_modelo);
 }

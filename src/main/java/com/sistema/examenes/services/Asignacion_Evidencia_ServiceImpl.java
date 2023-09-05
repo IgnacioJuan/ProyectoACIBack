@@ -21,6 +21,12 @@ public class Asignacion_Evidencia_ServiceImpl extends GenericServiceImpl<Asignac
     public List<Asignacion_Evidencia> listarporUsuario(String usuario) {
         return repository.listarporAsignacionUsuario (usuario);
     }
+
+    @Override
+    public Boolean verificarAsignacionUsuario(Long id_usuario, Long id_evidencia, Long id_modelo) {
+        return repository.verificarAsignacionUsuario(id_usuario,id_evidencia,id_modelo);
+    }
+
     @Override
     public List<Asignacion_Evidencia> listar() {
         return repository.listarAsignacionEvidencia();
