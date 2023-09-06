@@ -28,7 +28,7 @@ public interface Indicador_repository extends JpaRepository<Indicador, Long> {
             "FROM indicador i JOIN subcriterio s ON s.id_subcriterio = i.subcriterio_id_subcriterio " +
             "JOIN criterio cri ON cri.id_criterio = s.id_criterio JOIN asignacion_indicador po ON po.indicador_id_indicador=i.id_indicador\n" +
             "JOIN modelo mo ON po.modelo_id_modelo=mo.id_modelo " +
-            "WHERE mo.id_modelo=:id_modelo AND i.visible=true GROUP BY cri.id_criterio", nativeQuery = true)
+            "WHERE mo.id_modelo=:id_modelo AND i.visible=true GROUP BY cri.id_criterio ORDER BY cri.id_criterio", nativeQuery = true)
     public List<IndicadoresProjection> Indicadores(Long id_modelo);
 
 
