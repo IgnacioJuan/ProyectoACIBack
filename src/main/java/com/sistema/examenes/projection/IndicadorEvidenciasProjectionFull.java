@@ -3,6 +3,9 @@ package com.sistema.examenes.projection;
 public interface IndicadorEvidenciasProjectionFull {
     Long getId_indicador();
     String getNombre();
+    String getCriterio();
+    String getSubcriterio();
+    String getEvidencia();
     String getDescripcion();
     double getPeso();
     double getEstandar();
