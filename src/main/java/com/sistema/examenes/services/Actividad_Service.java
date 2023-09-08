@@ -3,6 +3,7 @@ package com.sistema.examenes.services;
 
 import com.sistema.examenes.entity.Actividad;
 import com.sistema.examenes.projection.ActivAprobadaProjection;
+import com.sistema.examenes.projection.ActivProyection;
 import com.sistema.examenes.projection.ActividadesProjection;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public interface Actividad_Service extends GenericService<Actividad, Long>{
     public List<Actividad> actividadUsu(Long id);
     public List<ActividadesProjection> actividadCont(Long id_modelo);
     public List<Actividad> listaActByUsuario(Long id);
+   public List<ActivProyection>listarByActividad();
 
 
 }

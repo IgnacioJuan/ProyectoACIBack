@@ -3,6 +3,7 @@ package com.sistema.examenes.services;
 import com.sistema.examenes.entity.Actividad;
 import com.sistema.examenes.entity.Actividad;
 import com.sistema.examenes.projection.ActivAprobadaProjection;
+import com.sistema.examenes.projection.ActivProyection;
 import com.sistema.examenes.projection.ActividadesProjection;
 import com.sistema.examenes.repository.Actividad_repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,5 +81,10 @@ public class Actividad_ServiceImpl extends GenericServiceImpl<Actividad, Long> i
     public List<Actividad> listaActByUsuario(Long id) {
         return repository.listarByUsuario(id);
     }
-    
+
+    @Override
+    public List<ActivProyection> listarByActividad() {
+        return repository.listarByActividad();
+    }
+
 }
