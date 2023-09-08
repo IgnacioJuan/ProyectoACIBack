@@ -217,4 +217,13 @@ public class Indicadores_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    /*@GetMapping("/listar")
+    public ResponseEntity<List<EvidenciaProjection>> obtenerLista() {
+        try {
+            return new ResponseEntity<>(Service.listarprueba(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }*/
 }
