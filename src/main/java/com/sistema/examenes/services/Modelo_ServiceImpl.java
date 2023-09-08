@@ -55,6 +55,11 @@ public class Modelo_ServiceImpl extends GenericServiceImpl<Modelo, Long> impleme
     }
 
     @Override
+    public List<criteriosdesprojection> criterioadmin(Long id_modelo, Long id) {
+        return repository.criterioadmin(id_modelo,id);
+    }
+
+    @Override
     public Boolean existefecha(String inicio, String fin) {
         return repository.existefecha(inicio,fin);
     }
