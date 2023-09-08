@@ -28,4 +28,14 @@ public class Detalle_Evaluacion_ServiceImpl extends GenericServiceImpl<Detalle_E
         return repository.listarDetalleEvaluacion( idEvidencia);
     }
 
+    @Override
+    public Boolean existeeva(Long id_evidencia, Long id, Long id_modelo) {
+        return repository.existeeva(id_evidencia, id, id_modelo);
+    }
+
+    @Override
+    public Long iddetalle(Long id_evidencia, Long id, Long id_modelo) {
+        return repository.iddetalle(id_evidencia,id,id_modelo);
+    }
+
 }

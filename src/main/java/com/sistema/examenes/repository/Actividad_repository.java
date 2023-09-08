@@ -30,14 +30,14 @@ public interface Actividad_repository extends JpaRepository<Actividad, Long> {
             + "AND ac.fecha_fin < CURRENT_DATE;", nativeQuery = true)
     List<Actividad> listarActividadAtrasadas();
 
-    @Query(value = "SELECT ac.*\n" +
-"FROM actividad ac JOIN evidencia e\n" +
-"ON ac.id_evidencia = e.id_evidencia\n" +
-"JOIN indicador i\n" +
-"ON e.indicador_id_indicador = i.id_indicador\n" +
-"JOIN asignacion_indicador ag\n" +
-"ON ag.indicador_id_indicador = i.id_indicador\n" +
-"WHERE ac.estado = 'Aprobada'\n" +
+    @Query(value = "SELECT ac.* " +
+"FROM actividad ac JOIN evidencia e " +
+"ON ac.id_evidencia = e.id_evidencia " +
+"JOIN indicador i " +
+"ON e.indicador_id_indicador = i.id_indicador " +
+"JOIN asignacion_indicador ag " +
+"ON ag.indicador_id_indicador = i.id_indicador " +
+"WHERE ac.estado = 'Aprobada' " +
 "AND ag.modelo_id_modelo = (SELECT MAX(id_modelo) FROM modelo)", nativeQuery = true)
     List<Actividad> listarActividadCumplidas();
     
@@ -78,9 +78,9 @@ List<ActivAprobadaProjection> actividadRechazada(Long id_modelo);
             "GROUP BY per.primer_nombre, per.primer_apellido;", nativeQuery = true)
     List<ActividadesProjection> actividadCont(Long id_modelo);
 
-    @Query(value = "SELECT * FROM actividad ac JOIN evidencia ev ON ac.id_evidencia=ev.id_evidencia " +
+    @Query(value = "SELECT ac.* FROM actividad ac JOIN evidencia ev ON ac.id_evidencia=ev.id_evidencia " +
             "JOIN indicador i ON i.id_indicador = ev.indicador_id_indicador " +
-            "JOIN ponderacion po ON po.indicador_id_indicador=i.id_indicador " +
+            "JOIN asignacion_indicador po ON po.indicador_id_indicador=i.id_indicador " +
             "JOIN modelo mo ON mo.id_modelo=po.modelo_id_modelo WHERE " +
             "mo.id_modelo=(SELECT MAX(id_modelo) FROM modelo) " +
             "AND ac.visible=true AND ac.usuario_id=:id;", nativeQuery = true)
@@ -104,7 +104,12 @@ List<ActivAprobadaProjection> actividadRechazada(Long id_modelo);
     @Query(value = "SELECT * FROM actividad WHERE visible= true AND id_evidencia=:idEvidendicia ;",nativeQuery = true)
     List<Actividad>listarporEvidencia(Long idEvidendicia);
 
-    @Query(value = "SELECT * FROM actividad WHERE usuario_id = :idUsuario ;",nativeQuery = true)
+    @Query(value = "SELECT ac.* FROM actividad ac JOIN evidencia ev ON ac.id_evidencia=ev.id_evidencia " +
+            "JOIN indicador i ON i.id_indicador = ev.indicador_id_indicador " +
+            "JOIN asignacion_indicador po ON po.indicador_id_indicador=i.id_indicador " +
+            "JOIN modelo mo ON mo.id_modelo=po.modelo_id_modelo WHERE " +
+            "mo.id_modelo=(SELECT MAX(id_modelo) FROM modelo) " +
+            "AND ac.visible=true AND ac.usuario_id=:idUsuario;", nativeQuery = true)
     List<Actividad>listarByUsuario(Long idUsuario);
 
 }

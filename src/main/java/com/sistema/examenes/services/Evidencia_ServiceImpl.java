@@ -2,6 +2,7 @@ package com.sistema.examenes.services;
 
 import com.sistema.examenes.entity.Actividad;
 import com.sistema.examenes.entity.Evidencia;
+import com.sistema.examenes.projection.EvidenciasProjection;
 import com.sistema.examenes.repository.Evidencia_repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
@@ -43,5 +44,15 @@ public class Evidencia_ServiceImpl extends GenericServiceImpl<Evidencia, Long> i
     @Override
     public List<Evidencia> evidenciacriterio(Long idcriterio) {
         return repository.evidenciacriterio(idcriterio);
+    }
+
+    @Override
+    public List<EvidenciasProjection> evidenciaAprobada(Long id_modelo) {
+        return repository.evidenciaAprobada(id_modelo);
+    }
+
+    @Override
+    public List<EvidenciasProjection> evidenciaRechazada(Long id_modelo) {
+        return repository.evidenciaRechazada(id_modelo);
     }
 }

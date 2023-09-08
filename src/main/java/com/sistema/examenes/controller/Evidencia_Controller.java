@@ -2,6 +2,7 @@ package com.sistema.examenes.controller;
 
 import com.sistema.examenes.entity.Encabezado_Evaluar;
 import com.sistema.examenes.entity.Evidencia;
+import com.sistema.examenes.projection.EvidenciasProjection;
 import com.sistema.examenes.services.Evidencia_Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -55,6 +56,23 @@ public class Evidencia_Controller {
         }
     }
 
+    @GetMapping("/evidenciaprobada/{id_modelo}")
+    public ResponseEntity<List<EvidenciasProjection>> evidenciaprobada(@PathVariable("id_modelo") Long id_modelo) {
+        try {
+            return new ResponseEntity<>(Service.evidenciaAprobada(id_modelo), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/evidenciarechazada/{id_modelo}")
+    public ResponseEntity<List<EvidenciasProjection>> evidenciarechazada(@PathVariable("id_modelo") Long id_modelo) {
+        try {
+            return new ResponseEntity<>(Service.evidenciaRechazada(id_modelo), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/evicriterio/{idcriterio}")
     public ResponseEntity<List<Evidencia>> evidenciaindicador(@PathVariable("idcriterio") Long idcriterio) {
         try {

@@ -21,14 +21,33 @@ public class Detalle_Evaluacion_Controller {
 
     @PostMapping("/crear")
     public ResponseEntity<Detalle_Evaluacion> crear(@RequestBody Detalle_Evaluacion r) {
+        Boolean existe = Service.existeeva(r.getEvidencia().getId_evidencia(), r.getUsuario().getId(), r.getId_modelo());
+        System.out.println("existe detalle "+existe);
         try {
-            r.setVisible(true);
+            // Verificar si el detalle ya existe
 
-            return new ResponseEntity<>(Service.save(r), HttpStatus.CREATED);
+            if (existe) {
+                // Si existe, actualiza el estado según lo recibido del frontend
+                Long iddet=Service.iddetalle(r.getEvidencia().getId_evidencia(), r.getUsuario().getId(), r.getId_modelo());
+                Detalle_Evaluacion detalleExistente = Service.findById(iddet);
+
+                if (detalleExistente != null) {
+                    detalleExistente.setObservacion(r.getObservacion());
+                    detalleExistente.setEstado(r.isEstado());
+                    return new ResponseEntity<>(Service.save(detalleExistente), HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND); // No se encontró el detalle
+                }
+            } else {
+                // Si no existe, establece r.setVisible(true) y crea un nuevo detalle
+                r.setVisible(true);
+                return new ResponseEntity<>(Service.save(r), HttpStatus.CREATED);
+            }
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @GetMapping("/listar")
     public ResponseEntity<List<Detalle_Evaluacion>> obtenerLista() {

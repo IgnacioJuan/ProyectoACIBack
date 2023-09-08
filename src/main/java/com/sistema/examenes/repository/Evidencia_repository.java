@@ -3,6 +3,7 @@ package com.sistema.examenes.repository;
 import com.sistema.examenes.entity.Actividad;
 import com.sistema.examenes.entity.Criterio;
 import com.sistema.examenes.entity.Evidencia;
+import com.sistema.examenes.projection.EvidenciasProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -48,5 +49,29 @@ public interface Evidencia_repository extends JpaRepository<Evidencia, Long> {
     // WHERE evidencia.indicador_id_indicador=6 And evidencia.visible=true;
     @Query(value = "SELECT evidencia.* FROM public.indicador join public.evidencia ON evidencia.indicador_id_indicador = indicador.id_indicador WHERE evidencia.indicador_id_indicador=:id_indicador And evidencia.visible=true", nativeQuery = true)
     List<Evidencia> listarEvidenciaPorIndicador(Long id_indicador);
+
+    @Query(value = "SELECT DISTINCT e.id_evidencia AS idev,per.primer_nombre||' '||per.primer_apellido AS enca, " +
+            "cri.nombre AS crit, s.nombre AS subc, i.nombre AS indic, e.descripcion AS descr FROM detalle_evaluacion d " +
+            "JOIN evidencia e ON d.evidencia_id_evidencia=e.id_evidencia " +
+            "JOIN indicador i ON i.id_indicador=e.indicador_id_indicador " +
+            "JOIN subcriterio s ON s.id_subcriterio=i.subcriterio_id_subcriterio " +
+            "JOIN criterio cri ON cri.id_criterio=s.id_criterio " +
+            "JOIN asignacion_evidencia ae ON ae.evidencia_id_evidencia=e.id_evidencia " +
+            "JOIN usuarios u ON u.id=ae.usuario_id " +
+            "JOIN persona per ON per.id_persona=u.persona_id_persona AND d.estado=true " +
+            "WHERE d.id_modelo=:id_modelo", nativeQuery = true)
+    List<EvidenciasProjection> evidenciaAprobada(Long id_modelo);
+
+    @Query(value = "SELECT DISTINCT e.id_evidencia AS idev,per.primer_nombre||' '||per.primer_apellido AS enca, " +
+            "cri.nombre AS crit, s.nombre AS subc, i.nombre AS indic, e.descripcion AS descr FROM detalle_evaluacion d " +
+            "JOIN evidencia e ON d.evidencia_id_evidencia=e.id_evidencia " +
+            "JOIN indicador i ON i.id_indicador=e.indicador_id_indicador " +
+            "JOIN subcriterio s ON s.id_subcriterio=i.subcriterio_id_subcriterio " +
+            "JOIN criterio cri ON cri.id_criterio=s.id_criterio " +
+            "JOIN asignacion_evidencia ae ON ae.evidencia_id_evidencia=e.id_evidencia " +
+            "JOIN usuarios u ON u.id=ae.usuario_id " +
+            "JOIN persona per ON per.id_persona=u.persona_id_persona AND d.estado=false " +
+            "WHERE d.id_modelo=:id_modelo", nativeQuery = true)
+    List<EvidenciasProjection> evidenciaRechazada(Long id_modelo);
     
 }
