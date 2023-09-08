@@ -179,7 +179,17 @@ public class  Modelo_Controller {
         try {
             return new ResponseEntity<>(Service.listicritedes(id_modelo,nombre), HttpStatus.OK);
         } catch (Exception e) {
-            System.out.println("erroor john"+e.getCause());
+            
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/listcriterioadmin/{id_modelo}/{id}")
+    public ResponseEntity<List<criteriosdesprojection>> criterioadminis(@PathVariable("id_modelo") Long id_modelo,
+                                                                          @PathVariable("id") Long id) {
+        try {
+            return new ResponseEntity<>(Service.criterioadmin(id_modelo,id), HttpStatus.OK);
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

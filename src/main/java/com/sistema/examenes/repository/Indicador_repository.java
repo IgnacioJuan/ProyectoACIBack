@@ -24,14 +24,23 @@ public interface Indicador_repository extends JpaRepository<Indicador, Long> {
             "WHERE c.id_criterio = :criterio GROUP BY i.id_indicador,s.id_subcriterio, c.id_criterio, c.nombre ORDER BY i.id_indicador", nativeQuery = true)
     public List<Indicador> obtenerIndicadores(Long criterio);
 
-    @Query(value = "SELECT cri.nombre as nombre, SUM(i.porc_utilida_obtenida) as total " +
-            "FROM indicador i JOIN subcriterio s ON s.id_subcriterio = i.subcriterio_id_subcriterio " +
-            "JOIN criterio cri ON cri.id_criterio = s.id_criterio JOIN asignacion_indicador po ON po.indicador_id_indicador=i.id_indicador\n" +
-            "JOIN modelo mo ON po.modelo_id_modelo=mo.id_modelo " +
-            "WHERE mo.id_modelo=:id_modelo AND i.visible=true GROUP BY cri.id_criterio ORDER BY cri.id_criterio", nativeQuery = true)
+    @Query(value = "SELECT cri.nombre AS nombre, " +
+            "CAST(SUM(i.porc_utilida_obtenida) AS NUMERIC(10, 4)) AS total, " +
+            "CAST(SUM(i.peso) AS NUMERIC(10, 4)) AS faltante " +
+            "FROM indicador i JOIN subcriterio sub ON sub.id_subcriterio=i.subcriterio_id_subcriterio " +
+            "JOIN criterio cri ON cri.id_criterio =sub.id_criterio " +
+            "JOIN asignacion_admin aa ON aa.criterio_id_criterio=cri.id_criterio AND aa.visible=true " +
+            "AND aa.id_modelo=:id_modelo GROUP BY cri.nombre,cri.id_criterio  ORDER BY cri.id_criterio", nativeQuery = true)
     public List<IndicadoresProjection> Indicadores(Long id_modelo);
 
-
+    @Query(value = "SELECT cri.nombre AS nombre, " +
+            "CAST(SUM(i.porc_utilida_obtenida) AS NUMERIC(10, 4)) AS total, " +
+            "CAST(SUM(i.peso) AS NUMERIC(10, 4)) AS faltante " +
+            "FROM indicador i JOIN subcriterio sub ON sub.id_subcriterio=i.subcriterio_id_subcriterio " +
+            "JOIN criterio cri ON cri.id_criterio =sub.id_criterio " +
+            "JOIN asignacion_admin aa ON aa.criterio_id_criterio=cri.id_criterio AND aa.visible=true " +
+            "AND aa.id_modelo=:id_modelo AND aa.usuario_id=:id GROUP BY cri.nombre,cri.id_criterio  ORDER BY cri.id_criterio", nativeQuery = true)
+    public List<IndicadoresProjection> indicadoresadmin(Long id_modelo,Long id);
     @Query(value = "SELECT i.* FROM public.modelo m join public.asignacion_indicador a ON " +
             "a.modelo_id_modelo = m.id_modelo JOIN public.indicador i on a.indicador_id_indicador = i.id_indicador AND a.visible=true " +
             "JOIN public.subcriterio s ON s.id_subcriterio = i.subcriterio_id_subcriterio JOIN public.criterio c " +
@@ -125,7 +134,7 @@ public interface Indicador_repository extends JpaRepository<Indicador, Long> {
             "AND i.visible = true")
     List<Indicador> indicadoresPorModelo(Long id_modelo);
 
-    @Query(value = "SELECT COUNT(ai.indicador_id_indicador) AS indica, " +
+    /*@Query(value = "SELECT COUNT(ai.indicador_id_indicador) AS indica, " +
             "CASE WHEN i.porc_obtenido > 75 THEN 'verde' " +
             "WHEN i.porc_obtenido > 50 AND i.porc_obtenido <= 75 THEN 'amarillo' " +
             "WHEN i.porc_obtenido > 25 AND i.porc_obtenido <= 50 THEN 'naranja' " +
@@ -137,5 +146,24 @@ public interface Indicador_repository extends JpaRepository<Indicador, Long> {
             "JOIN criterio cri ON cri.id_criterio = s.id_criterio " +
             "JOIN modelo mo ON ai.modelo_id_modelo=mo.id_modelo " +
             "WHERE mo.id_modelo=:id_modelo AND i.visible=true GROUP BY color", nativeQuery = true)
+    List<IndiColProjection> indicadorval(Long id_modelo);*/
+    @Query(value = "WITH color_values AS ( " +
+            "SELECT 'verde' AS color UNION ALL SELECT 'amarillo' " +
+            "UNION ALL SELECT 'naranja' UNION ALL SELECT 'rojo') " +
+            "SELECT COALESCE(counts.indica, 0) AS indica, cv.color AS color, " +
+            "ROUND(COALESCE(counts.indica, 0) * 100.0 / NULLIF(total.total_count, 0), 2) AS porcentaje " +
+            "FROM color_values cv LEFT JOIN (SELECT CASE " +
+            "WHEN i.porc_obtenido > 75 THEN 'verde' " +
+            "WHEN i.porc_obtenido > 50 AND i.porc_obtenido <= 75 THEN 'amarillo' " +
+            "WHEN i.porc_obtenido > 25 AND i.porc_obtenido <= 50 THEN 'naranja' " +
+            "ELSE 'rojo' END AS color, " +
+            "COUNT(ai.indicador_id_indicador) AS indica FROM asignacion_indicador ai " +
+            "JOIN indicador i ON i.id_indicador = ai.indicador_id_indicador AND ai.visible = true " +
+            "JOIN modelo mo ON ai.modelo_id_modelo = mo.id_modelo " +
+            "WHERE mo.id_modelo =:id_modelo AND i.visible = true GROUP BY color " +
+            ") counts ON cv.color = counts.color LEFT JOIN ( " +
+            "SELECT COUNT(indicador_id_indicador) AS total_count " +
+            "FROM asignacion_indicador WHERE modelo_id_modelo =:id_modelo AND visible = true) " +
+            "AS total ON 1=1;", nativeQuery = true)
     List<IndiColProjection> indicadorval(Long id_modelo);
 }

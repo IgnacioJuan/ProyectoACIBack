@@ -1,5 +1,7 @@
 package com.sistema.examenes.projection;
 
+import java.math.BigDecimal;
+
 public interface criteriosdesprojection {
     String getcriterionomj();
     String getsubcrierioj();
@@ -9,5 +11,8 @@ public interface criteriosdesprojection {
     String getarchivo_nombre();
     String getarchivo_enlace();
     Boolean getVisi();
-
+    BigDecimal getPes();
+    BigDecimal getObt();
+    BigDecimal getUti();
+    BigDecimal getVal();
 }
