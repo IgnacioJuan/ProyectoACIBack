@@ -2,6 +2,7 @@ package com.sistema.examenes.controller;
 
 import com.sistema.examenes.entity.Actividad;
 import com.sistema.examenes.entity.Asignacion_Evidencia;
+import com.sistema.examenes.projection.AsignacionEvidenciaProyeccion;
 import com.sistema.examenes.services.Asignacion_Evidencia_Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,15 @@ public class Asignacion_Evidencia_controller {
     public ResponseEntity<List<Asignacion_Evidencia>> obtenerListav() {
         try {
             return new ResponseEntity<>(Service.listar(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/listarpruebasevi")
+    public ResponseEntity<List<AsignacionEvidenciaProyeccion>> listarpruebasevi() {
+        try {
+            return new ResponseEntity<>(Service.listarAsignacionEvidenciaProyeccion(), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

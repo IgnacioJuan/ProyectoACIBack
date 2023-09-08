@@ -20,7 +20,7 @@ public interface Evidencia_repository extends JpaRepository<Evidencia, Long> {
             "               LEFT JOIN asignacion_evidencia ae ON e.id_evidencia = ae.evidencia_id_evidencia \n" +
             "               WHERE ae.id_asignacion_evidencia IS NULL AND e.visible=true",nativeQuery = true)*/
 
-    @Query(value = "SELECT e.* FROM evidencia e " +
+    @Query(value = "SELECT cri.nombre criterio, s.nombre subcriterio, i.nombre indicador, e.* FROM evidencia e " +
             "JOIN indicador i ON i.id_indicador = e.indicador_id_indicador " +
             "JOIN subcriterio s ON s.id_subcriterio = i.subcriterio_id_subcriterio " +
             "JOIN criterio cri ON cri.id_criterio = s.id_criterio " +

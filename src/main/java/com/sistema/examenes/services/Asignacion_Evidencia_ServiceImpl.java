@@ -2,6 +2,7 @@ package com.sistema.examenes.services;
 
 import com.sistema.examenes.entity.Actividad;
 import com.sistema.examenes.entity.Asignacion_Evidencia;
+import com.sistema.examenes.projection.AsignacionEvidenciaProyeccion;
 import com.sistema.examenes.repository.Asignacion_Evidencia_repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
@@ -20,6 +21,11 @@ public class Asignacion_Evidencia_ServiceImpl extends GenericServiceImpl<Asignac
     @Override
     public List<Asignacion_Evidencia> listarporUsuario(String usuario) {
         return repository.listarporAsignacionUsuario (usuario);
+    }
+
+    @Override
+    public List<AsignacionEvidenciaProyeccion> listarAsignacionEvidenciaProyeccion() {
+        return repository.listarAsignacionEvidenciaProyeccion();
     }
 
     @Override

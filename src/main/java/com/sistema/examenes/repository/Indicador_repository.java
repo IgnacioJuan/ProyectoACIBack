@@ -111,7 +111,7 @@ public interface Indicador_repository extends JpaRepository<Indicador, Long> {
             "WHERE i.visible = true AND i.subcriterio_id_subcriterio = :id_subcriterio " +
             "GROUP BY i.id_indicador", nativeQuery = true)
     List<IndicadorEvidenciasProjection> obtenerIndicadoresConCantidadEvidencia(Long id_subcriterio);
-    @Query(value = "SELECT i.id_indicador, i.nombre, c.nombre, s.nombre, e.nombre, e2.nombre, i.descripcion, i.peso, i.estandar, i.tipo ," +
+    @Query(value = "SELECT i.id_indicador, i.nombre indicador, c.nombre criterio, s.nombre subcriterio, e.nombre evidencia, i.descripcion, i.peso, i.estandar, i.tipo ," +
             "i.valor_obtenido,i.porc_obtenido,i.porc_utilida_obtenida, i.visible, " +
             "(SELECT COUNT(e2.id_evidencia) " +
             "FROM evidencia e2 WHERE e2.indicador_id_indicador = i.id_indicador AND e2.visible = true) " +
@@ -120,12 +120,16 @@ public interface Indicador_repository extends JpaRepository<Indicador, Long> {
             "FROM indicador i " +
             "JOIN subcriterio s " +
             "ON s.id_subcriterio = i.subcriterio_id_subcriterio " +
+            "JOIN criterio c " +
+            "ON c.id_criterio = s.id_criterio " +
             "LEFT JOIN evidencia e " +
             "ON i.id_indicador = e.indicador_id_indicador "+
             "WHERE i.visible = true " +
-            "GROUP BY i.id_indicador, s.nombre " +
+            "GROUP BY i.id_indicador, c.nombre, s.nombre, e.nombre " +
             "ORDER BY s.nombre, i.id_indicador ", nativeQuery = true)
     List<IndicadorEvidenciasProjectionFull> obtenerIndicadoresConCantidadEvidenciaFull();
+
+
 
     @Query("SELECT DISTINCT i FROM Indicador i " +
             "JOIN i.subcriterio s " +
