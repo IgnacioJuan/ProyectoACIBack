@@ -2,6 +2,7 @@ package com.sistema.examenes.repository;
 
 import com.sistema.examenes.entity.Actividad;
 import com.sistema.examenes.projection.ActivAprobadaProjection;
+import com.sistema.examenes.projection.ActivProyection;
 import com.sistema.examenes.projection.ActividadesProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -51,6 +52,31 @@ public interface Actividad_repository extends JpaRepository<Actividad, Long> {
 "WHERE ac.estado = 'Rechazada'\n" +
 "AND ag.modelo_id_modelo = (SELECT MAX(id_modelo) FROM modelo)", nativeQuery = true)
     List<Actividad> listarEvideRechazadasFecha();
+
+
+    @Query(value = "  SELECT distinct u.id  as idpersona, per.primer_nombre,per.primer_apellido , COALESCE(per.correo, 'Sin correo') AS percorreo\n" +
+            "        FROM actividad ac\n" +
+            "        JOIN evidencia e ON e.id_evidencia = ac.id_evidencia\n" +
+            "        JOIN usuarios u ON u.id=ac.usuario_id\n" +
+            "        JOIN persona per ON per.id_persona = u.persona_id_persona\n" +
+            "        JOIN indicador i ON i.id_indicador = e.indicador_id_indicador\n" +
+            "        JOIN ponderacion po ON po.indicador_id_indicador = i.id_indicador\n" +
+            "        JOIN modelo mo ON mo.id_modelo = po.modelo_id_modelo\n" +
+            "        WHERE mo.id_modelo = (SELECT MAX(id_modelo) FROM modelo);\n",nativeQuery = true)
+    List<ActivProyection>listarByActividad();
+    
+@Query(value = "SELECT pe.primer_nombre||' '||pe.primer_apellido as encargado, ac.nombre as actividades, ac.fecha_inicio as inicio,\n" +
+        "ac.fecha_fin as fin, ar.enlace\n" +
+        "FROM actividad ac JOIN evidencia ev ON ac.id_evidencia=ev.id_evidencia\n" +
+        "JOIN indicador i ON i.id_indicador = ev.indicador_id_indicador\n" +
+        "JOIN ponderacion po ON po.indicador_id_indicador=i.id_indicador\n" +
+        "JOIN modelo mo ON mo.id_modelo=po.modelo_id_modelo\n" +
+        "JOIN usuarios u ON u.id=ac.usuario_id\n" +
+        "LEFT JOIN archivo ar ON ar.id_actividad = ac.id_actividad AND ar.visible = true\n" +
+        "JOIN persona pe ON pe.id_persona=u.persona_id_persona WHERE\n" +
+        "mo.id_modelo=(SELECT MAX(id_modelo) FROM modelo) AND ac.estado != 'Aprobada'\n" +
+        "AND ac.visible=true;", nativeQuery = true)
+List<ActivAprobadaProjection> actividadRechazada();
 
     @Query(value = "SELECT pe.primer_nombre||' '||pe.primer_apellido as encargado, ac.nombre as actividades, ac.fecha_inicio as inicio, " +
             "c.nombre criterio, s.nombre subcriterio, i.nombre indicador, " +
@@ -136,3 +162,5 @@ public interface Actividad_repository extends JpaRepository<Actividad, Long> {
     List<Actividad>listarByUsuario(Long idUsuario);
 
 }
+
+

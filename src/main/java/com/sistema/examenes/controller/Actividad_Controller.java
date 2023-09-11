@@ -3,6 +3,7 @@ package com.sistema.examenes.controller;
 import com.sistema.examenes.entity.Actividad;
 import com.sistema.examenes.entity.Criterio;
 import com.sistema.examenes.projection.ActivAprobadaProjection;
+import com.sistema.examenes.projection.ActivProyection;
 import com.sistema.examenes.projection.ActividadesProjection;
 import com.sistema.examenes.services.Actividad_Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,8 +59,17 @@ public class Actividad_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/actividadatrasa/{id_modelo}")
-    public ResponseEntity<List<ActivAprobadaProjection>> actividadAtra(@PathVariable("id_modelo") Long id_modelo) {
+    @GetMapping("/listaractividad")
+    public ResponseEntity<List<ActivProyection>> listarActividad () {
+
+        try {
+            return new ResponseEntity<>(Service.listarByActividad(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/actividadatrasa")
+    public ResponseEntity<List<ActivAprobadaProjection>> actividadAtra() {
 
         try {
             return new ResponseEntity<>(Service.actividadAtrasada(id_modelo), HttpStatus.OK);
