@@ -184,6 +184,15 @@ public class  Modelo_Controller {
         }
     }
 
+    @GetMapping("/listcritmod/{id_criterio}/{id_modelo}")
+    public ResponseEntity<List<criteriosdesprojection>> listcritemod(@PathVariable("id_criterio") Long id_criterio,@PathVariable("id_modelo") Long id_modelo) {
+        try {
+            return new ResponseEntity<>(Service.listcritmodel(id_criterio,id_modelo), HttpStatus.OK);
+        } catch (Exception e) {
+
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/listcriterioadmin/{id_modelo}/{id}")
     public ResponseEntity<List<criteriosdesprojection>> criterioadminis(@PathVariable("id_modelo") Long id_modelo,
                                                                           @PathVariable("id") Long id) {

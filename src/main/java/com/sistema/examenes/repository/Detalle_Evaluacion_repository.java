@@ -18,7 +18,9 @@ public interface Detalle_Evaluacion_repository extends JpaRepository<Detalle_Eva
     @Query(value = "SELECT CASE  WHEN COUNT(id_detalle_evaluacion)>0 THEN true ELSE false END FROM detalle_evaluacion " +
             "WHERE evidencia_id_evidencia=:id_evidencia AND usuario_id=:id AND id_modelo=:id_modelo",nativeQuery = true)
     Boolean existeeva(Long id_evidencia,Long id,Long id_modelo);
+
     @Query(value = "SELECT id_detalle_evaluacion FROM detalle_evaluacion " +
-            "WHERE evidencia_id_evidencia=:id_evidencia AND usuario_id=:id AND id_modelo=:id_modelo",nativeQuery = true)
+            "WHERE evidencia_id_evidencia=:id_evidencia AND usuario_id=:id AND id_modelo=:id_modelo AND estado=true",nativeQuery = true)
     Long iddetalle(Long id_evidencia,Long id,Long id_modelo);
+
 }

@@ -3,6 +3,8 @@ package com.sistema.examenes.repository;
 import com.sistema.examenes.entity.Actividad;
 import com.sistema.examenes.entity.Criterio;
 import com.sistema.examenes.entity.Evidencia;
+import com.sistema.examenes.projection.AsigEvidProjection;
+import com.sistema.examenes.projection.EvidenciaCalProjection;
 import com.sistema.examenes.projection.EvidenciasProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,7 +16,7 @@ public interface Evidencia_repository extends JpaRepository<Evidencia, Long> {
     List<Evidencia> listarEvidencia();
 
     @Query(value = "SELECT * from evidencia e JOIN asignacion_evidencia ae ON ae.evidencia_id_evidencia = e.id_evidencia " +
-            "JOIN usuarios u ON ae.usuario_id = u.id where u.username=:username and e.visible =true AND ae.id_modelo=(SELECT MAX(id_modelo) FROM modelo)", nativeQuery = true)
+            "JOIN usuarios u ON ae.usuario_id = u.id where u.username=:username and e.visible =true AND ae.visible=true AND ae.id_modelo=(SELECT MAX(id_modelo) FROM modelo)", nativeQuery = true)
     public List<Evidencia> evidenciaUsuario(String username);
 
    /* @Query(value = " SELECT e.* FROM evidencia e  \n" +
@@ -42,7 +44,16 @@ public interface Evidencia_repository extends JpaRepository<Evidencia, Long> {
             "ORDER BY c.id_criterio,e.id_evidencia", nativeQuery = true)
     List<Evidencia> evidenciacriterio(Long idcriterio);
 
-
+    @Query(value = "SELECT DISTINCT e.id_evidencia AS idev,c.id_criterio AS idcri,c.nombre AS nombcri, " +
+            "sc.id_subcriterio AS idsub,sc.nombre AS nombsub,i.id_indicador AS idind,i.nombre AS nombind, e.descripcion AS descripc " +
+            "FROM evidencia e JOIN indicador i ON e.indicador_id_indicador = i.id_indicador " +
+            "JOIN subcriterio sc ON i.subcriterio_id_subcriterio = sc.id_subcriterio " +
+            "JOIN criterio c ON sc.id_criterio = c.id_criterio " +
+            "JOIN asignacion_admin aa ON c.id_criterio = aa.criterio_id_criterio " +
+            "WHERE c.id_criterio=:idcriterio AND e.visible = true " +
+            "AND e.id_evidencia NOT IN (SELECT evidencia_id_evidencia FROM asignacion_evidencia  WHERE visible=true) " +
+            "ORDER BY c.id_criterio,sc.id_subcriterio, i.id_indicador,e.id_evidencia", nativeQuery = true)
+    List<AsigEvidProjection> evidenciatab(Long idcriterio);
     // SELECT evidencia.*
     // FROM public.indicador join public.evidencia ON
     // evidencia.indicador_id_indicador = indicador.id_indicador
@@ -73,5 +84,11 @@ public interface Evidencia_repository extends JpaRepository<Evidencia, Long> {
             "JOIN persona per ON per.id_persona=u.persona_id_persona AND d.estado=false " +
             "WHERE d.id_modelo=:id_modelo", nativeQuery = true)
     List<EvidenciasProjection> evidenciaRechazada(Long id_modelo);
-    
+
+    @Query(value = "SELECT i.tipo AS tipo, i.id_indicador AS id_in,i.peso AS peso,  e.descripcion AS descrip, " +
+            "e.estado AS est from evidencia e JOIN asignacion_evidencia ae ON ae.evidencia_id_evidencia = e.id_evidencia " +
+            "JOIN indicador i ON i.id_indicador = e.indicador_id_indicador AND i.visible = true " +
+            "JOIN usuarios u ON ae.usuario_id = u.id where e.visible =true AND e.id_evidencia=:id_evidencia " +
+            "AND ae.visible=true AND ae.id_modelo=:id_modelo ", nativeQuery = true)
+    EvidenciaCalProjection evidenciacal(Long id_evidencia, Long id_modelo);
 }

@@ -51,7 +51,7 @@ public interface Modelo_repository extends JpaRepository<Modelo, Long> {
     List<ModelIndiProjection> listindiModelo(Long id_modelo);
 
     @Query(value = "SELECT cri.nombre AS criterionomj, sub.nombre AS subcrierioj, i.id_indicador AS id_indicardorj, " +
-            "i.nombre AS ind_nombrej, ev.descripcion AS descrip, i.peso AS pes, i.porc_obtenido AS obt, " +
+            "i.nombre AS ind_nombrej,i.descripcion as ides, i.tipo AS tip, ev.descripcion AS descrip, i.peso AS pes, i.porc_obtenido AS obt, " +
             "i.porc_utilida_obtenida AS uti, i.valor_obtenido AS val, " +
             "CASE WHEN ai.visible IS NOT NULL THEN ai.visible ELSE false END AS visi, " +
             "arc.nombre AS archivo_nombre, " +
@@ -63,9 +63,23 @@ public interface Modelo_repository extends JpaRepository<Modelo, Long> {
             "LEFT JOIN actividad ac ON ev.id_evidencia = ac.id_evidencia AND ac.visible = true " +
             "LEFT JOIN archivo arc ON ac.id_actividad = arc.id_actividad AND arc.visible = true " +
             "WHERE ai.modelo_id_modelo =:id_modelo AND cri.nombre =:nombre " +
-            "ORDER BY cri.id_criterio, sub.id_subcriterio, i.id_indicador;", nativeQuery = true)
+            "ORDER BY cri.id_criterio, sub.id_subcriterio, i.id_indicador", nativeQuery = true)
     List<criteriosdesprojection> listicritedes(Long id_modelo,String nombre);
-
+    @Query(value = "SELECT cri.nombre AS criterionomj, sub.nombre AS subcrierioj, i.id_indicador AS id_indicardorj, " +
+            "i.nombre AS ind_nombrej,i.descripcion as ides, i.tipo AS tip, ev.descripcion AS descrip, i.peso AS pes, i.porc_obtenido AS obt, " +
+            "i.porc_utilida_obtenida AS uti, i.valor_obtenido AS val, " +
+            "CASE WHEN ai.visible IS NOT NULL THEN ai.visible ELSE false END AS visi, " +
+            "arc.nombre AS archivo_nombre, " +
+            "arc.enlace AS archivo_enlace " +
+            "FROM criterio cri JOIN subcriterio sub ON cri.id_criterio = sub.id_criterio AND sub.visible = true " +
+            "LEFT JOIN indicador i ON sub.id_subcriterio = i.subcriterio_id_subcriterio AND i.visible = true " +
+            "LEFT JOIN asignacion_indicador ai ON i.id_indicador = ai.indicador_id_indicador " +
+            "LEFT JOIN evidencia ev ON i.id_indicador = ev.indicador_id_indicador AND ev.visible = true " +
+            "LEFT JOIN actividad ac ON ev.id_evidencia = ac.id_evidencia AND ac.visible = true " +
+            "LEFT JOIN archivo arc ON ac.id_actividad = arc.id_actividad AND arc.visible = true " +
+            "WHERE cri.id_criterio =:id_criterio AND ai.modelo_id_modelo =:id_modelo " +
+            "ORDER BY cri.id_criterio, sub.id_subcriterio, i.id_indicador", nativeQuery = true)
+    List<criteriosdesprojection> listcritmodel(Long id_criterio, Long id_modelo);
     @Query(value = "SELECT cri.nombre AS criterionomj, sub.nombre AS subcrierioj, i.id_indicador AS id_indicardorj, " +
             "i.nombre AS ind_nombrej, ev.descripcion AS descrip, i.peso AS pes, i.porc_obtenido AS obt, " +
             "i.porc_utilida_obtenida AS uti, i.valor_obtenido AS val, " +

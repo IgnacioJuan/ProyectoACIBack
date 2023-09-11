@@ -76,6 +76,15 @@ public class Actividad_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/actividadpendiente/{id_modelo}")
+    public ResponseEntity<List<ActivAprobadaProjection>> actividadpendiente(@PathVariable("id_modelo") Long id_modelo) {
+
+        try {
+            return new ResponseEntity<>(Service.actividadpendiente(id_modelo), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/listarCumpli")
     public ResponseEntity<List<Actividad>> obtenerListaCump() {
         try {

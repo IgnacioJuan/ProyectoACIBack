@@ -50,6 +50,12 @@ public class Modelo_ServiceImpl extends GenericServiceImpl<Modelo, Long> impleme
     @Override
     public List<criteriosdesprojection> listicritedes(Long id_modelo,String nombre) {return repository.listicritedes(id_modelo,nombre);
     }
+
+    @Override
+    public List<criteriosdesprojection> listcritmodel(Long id_criterio, Long id_modelo) {
+        return repository.listcritmodel(id_criterio, id_modelo);
+    }
+
     @Override
     public List<criteriosdesprojection> listicrinom(Long id_modelo,String nomcrite ) {return repository.listicrinom(id_modelo,nomcrite);
     }

@@ -68,6 +68,11 @@ public class Actividad_ServiceImpl extends GenericServiceImpl<Actividad, Long> i
     }
 
     @Override
+    public List<ActivAprobadaProjection> actividadpendiente(Long id_modelo) {
+        return repository.actividadpendiente(id_modelo);
+    }
+
+    @Override
     public List<Actividad> actividadUsu(Long id) {
         return repository.actividadUsu(id);
     }

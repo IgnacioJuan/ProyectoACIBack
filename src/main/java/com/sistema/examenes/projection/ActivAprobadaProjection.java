@@ -5,6 +5,7 @@ public interface ActivAprobadaProjection {
     String getCriterio();
     String getSubcriterio();
     String getIndicador();
+    String getNomb();
     String getActividades();
     String getInicio();
     String getFin();

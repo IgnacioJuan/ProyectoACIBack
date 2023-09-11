@@ -24,22 +24,23 @@ public class Detalle_Evaluacion_Controller {
         Boolean existe = Service.existeeva(r.getEvidencia().getId_evidencia(), r.getUsuario().getId(), r.getId_modelo());
         System.out.println("existe detalle "+existe);
         try {
-            // Verificar si el detalle ya existe
-
             if (existe) {
-                // Si existe, actualiza el estado según lo recibido del frontend
                 Long iddet=Service.iddetalle(r.getEvidencia().getId_evidencia(), r.getUsuario().getId(), r.getId_modelo());
                 Detalle_Evaluacion detalleExistente = Service.findById(iddet);
 
                 if (detalleExistente != null) {
+                    if(!r.isEstado()){
+                        r.setVisible(true);
+                        return new ResponseEntity<>(Service.save(r), HttpStatus.CREATED);
+                    }else{
+                    detalleExistente.setFecha(r.getFecha());
                     detalleExistente.setObservacion(r.getObservacion());
                     detalleExistente.setEstado(r.isEstado());
-                    return new ResponseEntity<>(Service.save(detalleExistente), HttpStatus.OK);
+                    return new ResponseEntity<>(Service.save(detalleExistente), HttpStatus.OK);}
                 } else {
-                    return new ResponseEntity<>(HttpStatus.NOT_FOUND); // No se encontró el detalle
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
                 }
             } else {
-                // Si no existe, establece r.setVisible(true) y crea un nuevo detalle
                 r.setVisible(true);
                 return new ResponseEntity<>(Service.save(r), HttpStatus.CREATED);
             }

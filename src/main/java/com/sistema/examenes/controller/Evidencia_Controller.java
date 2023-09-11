@@ -2,6 +2,8 @@ package com.sistema.examenes.controller;
 
 import com.sistema.examenes.entity.Encabezado_Evaluar;
 import com.sistema.examenes.entity.Evidencia;
+import com.sistema.examenes.projection.AsigEvidProjection;
+import com.sistema.examenes.projection.EvidenciaCalProjection;
 import com.sistema.examenes.projection.EvidenciasProjection;
 import com.sistema.examenes.services.Evidencia_Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +75,7 @@ public class Evidencia_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @GetMapping("/evicriterio/{idcriterio}")
     public ResponseEntity<List<Evidencia>> evidenciaindicador(@PathVariable("idcriterio") Long idcriterio) {
         try {
@@ -81,7 +84,14 @@ public class Evidencia_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @GetMapping("/eviasigtab/{idcriterio}")
+    public ResponseEntity<List<AsigEvidProjection>> evidenciatabla(@PathVariable("idcriterio") Long idcriterio) {
+        try {
+            return new ResponseEntity<>(Service.evidenciatab(idcriterio), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/buscar/{id}")
     public ResponseEntity<Evidencia> getById(@PathVariable("id") Long id) {
         try {
@@ -100,6 +110,14 @@ public class Evidencia_Controller {
         }
     }
 
+    @GetMapping("/evidenciacal/{id_evidencia}/{id_modelo}")
+    public ResponseEntity<EvidenciaCalProjection> evidenciacal(@PathVariable("id_evidencia") Long id_evidencia,@PathVariable("id_modelo") Long id_modelo) {
+        try {
+            return new ResponseEntity<>(Service.evidenciacal(id_evidencia,id_modelo), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id, @RequestBody Evidencia evidencia) {
         return Service.delete(id);

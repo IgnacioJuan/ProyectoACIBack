@@ -101,7 +101,14 @@ public class Criterio_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @GetMapping("/valorescriterio/{id_modelo}/{nombre}")
+    public ResponseEntity<List<ValoresProjection>> valorescriterio(@PathVariable("id_modelo") Long id_modelo,@PathVariable("nombre") String nombre) {
+        try {
+            return new ResponseEntity<>(Service.valoresporcriterio(id_modelo,nombre), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/listvalad/{id_modelo}/{id}")
     public ResponseEntity<List<ValoresProjection>> listarvaladmin(@PathVariable("id_modelo") Long id_modelo,@PathVariable("id") Long id) {
         try {

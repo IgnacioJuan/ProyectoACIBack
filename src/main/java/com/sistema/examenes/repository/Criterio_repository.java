@@ -68,6 +68,14 @@ public interface Criterio_repository extends JpaRepository<Criterio, Long> {
                 "FROM indicador i JOIN subcriterio sub ON sub.id_subcriterio=i.subcriterio_id_subcriterio " +
                 "JOIN criterio cri ON cri.id_criterio =sub.id_criterio " +
                 "JOIN asignacion_admin aa ON aa.criterio_id_criterio=cri.id_criterio AND aa.visible=true " +
+                "AND aa.id_modelo=?1 AND cri.nombre=?2 GROUP BY cri.nombre,cri.id_criterio  ORDER BY cri.id_criterio", nativeQuery = true)
+        List<ValoresProjection> valoresporcriterio(Long id_modelo,String nombre);
+        @Query(value = "SELECT cri.nombre AS \"Nomcriterio\",CAST(SUM(i.peso) AS NUMERIC(10, 2)) as \"Ponderacio\", " +
+                "CAST(SUM(i.porc_utilida_obtenida) AS NUMERIC(10, 2)) AS \"VlObtenido\", " +
+                "CAST(SUM(i.peso) - SUM(i.porc_utilida_obtenida) AS NUMERIC(10, 2)) AS \"Vlobtener\" " +
+                "FROM indicador i JOIN subcriterio sub ON sub.id_subcriterio=i.subcriterio_id_subcriterio " +
+                "JOIN criterio cri ON cri.id_criterio =sub.id_criterio " +
+                "JOIN asignacion_admin aa ON aa.criterio_id_criterio=cri.id_criterio AND aa.visible=true " +
                 "AND aa.id_modelo=?1 AND aa.usuario_id=?2 GROUP BY cri.nombre,cri.id_criterio  ORDER BY cri.id_criterio", nativeQuery = true)
         List<ValoresProjection> listarvaladmin(Long id_modelo,Long id);
         @Query(value = "SELECT id_criterio FROM criterio WHERE nombre=:nombre", nativeQuery = true)
