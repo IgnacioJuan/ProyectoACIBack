@@ -92,6 +92,15 @@ public class Evidencia_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/eviasigadmin/{idUser}")
+    public ResponseEntity<List<AsigEvidProjection>> evidenciaadmintabla(@PathVariable("idUser") Long idUser) {
+        try {
+            return new ResponseEntity<>(Service.listarEvidenciaAdmin(idUser), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/buscar/{id}")
     public ResponseEntity<Evidencia> getById(@PathVariable("id") Long id) {
         try {

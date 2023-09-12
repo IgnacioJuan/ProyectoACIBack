@@ -6,7 +6,7 @@ public interface AsigEvidProjection {
     String getNombcri();
     Long getIdsub();
     String getNombsub();
-    Long getIndind();
+    Long getIdind();
     String getNombind();
     String getDescripc();
 }

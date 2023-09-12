@@ -2,6 +2,7 @@ package com.sistema.examenes.repository;
 
 import com.sistema.examenes.entity.Asignacion_Evidencia;
 import com.sistema.examenes.entity.Criterio;
+import com.sistema.examenes.projection.AsignaProjection;
 import com.sistema.examenes.projection.AsignacionEvidenciaProyeccion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +18,18 @@ public interface Asignacion_Evidencia_repository extends JpaRepository<Asignacio
             "AND mo.id_modelo = (SELECT MAX(id_modelo) FROM modelo) \n" +
             "WHERE ae.visible=true ORDER BY ae.usuario_id,ae.evidencia_id_evidencia;",nativeQuery = true)
     List<Asignacion_Evidencia> listarAsignacionEvidencia();
-
+    @Query(value = "SELECT ae.id_asignacion_evidencia AS idevid, e.id_evidencia AS ideviden, cri.nombre AS crite,s.nombre AS subcrite,i.nombre AS indi,pe.primer_nombre||' '||pe.primer_apellido AS respon,\n" +
+            "e.descripcion AS descev FROM asignacion_evidencia ae JOIN evidencia e ON e.id_evidencia=ae.evidencia_id_evidencia AND ae.visible =true\n" +
+            "JOIN usuarios u ON u.id=ae.usuario_id \n" +
+            "JOIN persona pe ON pe.id_persona=u.persona_id_persona \n" +
+            "JOIN indicador i ON e.indicador_id_indicador = i.id_indicador \n" +
+            "JOIN subcriterio s ON s.id_subcriterio=i.subcriterio_id_subcriterio \n" +
+            "JOIN criterio cri ON cri.id_criterio = s.id_criterio \n" +
+            "JOIN asignacion_indicador po ON i.id_indicador = po.indicador_id_indicador\n" +
+            "JOIN modelo mo ON mo.id_modelo=po.modelo_id_modelo\n" +
+            "AND mo.id_modelo = (SELECT MAX(id_modelo) FROM modelo) \n" +
+            "WHERE ae.visible=true ORDER BY ae.usuario_id,cri.id_criterio, s.id_subcriterio,i.id_indicador;",nativeQuery = true)
+    List<AsignaProjection> listarAsigEvidencia();
     @Query(value = "SELECT ae.id_asignacion_evidencia as idAsignacionEvidencia, ae.usuario_id as usuarioId, ae.evidencia_id_evidencia as evidenciaId " +
             "FROM asignacion_evidencia ae " +
             "JOIN evidencia e ON e.id_evidencia = ae.evidencia_id_evidencia AND ae.visible = true " +

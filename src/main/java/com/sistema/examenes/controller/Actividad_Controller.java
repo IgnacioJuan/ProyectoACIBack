@@ -68,8 +68,8 @@ public class Actividad_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/actividadatrasa")
-    public ResponseEntity<List<ActivAprobadaProjection>> actividadAtra() {
+    @GetMapping("/actividadatrasa/{id_modelo}")
+    public ResponseEntity<List<ActivAprobadaProjection>> actividadAtra(@PathVariable("id_modelo") Long id_modelo) {
 
         try {
             return new ResponseEntity<>(Service.actividadAtrasada(id_modelo), HttpStatus.OK);

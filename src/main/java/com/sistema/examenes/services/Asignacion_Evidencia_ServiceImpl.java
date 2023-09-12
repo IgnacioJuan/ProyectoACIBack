@@ -2,6 +2,7 @@ package com.sistema.examenes.services;
 
 import com.sistema.examenes.entity.Actividad;
 import com.sistema.examenes.entity.Asignacion_Evidencia;
+import com.sistema.examenes.projection.AsignaProjection;
 import com.sistema.examenes.projection.AsignacionEvidenciaProyeccion;
 import com.sistema.examenes.repository.Asignacion_Evidencia_repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,11 @@ public class Asignacion_Evidencia_ServiceImpl extends GenericServiceImpl<Asignac
     @Override
     public Boolean verificarAsignacionUsuario(Long id_usuario, Long id_evidencia, Long id_modelo) {
         return repository.verificarAsignacionUsuario(id_usuario,id_evidencia,id_modelo);
+    }
+
+    @Override
+    public List<AsignaProjection> listarAsigEvidencia() {
+        return repository.listarAsigEvidencia();
     }
 
     @Override

@@ -67,4 +67,9 @@ public class Evidencia_ServiceImpl extends GenericServiceImpl<Evidencia, Long> i
     public List<AsigEvidProjection> evidenciatab(Long idcriterio) {
         return repository.evidenciatab(idcriterio);
     }
+
+    @Override
+    public List<AsigEvidProjection> listarEvidenciaAdmin(Long idUser) {
+        return repository.listarEvidenciaAdmin(idUser);
+    }
 }
