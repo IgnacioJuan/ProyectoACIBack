@@ -36,6 +36,13 @@ public class Subcriterio_ServiceImpl extends GenericServiceImpl<Subcriterio, Lon
 
     public List<SubcriterioIndicadoresProjectionFull> obtenerDatosSubcriteriosFull(){
         return repository.obtenerSubcirteriosConCantidadIndicadorFull();
-    };
+    }
+
+    @Override
+    public List<SubcriterioIndicadoresProjection> obtenerSubcriterios(Long id_criterio, Long id_modelo) {
+        return repository.obtenerSubcriterios(id_criterio, id_modelo);
+    }
+
+    ;
 
 }

@@ -3,6 +3,7 @@ package com.sistema.examenes.repository;
 import com.sistema.examenes.entity.Asignacion_Indicador;
 import com.sistema.examenes.entity.Modelo;
 
+import com.sistema.examenes.projection.AsignaIndicadorProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -48,4 +49,12 @@ public interface Asignacion_Indicador_repository extends JpaRepository<Asignacio
             "JOIN criterio cri ON cri.id_criterio=s.id_criterio " +
             "WHERE ai.modelo_id_modelo=:id_modelo AND cri.nombre=:nombre", nativeQuery = true)
     Integer contar(Long id_modelo, String nombre);
+
+    @Query(value = "SELECT DISTINCT cri.id_criterio AS idcriterio, cri.nombre AS nombrecriterio, " +
+            "cri.descripcion AS descripcio FROM asignacion_indicador ai " +
+            "JOIN indicador i ON i.id_indicador=ai.indicador_id_indicador " +
+            "JOIN subcriterio s ON s.id_subcriterio=i.subcriterio_id_subcriterio " +
+            "JOIN criterio cri ON cri.id_criterio=s.id_criterio " +
+            "WHERE ai.modelo_id_modelo=:id_modelo", nativeQuery = true)
+    List<AsignaIndicadorProjection> listarAsignaIndicador(Long id_modelo);
 }

@@ -4,6 +4,7 @@ import com.sistema.examenes.entity.Encabezado_Evaluar;
 import com.sistema.examenes.entity.Evidencia;
 import com.sistema.examenes.projection.AsigEvidProjection;
 import com.sistema.examenes.projection.EvidenciaCalProjection;
+import com.sistema.examenes.projection.EvidenciaProjection;
 import com.sistema.examenes.projection.EvidenciasProjection;
 import com.sistema.examenes.services.Evidencia_Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,6 +120,14 @@ public class Evidencia_Controller {
         }
     }
 
+    @GetMapping("/evidenuser/{username}")
+    public ResponseEntity<List<EvidenciaProjection>> evidenciauser(@PathVariable("username") String username) {
+        try {
+            return new ResponseEntity<>(Service.evidenUsuario(username), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/evidenciacal/{id_evidencia}/{id_modelo}")
     public ResponseEntity<EvidenciaCalProjection> evidenciacal(@PathVariable("id_evidencia") Long id_evidencia,@PathVariable("id_modelo") Long id_modelo) {
         try {

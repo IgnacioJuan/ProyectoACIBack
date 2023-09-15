@@ -81,7 +81,7 @@ public interface Modelo_repository extends JpaRepository<Modelo, Long> {
             "ORDER BY cri.id_criterio, sub.id_subcriterio, i.id_indicador", nativeQuery = true)
     List<criteriosdesprojection> listcritmodel(Long id_criterio, Long id_modelo);
     @Query(value = "SELECT cri.nombre AS criterionomj, sub.nombre AS subcrierioj, i.id_indicador AS id_indicardorj, " +
-            "i.nombre AS ind_nombrej, ev.descripcion AS descrip, i.peso AS pes, i.porc_obtenido AS obt, " +
+            "i.nombre AS ind_nombrej, ev.descripcion AS descrip, i.peso AS pes, i.porc_obtenido AS obt, i.tipo AS tip, " +
             "i.porc_utilida_obtenida AS uti, i.valor_obtenido AS val, " +
             "CASE WHEN ai.visible IS NOT NULL THEN ai.visible ELSE false END AS visi, " +
             "arc.nombre AS archivo_nombre, arc.enlace AS archivo_enlace " +

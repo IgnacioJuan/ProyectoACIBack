@@ -2,6 +2,7 @@ package com.sistema.examenes.controller;
 
 import com.sistema.examenes.entity.Asignacion_Indicador;
 import com.sistema.examenes.entity.Modelo;
+import com.sistema.examenes.projection.AsignaIndicadorProjection;
 import com.sistema.examenes.services.Asignacion_Indicador_Service;
 import com.sistema.examenes.services.Modelo_Service;
 
@@ -130,7 +131,14 @@ public class Asignacion_Indicador_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @GetMapping("/asignacioncriterio/{id_modelo}")
+    public ResponseEntity<List<AsignaIndicadorProjection>> obtenerListaAsigna(@PathVariable("id_modelo") Long id_modelo) {
+        try {
+            return new ResponseEntity<>(Service.listarAsignaIndicador(id_modelo), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/listarasig_indi/{id}")
     public ResponseEntity<List<Asignacion_Indicador>> obtenerAsignacion(@PathVariable("id") Long id) {
         try {

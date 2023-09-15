@@ -41,4 +41,11 @@ public interface Subcriterio_repository extends JpaRepository<Subcriterio, Long>
             "GROUP BY s.id_subcriterio, c.nombre " +
             "ORDER BY c.nombre, s.id_subcriterio", nativeQuery = true)
     List<SubcriterioIndicadoresProjectionFull> obtenerSubcirteriosConCantidadIndicadorFull();
+
+    @Query(value = "SELECT DISTINCT s.id_subcriterio,s.nombre,s.descripcion FROM subcriterio s " +
+            "JOIN criterio cri ON cri.id_criterio=s.id_criterio " +
+            "JOIN indicador i ON i.subcriterio_id_subcriterio=s.id_subcriterio " +
+            "JOIN asignacion_indicador ai ON ai.indicador_id_indicador=i.id_indicador AND ai.visible=true " +
+            "WHERE cri.id_criterio=:id_criterio AND ai.modelo_id_modelo=:id_modelo ", nativeQuery = true)
+    List<SubcriterioIndicadoresProjection> obtenerSubcriterios(Long id_criterio,Long id_modelo);
 }

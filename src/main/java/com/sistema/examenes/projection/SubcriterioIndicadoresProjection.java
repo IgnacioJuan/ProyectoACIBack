@@ -4,6 +4,6 @@ public interface SubcriterioIndicadoresProjection {
     Long getId_subcriterio();
     String getNombre();
     String getDescripcion();
-    boolean isVisible();
+    Boolean getVisible();
     Long getCantidadIndicadores();
 }

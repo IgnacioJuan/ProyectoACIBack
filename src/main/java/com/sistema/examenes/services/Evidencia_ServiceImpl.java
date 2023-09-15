@@ -1,9 +1,9 @@
 package com.sistema.examenes.services;
 
-import com.sistema.examenes.entity.Actividad;
 import com.sistema.examenes.entity.Evidencia;
 import com.sistema.examenes.projection.AsigEvidProjection;
 import com.sistema.examenes.projection.EvidenciaCalProjection;
+import com.sistema.examenes.projection.EvidenciaProjection;
 import com.sistema.examenes.projection.EvidenciasProjection;
 import com.sistema.examenes.repository.Evidencia_repository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,5 +71,10 @@ public class Evidencia_ServiceImpl extends GenericServiceImpl<Evidencia, Long> i
     @Override
     public List<AsigEvidProjection> listarEvidenciaAdmin(Long idUser) {
         return repository.listarEvidenciaAdmin(idUser);
+    }
+
+    @Override
+    public List<EvidenciaProjection> evidenUsuario(String username) {
+        return repository.evidenUsuario(username);
     }
 }

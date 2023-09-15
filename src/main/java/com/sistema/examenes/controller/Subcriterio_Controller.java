@@ -95,6 +95,11 @@ public class Subcriterio_Controller {
     public List<SubcriterioIndicadoresProjection> obtenerDatosSubcriterios(@PathVariable("id_criterio") Long id_criterio) {
         return Service.obtenerDatosSubcriterios(id_criterio);
     }
+
+    @GetMapping("/subcritindi/{id_criterio}/{id_modelo}")
+    public List<SubcriterioIndicadoresProjection> obtenerSubcriterios(@PathVariable("id_criterio") Long id_criterio,@PathVariable("id_modelo") Long id_modelo) {
+        return Service.obtenerSubcriterios(id_criterio, id_modelo);
+    }
     @GetMapping("/datosSubcriteriosFull")
     public List<SubcriterioIndicadoresProjectionFull> obtenerDatosSubcriteriosFull() {
         return Service.obtenerDatosSubcriteriosFull();

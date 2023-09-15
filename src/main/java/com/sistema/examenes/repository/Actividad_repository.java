@@ -148,6 +148,12 @@ List<ActivAprobadaProjection> actividadRechazada();
     List<ActivAprobadaProjection> actividadpendiente(Long id_modelo);
     @Query(value = "select * from  actividad ac JOIN usuarios u ON ac.usuario_id = u.id where u.username=:username and ac.visible =true",nativeQuery = true)
     List<Actividad>listarporusuario(String username);
+
+    @Query(value = "SELECT ac.* FROM  actividad ac JOIN usuarios u " +
+            "ON ac.usuario_id = u.id where u.username=:username " +
+            "AND ac.visible =true AND id_evidencia=:id_evidencia ",nativeQuery = true)
+    List<Actividad>listareviuser(String username,Long id_evidencia);
+
     List<Actividad> findByNombreContainingIgnoreCase(String nombre);
 
     @Query(value = "SELECT * FROM actividad WHERE visible= true AND id_evidencia=:idEvidendicia ;",nativeQuery = true)

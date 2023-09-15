@@ -138,6 +138,12 @@ public interface Indicador_repository extends JpaRepository<Indicador, Long> {
             "AND i.visible = true")
     List<Indicador> indicadoresPorModelo(Long id_modelo);
 
+    @Query(value = "SELECT i.* FROM indicador i " +
+            "JOIN subcriterio s ON i.subcriterio_id_subcriterio=s.id_subcriterio " +
+            "JOIN criterio cri ON cri.id_criterio=s.id_criterio " +
+            "JOIN asignacion_indicador ai ON ai.indicador_id_indicador=i.id_indicador AND ai.visible=true " +
+            "WHERE s.id_subcriterio=:id_subcriterio AND ai.modelo_id_modelo=:id_modelo ORDER BY i.id_indicador;", nativeQuery = true)
+    List<Indicador> indicadorPorSubcriterio(Long id_subcriterio,Long id_modelo);
     /*@Query(value = "SELECT COUNT(ai.indicador_id_indicador) AS indica, " +
             "CASE WHEN i.porc_obtenido > 75 THEN 'verde' " +
             "WHEN i.porc_obtenido > 50 AND i.porc_obtenido <= 75 THEN 'amarillo' " +

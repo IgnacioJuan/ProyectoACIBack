@@ -2,6 +2,7 @@ package com.sistema.examenes.services;
 
 import com.sistema.examenes.entity.Asignacion_Indicador;
 import com.sistema.examenes.entity.Modelo;
+import com.sistema.examenes.projection.AsignaIndicadorProjection;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface Asignacion_Indicador_Service extends GenericService<Asignacion_
     public  Boolean existeCriterio(Long id_modelo,Long id_indi);
     public String nombreCriterio(Long id_indi);
     public Integer contar(Long id_modelo, String nombre);
+    List<AsignaIndicadorProjection> listarAsignaIndicador(Long id_modelo);
 }

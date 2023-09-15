@@ -25,6 +25,6 @@ public interface Actividad_Service extends GenericService<Actividad, Long>{
     public List<Actividad> listaActByUsuario(Long id);
    public List<ActivProyection>listarByActividad();
 
-
+    List<Actividad>listareviuser(String username,Long id_evidencia);
 }
 

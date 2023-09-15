@@ -15,4 +15,6 @@ public interface Subcriterio_Service extends GenericService<Subcriterio, Long> {
 
     public List<SubcriterioIndicadoresProjection> obtenerDatosSubcriterios(Long id_criterio);
     public List<SubcriterioIndicadoresProjectionFull> obtenerDatosSubcriteriosFull();
+
+    List<SubcriterioIndicadoresProjection> obtenerSubcriterios(Long id_criterio,Long id_modelo);
 }

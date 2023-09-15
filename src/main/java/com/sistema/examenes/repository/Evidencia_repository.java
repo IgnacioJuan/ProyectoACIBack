@@ -5,6 +5,7 @@ import com.sistema.examenes.entity.Criterio;
 import com.sistema.examenes.entity.Evidencia;
 import com.sistema.examenes.projection.AsigEvidProjection;
 import com.sistema.examenes.projection.EvidenciaCalProjection;
+import com.sistema.examenes.projection.EvidenciaProjection;
 import com.sistema.examenes.projection.EvidenciasProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,6 +19,15 @@ public interface Evidencia_repository extends JpaRepository<Evidencia, Long> {
     @Query(value = "SELECT * from evidencia e JOIN asignacion_evidencia ae ON ae.evidencia_id_evidencia = e.id_evidencia " +
             "JOIN usuarios u ON ae.usuario_id = u.id where u.username=:username and e.visible =true AND ae.visible=true AND ae.id_modelo=(SELECT MAX(id_modelo) FROM modelo)", nativeQuery = true)
     public List<Evidencia> evidenciaUsuario(String username);
+
+    @Query(value = "SELECT e.id_evidencia, cri.nombre AS criterio,s.nombre AS subcriterio,i.nombre AS indicador,e.descripcion, " +
+            "e.estado FROM evidencia e JOIN indicador i ON i.id_indicador=e.indicador_id_indicador " +
+            "JOIN subcriterio s ON s.id_subcriterio=i.subcriterio_id_subcriterio " +
+            "JOIN criterio cri ON cri.id_criterio=s.id_criterio " +
+            "JOIN asignacion_evidencia ae ON ae.evidencia_id_evidencia=e.id_evidencia AND ae.visible=true AND ae.id_modelo=(SELECT MAX(id_modelo) FROM modelo) " +
+            "JOIN usuarios u ON u.id=ae.usuario_id " +
+            "WHERE u.username=:username ", nativeQuery = true)
+    public List<EvidenciaProjection> evidenUsuario(String username);
 
    /* @Query(value = " SELECT e.* FROM evidencia e  \n" +
             "               LEFT JOIN asignacion_evidencia ae ON e.id_evidencia = ae.evidencia_id_evidencia \n" +

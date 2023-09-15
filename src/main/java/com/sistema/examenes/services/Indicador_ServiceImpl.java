@@ -89,4 +89,9 @@ public class Indicador_ServiceImpl extends GenericServiceImpl<Indicador, Long> i
     public List<IndiColProjection> indicadorval(Long id_modelo) {
         return repository.indicadorval(id_modelo);
     }
+
+    @Override
+    public List<Indicador> indicadorPorSubcriterio(Long id_subcriterio, Long id_modelo) {
+        return repository.indicadorPorSubcriterio(id_subcriterio, id_modelo);
+    }
 }

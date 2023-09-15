@@ -154,15 +154,24 @@ public class Actividad_Controller {
              return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
          }
      }*/
-    @GetMapping("/buscarusuario/{usenname}")
-    public ResponseEntity <List<Actividad>> listarporUsuario(@PathVariable("usenname") String username) {
+    @GetMapping("/activevid/{username}/{id_evidencia}")
+    public ResponseEntity <List<Actividad>> listarporUsuario(@PathVariable("username") String username,@PathVariable("id_evidencia") Long id_evidencia) {
+
+        try {
+            return new ResponseEntity<>(Service.listareviuser(username,id_evidencia), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/buscarusuario/{username}")
+    public ResponseEntity <List<Actividad>> listaractiUsuario(@PathVariable("username") String username) {
 
         try {
             return new ResponseEntity<>(Service.listarporusuario(username), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id) {
