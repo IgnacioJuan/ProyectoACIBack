@@ -2,6 +2,7 @@ package com.sistema.examenes.controller;
 
 import com.sistema.examenes.entity.Encabezado_Evaluar;
 import com.sistema.examenes.entity.Ponderacion;
+import com.sistema.examenes.projection.PonderacionProjection;
 import com.sistema.examenes.services.Ponderacion_Service;
 
 import java.text.ParseException;
@@ -112,16 +113,23 @@ public class Ponderacion_Controller {
 
         }
     }
-
+    @GetMapping("/idmax/{id_modelo}")
+    public ResponseEntity<List<PonderacionProjection>>idmax(@PathVariable("id_modelo") Long id_modelo) {
+        try {
+            return new ResponseEntity<>(Service.idmax(id_modelo), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/listarPonderacionPorModelo/{id_modelo}")
-    public ResponseEntity<List<Date>> listarPonderacionPorModelo(@PathVariable("id_modelo") Long id_modelo) {
-        List<Date> ponderaciones = Service.listarPonderacionPorModelo(id_modelo);
+    public ResponseEntity<List<PonderacionProjection>> listarPonderacionPorModelo(@PathVariable("id_modelo") Long id_modelo) {
+        List<PonderacionProjection> ponderaciones = Service.listarPonderacionModelo(id_modelo);
         return new ResponseEntity<>(ponderaciones, HttpStatus.OK);
     }
 
-    @GetMapping("/listarPonderacionPorFecha/{fecha}")
-    public ResponseEntity<List<Ponderacion>> listarPonderacionPorFecha(@PathVariable("fecha") String fecha) {
-        List<Ponderacion> ponderaciones = Service.listarPonderacionPorFecha(fecha);
+    @GetMapping("/listarPonderacionPorFecha/{fecha}/{contador}")
+    public ResponseEntity<List<Ponderacion>> listarPonderacionPorFecha(@PathVariable("fecha") String fecha,@PathVariable("contador") Long contador) {
+        List<Ponderacion> ponderaciones = Service.listarPonderacionPorFecha(fecha,contador);
         return new ResponseEntity<>(ponderaciones, HttpStatus.OK);
     }
 
@@ -131,4 +139,9 @@ public class Ponderacion_Controller {
         return new ResponseEntity<>(ponderaciones, HttpStatus.OK);
     }
 
+    @DeleteMapping("/eliminarponderacion/{contador}/{fecha}")
+    public ResponseEntity<Void> eliminarPonderacion(@PathVariable Long contador,@PathVariable("fecha") String fecha) {
+        Service.eliminarPonderacion(contador,fecha);
+        return ResponseEntity.noContent().build();
+    }
 }

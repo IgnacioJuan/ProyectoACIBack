@@ -9,7 +9,10 @@ import org.springframework.data.repository.query.Param;
 import com.sistema.examenes.fenix.entity.Docentesfenix;
 
 public interface DocentesfenixRepository extends JpaRepository<Docentesfenix, String> {
-
+    @Query("SELECT d FROM Docentesfenix d WHERE UPPER(d.primer_nombre) = UPPER(:primer_nombre)")
+    List<Docentesfenix> findByPrimer_Nombre(@Param("primer_nombre") String primer_nombre);
+    @Query("SELECT d FROM Docentesfenix d WHERE UPPER(d.primer_nombre) = UPPER(:primer_nombre) AND UPPER(d.primer_apellido) = UPPER(:primer_apellido)")
+    List<Docentesfenix> findBynombresCompletos(@Param("primer_nombre") String primer_nombre, @Param("primer_apellido") String primer_apellido);
     @Query("SELECT d FROM Docentesfenix d WHERE UPPER(d.primer_apellido) = UPPER(:primer_apellido)")
     List<Docentesfenix> findByPrimer_Apellido(@Param("primer_apellido") String primer_apellido);
 

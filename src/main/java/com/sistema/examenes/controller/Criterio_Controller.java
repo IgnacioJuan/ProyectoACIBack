@@ -1,14 +1,21 @@
 package com.sistema.examenes.controller;
 
 import com.sistema.examenes.entity.Criterio;
+import com.sistema.examenes.entity.Indicador;
+import com.sistema.examenes.entity.Subcriterio;
 import com.sistema.examenes.projection.CriterioSubcriteriosProjection;
 import com.sistema.examenes.services.Criterio_Service;
+import com.sistema.examenes.services.Indicador_Service;
+import com.sistema.examenes.services.Subcriterio_Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = { "*" })
 @RestController
@@ -16,6 +23,31 @@ import java.util.List;
 public class Criterio_Controller {
     @Autowired
     Criterio_Service Service;
+    @Autowired
+    Subcriterio_Service subcriterioService;
+    @Autowired
+    Indicador_Service indicadorService;
+    @PostConstruct
+    public void iniciarServidor() {
+        obtenerDatos();
+    }
+    @GetMapping("/datos")
+    public ResponseEntity<String> obtenerDatos() {
+        List<Criterio> criterios = Service.listar();
+
+        for (Criterio criterio : criterios) {
+            List<Subcriterio> subcriterios = subcriterioService.listarPorCriterio(criterio.getId_criterio());
+            for (Subcriterio subcriterio : subcriterios) {
+                List<Indicador> indicadores = indicadorService.listarPorSubcriterio(subcriterio.getId_subcriterio());
+                Set<Indicador> indicadoresSet = new HashSet<>(indicadores);
+                subcriterio.setLista_indicadores(indicadoresSet);
+            }
+            Set<Subcriterio> indicadoresSet = new HashSet<>(subcriterios);
+            criterio.setLista_subcriterios((indicadoresSet));
+        }
+        System.out.println("criterios "+criterios.toString());
+        return new ResponseEntity<>(criterios.toString(), HttpStatus.OK);
+    }
 
     @PostMapping("/crear")
     public ResponseEntity<Criterio> crear(@RequestBody Criterio r) {
@@ -129,4 +161,5 @@ public class Criterio_Controller {
     public List<CriterioSubcriteriosProjection> obtenerDatosCriterios() {
         return Service.obtenerDatosCriterios();
     }
+
 }

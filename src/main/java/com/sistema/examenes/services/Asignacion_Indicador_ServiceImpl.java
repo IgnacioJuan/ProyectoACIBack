@@ -29,4 +29,34 @@ public class Asignacion_Indicador_ServiceImpl extends GenericServiceImpl<Asignac
     public List<Asignacion_Indicador> findByModelo(Modelo modelo) {
         return repository.findByModelo(modelo);
     }
+
+    @Override
+    public List<Asignacion_Indicador> listarAsignacion(Long id_modelo) {
+        return repository.listarAsignacion(id_modelo);
+    }
+
+    @Override
+    public void eliminarasignacion(Long id_modelo,Long id_asig) {
+        repository.eliminarasignacion(id_modelo, id_asig);
+    }
+
+    @Override
+    public Boolean existeIndicador(Long id_indi, Long id_modelo) {
+        return repository.existeIndicador(id_indi,id_modelo);
+    }
+
+    @Override
+    public Boolean existeCriterio(Long id_modelo,Long id_indi) {
+        return repository.existeCriterio(id_modelo,id_indi);
+    }
+
+    @Override
+    public String nombreCriterio(Long id_indi) {
+        return repository.nombreCriterio(id_indi);
+    }
+
+    @Override
+    public Integer contar(Long id_modelo, String nombre) {
+        return repository.contar(id_modelo,nombre);
+    }
 }

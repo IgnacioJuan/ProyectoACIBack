@@ -22,7 +22,7 @@ public class Notificacion_ServiceImpl extends GenericServiceImpl<Notificacion,Lo
         return notificacionRepository.listarUserNoti(user);
     }
 
-    @Transactional
+    @Override
     public void eliminar(Long id) {
         notificacionRepository.borrar(id);
     }

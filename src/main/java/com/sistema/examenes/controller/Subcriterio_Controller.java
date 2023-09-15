@@ -3,6 +3,7 @@ package com.sistema.examenes.controller;
 import com.sistema.examenes.entity.Subcriterio;
 import com.sistema.examenes.projection.CriterioSubcriteriosProjection;
 import com.sistema.examenes.projection.SubcriterioIndicadoresProjection;
+import com.sistema.examenes.projection.SubcriterioIndicadoresProjectionFull;
 import com.sistema.examenes.services.Subcriterio_Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -93,5 +94,9 @@ public class Subcriterio_Controller {
     @GetMapping("/datosSubcriterios/{id_criterio}")
     public List<SubcriterioIndicadoresProjection> obtenerDatosSubcriterios(@PathVariable("id_criterio") Long id_criterio) {
         return Service.obtenerDatosSubcriterios(id_criterio);
+    }
+    @GetMapping("/datosSubcriteriosFull")
+    public List<SubcriterioIndicadoresProjectionFull> obtenerDatosSubcriteriosFull() {
+        return Service.obtenerDatosSubcriteriosFull();
     }
 }

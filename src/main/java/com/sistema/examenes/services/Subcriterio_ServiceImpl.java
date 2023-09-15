@@ -2,6 +2,7 @@ package com.sistema.examenes.services;
 
 import com.sistema.examenes.entity.Subcriterio;
 import com.sistema.examenes.projection.SubcriterioIndicadoresProjection;
+import com.sistema.examenes.projection.SubcriterioIndicadoresProjectionFull;
 import com.sistema.examenes.repository.Subcriterio_repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
@@ -31,6 +32,10 @@ public class Subcriterio_ServiceImpl extends GenericServiceImpl<Subcriterio, Lon
     }
     public List<SubcriterioIndicadoresProjection> obtenerDatosSubcriterios(Long id_criterio){
         return repository.obtenerSubcirteriosConCantidadIndicador(id_criterio);
+    };
+
+    public List<SubcriterioIndicadoresProjectionFull> obtenerDatosSubcriteriosFull(){
+        return repository.obtenerSubcirteriosConCantidadIndicadorFull();
     };
 
 }

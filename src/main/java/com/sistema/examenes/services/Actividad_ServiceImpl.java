@@ -2,6 +2,8 @@ package com.sistema.examenes.services;
 
 import com.sistema.examenes.entity.Actividad;
 import com.sistema.examenes.entity.Actividad;
+import com.sistema.examenes.projection.ActivAprobadaProjection;
+import com.sistema.examenes.projection.ActividadesProjection;
 import com.sistema.examenes.repository.Actividad_repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
@@ -27,6 +29,16 @@ public class Actividad_ServiceImpl extends GenericServiceImpl<Actividad, Long> i
     @Override
     public List<Actividad> listar() {
         return repository.listarActividad();
+    }
+
+    @Override
+    public List<ActivAprobadaProjection> actividadAtrasada() {
+        return  repository.actividadRechazada();
+    }
+
+    @Override
+    public List<ActivAprobadaProjection> actividadApr() {
+        return repository.actividadAprobada();
     }
 
     @Override
@@ -56,6 +68,15 @@ public class Actividad_ServiceImpl extends GenericServiceImpl<Actividad, Long> i
     }
 
     @Override
+    public List<Actividad> actividadUsu(Long id) {
+        return repository.actividadUsu(id);
+    }
+
+    @Override
+    public List<ActividadesProjection> actividadCont() {
+        return repository.actividadCont();
+    }
+
     public List<Actividad> listaActByUsuario(Long id) {
         return repository.listarByUsuario(id);
     }

@@ -5,6 +5,7 @@ import com.sistema.examenes.entity.Archivo;
 import com.sistema.examenes.entity.Archivo_s;
 import com.sistema.examenes.entity.Evidencia;
 import com.sistema.examenes.mensajes.Archivosmensajes;
+import com.sistema.examenes.projection.ArchivoProjection;
 import com.sistema.examenes.services.Actividad_Service;
 import com.sistema.examenes.services.Archivo_Service;
 import com.sistema.examenes.services.Archivoservices;
@@ -80,7 +81,14 @@ public class Archivo_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @GetMapping("/listararchi")
+    public ResponseEntity<List<ArchivoProjection>> listaarchi() {
+        try {
+            return new ResponseEntity<>(archivoservis.listararchi(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/listar")
     public ResponseEntity<List<Archivo>> getFiles() {
         List<Archivo> archivos = servis.lIstar().map(path -> {

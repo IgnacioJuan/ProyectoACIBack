@@ -2,6 +2,8 @@ package com.sistema.examenes.controller;
 
 import com.sistema.examenes.entity.Actividad;
 import com.sistema.examenes.entity.Criterio;
+import com.sistema.examenes.projection.ActivAprobadaProjection;
+import com.sistema.examenes.projection.ActividadesProjection;
 import com.sistema.examenes.services.Actividad_Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,8 +58,24 @@ public class Actividad_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/actividadatrasa")
+    public ResponseEntity<List<ActivAprobadaProjection>> actividadAtra() {
 
-    
+        try {
+            return new ResponseEntity<>(Service.actividadAtrasada(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/actividadaprobada")
+    public ResponseEntity<List<ActivAprobadaProjection>> actividadApro() {
+
+        try {
+            return new ResponseEntity<>(Service.actividadApr(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/listarCumpli")
     public ResponseEntity<List<Actividad>> obtenerListaCump() {
         try {
@@ -77,7 +95,24 @@ public class Actividad_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/listaractiv")
+    public ResponseEntity<List<ActividadesProjection>> obtactiv() {
+        try {
+            return new ResponseEntity<>(Service.actividadCont(), HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage().toString());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
+    @GetMapping("/buscaractiv/{id}")
+    public ResponseEntity<List<Actividad>> getByACId(@PathVariable("id") Long id) {
+        try {
+            return new ResponseEntity<>(Service.actividadUsu(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 //    @GetMapping("/buscar/")
 //    public ResponseEntity<List<?>> buscar(@RequestParam("nombre") String nombre) {
 //        try {

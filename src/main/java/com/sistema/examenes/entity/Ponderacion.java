@@ -43,5 +43,7 @@ public class Ponderacion implements Serializable {
     private Modelo modelo;
     @ManyToOne(fetch = FetchType.EAGER)
     private Indicador indicador;
+    @Column(name = "contador")
+    private Long contador;
 
 }

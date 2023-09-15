@@ -1,7 +1,9 @@
 package com.sistema.examenes.controller;
 
 import com.sistema.examenes.entity.*;
+import com.sistema.examenes.projection.ResponsableProjection;
 import com.sistema.examenes.repository.UsuarioRepository;
+import com.sistema.examenes.services.Persona_Service;
 import com.sistema.examenes.services.RolService;
 import com.sistema.examenes.services.UsuarioRolService;
 import com.sistema.examenes.services.UsuarioService;
@@ -32,6 +34,9 @@ public class UsuarioController {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired
+    Persona_Service Service;
+
 
     @PostConstruct
     public void init() {
@@ -137,7 +142,14 @@ public class UsuarioController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @GetMapping("/responsables")
+    public ResponseEntity<List<ResponsableProjection>> Responsables() {
+        try {
+            return new ResponseEntity<>(uR.responsables(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/buscar/{username}")
     public Usuario obtenerUsuario(@PathVariable("username") String username) {
         return usuarioService.obtenerUsuario(username);
@@ -152,23 +164,90 @@ public class UsuarioController {
     public void eliminarUsuario(@PathVariable("usuarioId") Long usuarioId) {
         usuarioService.delete(usuarioId);
     }
-
-    @PutMapping("/actualizar/{id}")
-    public ResponseEntity<Usuario> actualizarCliente(@PathVariable Long id, @RequestBody Usuario p) {
-        Usuario usu = usuarioService.findById(id);
-        UsuarioRol urol=userrol.findByUsuario_UsuarioId(id);
-        if (usu == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            try {
-                usu.setPassword(this.bCryptPasswordEncoder.encode(p.getPassword()));
-                return new ResponseEntity<>(usuarioService.save(usu), HttpStatus.CREATED);
-            } catch (Exception e) {
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-
+    @GetMapping("/listausuariosprueba/{usuarioId}")
+    public ResponseEntity<Boolean> listausuariosprueba(@PathVariable("usuarioId") Long usuarioId) {
+        try {
+            return new ResponseEntity<>(usuarioService.listapersonasusuario(usuarioId), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace(); // Imprimir la excepción en los registros
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PutMapping("/actualizarPersonaIdEnUsuario/{usuarioId}")
+    public ResponseEntity<Void> actualizarPersonaIdEnUsuario(@PathVariable("usuarioId") Long usuarioId) {
+        try {
+            usuarioService.actualizarPersonaIdEnUsuario(usuarioId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace(); // Imprimir la excepción en los registros
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping("/crear")
+    public ResponseEntity<Persona> crear(@RequestBody Persona r) {
+        try {
+            return new ResponseEntity<>(Service.save(r), HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PutMapping("/actualizar/{id}")
+    public ResponseEntity<Usuario> actualizarCliente(@PathVariable Long id, @RequestBody Usuario p) {
+        try {
+            Usuario usu = usuarioService.findById(id);
+            Boolean existencia = usuarioService.listapersonasusuario(id);
+            UsuarioRol urol=userrol.findByUsuario_UsuarioId(id);
+            if(existencia){
+                Persona persona = new Persona();
+                persona.setCorreo(p.getPersona().getCorreo());
+                persona.setCelular(p.getPersona().getCelular());
+                persona.setDireccion(p.getPersona().getDireccion());
+                persona.setPrimer_nombre(p.getPersona().getPrimer_nombre());
+                persona.setPrimer_apellido(p.getPersona().getPrimer_apellido());
+                persona.setVisible(true);
+                crear(persona);
+            }else{
+                try {
+                usu.setPassword(this.bCryptPasswordEncoder.encode(p.getPassword()));
+                return new ResponseEntity<>(usuarioService.save(usu), HttpStatus.CREATED);
+                } catch (Exception e) {
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+            }
+            if (usu == null) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            // Actualizar la contraseña si se proporciona en la solicitud
+            if (p.getPassword() != null && !p.getPassword().isEmpty()) {
+                usu.setPassword(this.bCryptPasswordEncoder.encode(p.getPassword()));
+            }
+            Usuario usuarioActualizado = usuarioService.save(usu);
+            return new ResponseEntity<>(usuarioActualizado, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+//    @PutMapping("/actualizar/{id}")
+//    public ResponseEntity<Usuario> actualizarCliente(@PathVariable Long id, @RequestBody Usuario p) {
+//
+//        Usuario usu = usuarioService.findById(id);
+//        UsuarioRol urol=userrol.findByUsuario_UsuarioId(id);
+//
+//
+//        if (usu == null) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        } else {
+//            try {
+//                usu.setPassword(this.bCryptPasswordEncoder.encode(p.getPassword()));
+//                return new ResponseEntity<>(usuarioService.save(usu), HttpStatus.CREATED);
+//            } catch (Exception e) {
+//                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//            }
+//
+//        }
+//    }
 
     @PutMapping("/eliminarlogic/{id}")
     public ResponseEntity<?> eliminarlogic(@PathVariable Long id) {

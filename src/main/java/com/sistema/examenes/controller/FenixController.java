@@ -42,7 +42,15 @@ public class FenixController {
     public List<Docentesfenix> findByPrimer_Apellido(@PathVariable("primer_apellido") String primer_apellido) {
         return docentefenixRepository.findByPrimer_Apellido(primer_apellido);
     }
+    @GetMapping(path = { "/p-nombre/{primer_nombre}" })
+    public List<Docentesfenix> findByPrimer_nombre(@PathVariable("primer_nombre") String primer_nombre) {
+        return docentefenixRepository.findByPrimer_Nombre(primer_nombre);
+    }
 
+    @GetMapping("/p-nombres/{primer_nombre}/{primer_apellido}")
+    public List<Docentesfenix> findBynombresCompletos(@PathVariable("primer_nombre") String primer_nombre, @PathVariable("primer_apellido") String primer_apellido) {
+        return docentefenixRepository.findBynombresCompletos(primer_nombre, primer_apellido);
+    }
     // metodo para buscar docente por segundo apellido
     @GetMapping(path = { "/s-apellido/{segundo_apellido}" })
     public List<Docentesfenix> findBySegundoApellido(@PathVariable("segundo_apellido") String segundo_apellido) {

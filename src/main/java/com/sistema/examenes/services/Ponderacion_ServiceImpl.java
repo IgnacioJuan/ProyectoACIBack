@@ -2,6 +2,7 @@ package com.sistema.examenes.services;
 
 import com.sistema.examenes.entity.Actividad;
 import com.sistema.examenes.entity.Ponderacion;
+import com.sistema.examenes.projection.PonderacionProjection;
 import com.sistema.examenes.repository.Ponderacion_repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
@@ -31,13 +32,31 @@ public class Ponderacion_ServiceImpl extends GenericServiceImpl<Ponderacion, Lon
     }
 
     @Override
-    public List<Date> listarPonderacionPorModelo(Long id_modelo) {
+    public List<PonderacionProjection> idmax(Long id_modelo) {
+        return repository.idmax(id_modelo);
+    }
+
+    @Override
+    public void eliminarPonderacion(Long contador,String fecha) {
+        repository.eliminarPonderacion(contador, fecha);
+    }
+
+    @Override
+    public List<Ponderacion> listarPonderacionPorModelo(Long id_modelo) {
         return repository.listarPonderacionPorModelo(id_modelo);
     }
 
     @Override
-    public List<Ponderacion> listarPonderacionPorFecha(String fecha) {
-        return repository.listarPonderacionPorFecha(fecha);
+    public List<PonderacionProjection> listarPonderacionModelo(Long id_modelo) {
+        return repository.listarPonderacionModelo(id_modelo);
     }
 
+    @Override
+    public List<Ponderacion> listarPonderacionPorFecha(String fecha,Long contador) {
+        return repository.listarPonderacionPorFecha(fecha, contador);
+    }
+    @Override
+    public Ponderacion save(Ponderacion entity) {
+        return repository.save(entity);
+    }
 }
