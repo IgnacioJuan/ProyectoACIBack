@@ -3,6 +3,7 @@ package com.sistema.examenes.entity;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "usuariorol")
 public class UsuarioRol {
 
     @Id

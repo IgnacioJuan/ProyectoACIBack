@@ -3,6 +3,7 @@ package com.sistema.examenes.controller;
 import com.sistema.examenes.entity.Criterio;
 import com.sistema.examenes.entity.Indicador;
 import com.sistema.examenes.entity.Subcriterio;
+import com.sistema.examenes.projection.CriteProjection;
 import com.sistema.examenes.projection.CriterioSubcriteriosProjection;
 import com.sistema.examenes.projection.IdCriterioProjection;
 import com.sistema.examenes.projection.ValoresProjection;
@@ -93,6 +94,16 @@ public class Criterio_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/datosuser/{id}/{id_modelo}")
+    public ResponseEntity<List<CriteProjection>> criterioadmi(@PathVariable("id") Long id, @PathVariable("id_modelo") Long id_modelo) {
+        try {
+            return new ResponseEntity<>(Service.actividadesusuario(id,id_modelo), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/listarvalores/{id_modelo}")
     public ResponseEntity<List<ValoresProjection>> listarvalores(@PathVariable("id_modelo") Long id_modelo) {
         try {

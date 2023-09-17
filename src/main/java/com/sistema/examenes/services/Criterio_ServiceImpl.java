@@ -1,6 +1,7 @@
 package com.sistema.examenes.services;
 
 import com.sistema.examenes.entity.Criterio;
+import com.sistema.examenes.projection.CriteProjection;
 import com.sistema.examenes.projection.CriterioSubcriteriosProjection;
 import com.sistema.examenes.projection.IdCriterioProjection;
 import com.sistema.examenes.projection.ValoresProjection;
@@ -73,6 +74,11 @@ public class Criterio_ServiceImpl extends GenericServiceImpl<Criterio, Long> imp
     @Override
     public IdCriterioProjection idcriterio(String nombre) {
         return repository.idcriterio(nombre);
+    }
+
+    @Override
+    public List<CriteProjection> actividadesusuario(Long id, Long id_modelo) {
+        return repository.actividadesusuario(id, id_modelo);
     }
 
 }

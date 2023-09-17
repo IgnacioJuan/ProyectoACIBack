@@ -1,6 +1,7 @@
 package com.sistema.examenes.repository;
 
 import com.sistema.examenes.entity.Criterio;
+import com.sistema.examenes.projection.CriteProjection;
 import com.sistema.examenes.projection.CriterioSubcriteriosProjection;
 import com.sistema.examenes.projection.IdCriterioProjection;
 import com.sistema.examenes.projection.ValoresProjection;
@@ -80,4 +81,17 @@ public interface Criterio_repository extends JpaRepository<Criterio, Long> {
         List<ValoresProjection> listarvaladmin(Long id_modelo,Long id);
         @Query(value = "SELECT id_criterio FROM criterio WHERE nombre=:nombre", nativeQuery = true)
         public IdCriterioProjection idcriterio(String nombre);
+
+        @Query(value = "SELECT CASE WHEN criterio.nombre IS NOT NULL THEN criterio.nombre ELSE '' END AS criterio, " +
+                "CASE WHEN evidencia.descripcion IS NOT NULL THEN evidencia.descripcion ELSE '' END AS evidencia " +
+                "FROM usuarios u " +
+                "LEFT JOIN usuariorol ur ON u.id = ur.usuario_id " +
+                "LEFT JOIN asignacion_admin aa ON aa.usuario_id = u.id AND aa.visible = true AND aa.id_modelo =:id_modelo " +
+                "LEFT JOIN criterio criterio ON aa.criterio_id_criterio = criterio.id_criterio " +
+                "LEFT JOIN asignacion_evidencia ae ON ae.usuario_id = u.id AND ae.visible = true AND ae.id_modelo =:id_modelo " +
+                "LEFT JOIN evidencia evidencia ON ae.evidencia_id_evidencia = evidencia.id_evidencia " +
+                "WHERE u.id =:id " +
+                "ORDER BY criterio.id_criterio, evidencia.id_evidencia", nativeQuery = true)
+         List<CriteProjection> actividadesusuario(Long id, Long id_modelo);
+
 }

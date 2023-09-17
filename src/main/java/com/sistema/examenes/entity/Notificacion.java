@@ -18,11 +18,10 @@ public class Notificacion {
     private String rol;
     @Column(name = "mensaje", length = 10000)
     private String mensaje;
-
     @Column(name = "fecha", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
-
     private Boolean visto;
-
+    private String url;
+    private Long idactividad;
 }

@@ -1,10 +1,8 @@
 package com.sistema.examenes.controller;
 
-import com.sistema.examenes.entity.Usuario;
+
 import com.sistema.examenes.entity.UsuarioRol;
-import com.sistema.examenes.projection.CriteUsuarioProjection;
 import com.sistema.examenes.services.UsuarioRolService;
-import com.sistema.examenes.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,23 +49,4 @@ public class Usuario_Rol_Controller {
         }
     }
 
-    @GetMapping("/criteriosu/{id}/{id_modelo}")
-    public ResponseEntity<List<CriteUsuarioProjection>> criteriousuario(@PathVariable("id") Long id,@PathVariable("id_modelo") Long id_modelo) {
-        try {
-
-            return new ResponseEntity<>(usuarioService.actividadesusuario(id, id_modelo), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/evidenciau/{id}/{id_modelo}")
-    public ResponseEntity<List<CriteUsuarioProjection>> evidenusuario(@PathVariable("id") Long id,@PathVariable("id_modelo") Long id_modelo) {
-        try {
-
-            return new ResponseEntity<>(usuarioService.evidenusuario(id, id_modelo), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 }
