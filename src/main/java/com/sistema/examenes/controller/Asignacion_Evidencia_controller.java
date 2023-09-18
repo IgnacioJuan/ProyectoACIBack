@@ -135,4 +135,21 @@ public class Asignacion_Evidencia_controller {
 
         }
     }
+
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<Asignacion_Evidencia> editar(@PathVariable Long id,@RequestBody Asignacion_Evidencia p) {
+        Asignacion_Evidencia asignacion_evidencia = Service.findById(id);
+        if (asignacion_evidencia == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            try {
+                asignacion_evidencia.setFecha_fin(p.getFecha_fin());
+                asignacion_evidencia.setFecha_inicio(p.getFecha_inicio());
+                return new ResponseEntity<>(Service.save(asignacion_evidencia), HttpStatus.CREATED);
+            } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+        }
+    }
 }
