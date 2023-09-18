@@ -30,4 +30,5 @@ public interface Criterio_Service extends GenericService<Criterio, Long> {
     List<ValoresProjection> listarvaladmin(Long id_modelo,Long id);
     IdCriterioProjection idcriterio(String nombre);
     List<CriteProjection> actividadesusuario(Long id, Long id_modelo);
+    List<ValoresProjection> listarvalresp(Long id_modelo,Long id);
 }

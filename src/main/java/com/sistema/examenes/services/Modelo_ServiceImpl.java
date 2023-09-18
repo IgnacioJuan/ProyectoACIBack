@@ -75,4 +75,9 @@ public class Modelo_ServiceImpl extends GenericServiceImpl<Modelo, Long> impleme
         return repository.fechaeditar(inicio,fin);
     }
 
+    @Override
+    public List<criteriosdesprojection> criterioresp(Long id_modelo, Long id) {
+        return repository.criterioresp(id_modelo, id);
+    }
+
 }

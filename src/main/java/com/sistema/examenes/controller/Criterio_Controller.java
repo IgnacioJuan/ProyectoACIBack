@@ -128,7 +128,14 @@ public class Criterio_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @GetMapping("/listvalresp/{id_modelo}/{id}")
+    public ResponseEntity<List<ValoresProjection>> listarvalrespo(@PathVariable("id_modelo") Long id_modelo,@PathVariable("id") Long id) {
+        try {
+            return new ResponseEntity<>(Service.listarvalresp(id_modelo,id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/buscar/{id}")
     public ResponseEntity<Criterio> getById(@PathVariable("id") Long id) {
         try {

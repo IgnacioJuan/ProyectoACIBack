@@ -81,4 +81,9 @@ public class Criterio_ServiceImpl extends GenericServiceImpl<Criterio, Long> imp
         return repository.actividadesusuario(id, id_modelo);
     }
 
+    @Override
+    public List<ValoresProjection> listarvalresp(Long id_modelo, Long id) {
+        return repository.listarvalresp(id_modelo, id);
+    }
+
 }

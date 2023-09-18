@@ -41,6 +41,22 @@ public interface Indicador_repository extends JpaRepository<Indicador, Long> {
             "JOIN asignacion_admin aa ON aa.criterio_id_criterio=cri.id_criterio AND aa.visible=true " +
             "AND aa.id_modelo=:id_modelo AND aa.usuario_id=:id GROUP BY cri.nombre,cri.id_criterio  ORDER BY cri.id_criterio", nativeQuery = true)
     public List<IndicadoresProjection> indicadoresadmin(Long id_modelo,Long id);
+
+    @Query(value = "SELECT cri.nombre AS nombre, " +
+            "CAST(SUM(i.porc_utilida_obtenida) AS NUMERIC(10, 4)) AS total, " +
+            "CAST(SUM(i.peso) AS NUMERIC(10, 4)) AS faltante " +
+            "FROM indicador i JOIN subcriterio sub ON sub.id_subcriterio=i.subcriterio_id_subcriterio " +
+            "JOIN criterio cri ON cri.id_criterio =sub.id_criterio " +
+            "JOIN asignacion_admin aa ON aa.criterio_id_criterio=cri.id_criterio AND aa.visible=true " +
+            "AND aa.id_modelo=:id_modelo AND aa.criterio_id_criterio IN " +
+            "(SELECT DISTINCT cri.id_criterio FROM asignacion_evidencia ae " +
+            "JOIN evidencia e ON ae.evidencia_id_evidencia = e.id_evidencia AND ae.visible=true " +
+            "JOIN indicador i ON i.id_indicador = e.indicador_id_indicador " +
+            "JOIN subcriterio s ON s.id_subcriterio = i.subcriterio_id_subcriterio " +
+            "JOIN criterio cri ON cri.id_criterio = s.id_criterio " +
+            "WHERE ae.usuario_id =:id AND ae.id_modelo =:id_modelo ) " +
+            "GROUP BY cri.nombre,cri.id_criterio  ORDER BY cri.id_criterio", nativeQuery = true)
+    public List<IndicadoresProjection> indicadoresresp(Long id_modelo,Long id);
     @Query(value = "SELECT i.* FROM public.modelo m join public.asignacion_indicador a ON " +
             "a.modelo_id_modelo = m.id_modelo JOIN public.indicador i on a.indicador_id_indicador = i.id_indicador AND a.visible=true " +
             "JOIN public.subcriterio s ON s.id_subcriterio = i.subcriterio_id_subcriterio JOIN public.criterio c " +
