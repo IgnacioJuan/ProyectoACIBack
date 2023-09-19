@@ -1,10 +1,7 @@
 package com.sistema.examenes.services;
 
 import com.sistema.examenes.entity.Criterio;
-import com.sistema.examenes.projection.CriteProjection;
-import com.sistema.examenes.projection.CriterioSubcriteriosProjection;
-import com.sistema.examenes.projection.IdCriterioProjection;
-import com.sistema.examenes.projection.ValoresProjection;
+import com.sistema.examenes.projection.*;
 import com.sistema.examenes.repository.Criterio_repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
@@ -84,6 +81,11 @@ public class Criterio_ServiceImpl extends GenericServiceImpl<Criterio, Long> imp
     @Override
     public List<ValoresProjection> listarvalresp(Long id_modelo, Long id) {
         return repository.listarvalresp(id_modelo, id);
+    }
+
+    @Override
+    public CorreoProjection getCorreo(Long id_modelo, Long id_evidencia) {
+        return repository.getCorreo(id_modelo, id_evidencia);
     }
 
 }
