@@ -38,4 +38,9 @@ public class Detalle_Evaluacion_ServiceImpl extends GenericServiceImpl<Detalle_E
         return repository.iddetalle(id_evidencia,id,id_modelo);
     }
 
+    @Override
+    public List<Detalle_Evaluacion> listarbservaciones(Long id_evidencia, Long id_modelo) {
+        return repository.listarbservaciones(id_evidencia, id_modelo);
+    }
+
 }
