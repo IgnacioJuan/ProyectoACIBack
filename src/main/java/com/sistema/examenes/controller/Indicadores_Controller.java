@@ -54,6 +54,15 @@ public class Indicadores_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/listarindicadresponsable/{id_modelo}/{id}")
+    public ResponseEntity<List<IndicadoresProjection>> listaIndirespo(@PathVariable("id_modelo") Long id_modelo,@PathVariable("id") Long id) {
+        try {
+            return new ResponseEntity<>(Service.indicadoresresp(id_modelo,id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/buscarindicador/{id}")
     public ResponseEntity<List<Indicador>> obtenerCriterios(@PathVariable("id") Long id) {
         try {

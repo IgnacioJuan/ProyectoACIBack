@@ -1,10 +1,7 @@
 package com.sistema.examenes.repository;
 
 import com.sistema.examenes.entity.Criterio;
-import com.sistema.examenes.projection.CriteProjection;
-import com.sistema.examenes.projection.CriterioSubcriteriosProjection;
-import com.sistema.examenes.projection.IdCriterioProjection;
-import com.sistema.examenes.projection.ValoresProjection;
+import com.sistema.examenes.projection.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -14,7 +11,11 @@ public interface Criterio_repository extends JpaRepository<Criterio, Long> {
 
         @Query(value = "SELECT * from criterio where visible =true", nativeQuery = true)
         List<Criterio> listarCriterio();
-
+        @Query(value = "SELECT per.correo " +
+                "FROM persona per JOIN usuarios u ON u.persona_id_persona=per.id_persona " +
+                "JOIN asignacion_evidencia ae ON ae.usuario_id=u.id " +
+                "WHERE ae.id_modelo=:id_modelo AND ae.evidencia_id_evidencia=:id_evidencia AND ae.visible=true ", nativeQuery = true)
+        CorreoProjection getCorreo(Long id_modelo,Long id_evidencia);
         @Query(value = "SELECT c.id_criterio, c.nombre, c.descripcion, c.visible FROM indicador i JOIN subcriterio s "
                         + "ON s.id_subcriterio = i.subcriterio_id_subcriterio JOIN criterio c "
                         + "ON c.id_criterio = s.id_criterio where c.visible =true GROUP BY c.id_criterio, c.nombre ORDER BY c.id_criterio;", nativeQuery = true)
@@ -79,6 +80,20 @@ public interface Criterio_repository extends JpaRepository<Criterio, Long> {
                 "JOIN asignacion_admin aa ON aa.criterio_id_criterio=cri.id_criterio AND aa.visible=true " +
                 "AND aa.id_modelo=?1 AND aa.usuario_id=?2 GROUP BY cri.nombre,cri.id_criterio  ORDER BY cri.id_criterio", nativeQuery = true)
         List<ValoresProjection> listarvaladmin(Long id_modelo,Long id);
+        @Query(value = "SELECT cri.nombre AS Nomcriterio,CAST(SUM(i.peso) AS NUMERIC(10, 2)) as Ponderacio, " +
+                "CAST(SUM(i.porc_utilida_obtenida) AS NUMERIC(10, 2)) AS VlObtenido, " +
+                "CAST(SUM(i.peso) - SUM(i.porc_utilida_obtenida) AS NUMERIC(10, 2)) AS Vlobtener " +
+                "FROM indicador i JOIN subcriterio sub ON sub.id_subcriterio=i.subcriterio_id_subcriterio " +
+                "JOIN criterio cri ON cri.id_criterio =sub.id_criterio " +
+                "JOIN asignacion_admin aa ON aa.criterio_id_criterio=cri.id_criterio AND aa.visible=true " +
+                "AND aa.id_modelo=:id_modelo AND aa.criterio_id_criterio IN " +
+                "(SELECT DISTINCT cri.id_criterio FROM asignacion_evidencia ae " +
+                "JOIN evidencia e ON ae.evidencia_id_evidencia = e.id_evidencia AND ae.visible=true " +
+                "JOIN indicador i ON i.id_indicador = e.indicador_id_indicador " +
+                "JOIN subcriterio s ON s.id_subcriterio = i.subcriterio_id_subcriterio " +
+                "JOIN criterio cri ON cri.id_criterio = s.id_criterio " +
+                "WHERE ae.usuario_id =:id AND ae.id_modelo =:id_modelo ) GROUP BY cri.nombre,cri.id_criterio  ORDER BY cri.id_criterio", nativeQuery = true)
+        List<ValoresProjection> listarvalresp(Long id_modelo,Long id);
         @Query(value = "SELECT id_criterio FROM criterio WHERE nombre=:nombre", nativeQuery = true)
         public IdCriterioProjection idcriterio(String nombre);
 

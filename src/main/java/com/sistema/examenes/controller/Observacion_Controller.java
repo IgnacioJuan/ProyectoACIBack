@@ -36,6 +36,16 @@ public class Observacion_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/obseractividad/{id_actividad}")
+    public ResponseEntity<List<Observacion>> observacionactividad(@PathVariable("id_actividad") Long id_actividad) {
+        try {
+            return new ResponseEntity<>(Service.observacionactividad(id_actividad), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/listarv")
     public ResponseEntity<List<Observacion>> obtenerListav() {
         try {

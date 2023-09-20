@@ -36,6 +36,7 @@ public class Detalle_Evaluacion_Controller {
                     detalleExistente.setFecha(r.getFecha());
                     detalleExistente.setObservacion(r.getObservacion());
                     detalleExistente.setEstado(r.isEstado());
+                    detalleExistente.setUsuario(r.getUsuario());
                     return new ResponseEntity<>(Service.save(detalleExistente), HttpStatus.OK);}
                 } else {
                     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -54,6 +55,15 @@ public class Detalle_Evaluacion_Controller {
     public ResponseEntity<List<Detalle_Evaluacion>> obtenerLista() {
         try {
             return new ResponseEntity<>(Service.findByAll(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/observaciones/{id_evidencia}/{id_modelo}")
+    public ResponseEntity<List<Detalle_Evaluacion>> obtenerobserva(@PathVariable("id_evidencia") Long id_evidencia,@PathVariable("id_modelo")Long id_modelo) {
+        try {
+            return new ResponseEntity<>(Service.listarbservaciones(id_evidencia, id_modelo), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

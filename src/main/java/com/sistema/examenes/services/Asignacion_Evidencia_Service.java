@@ -13,4 +13,5 @@ public interface Asignacion_Evidencia_Service extends GenericService<Asignacion_
     List<AsignacionEvidenciaProyeccion> listarAsignacionEvidenciaProyeccion();
     Boolean verificarAsignacionUsuario(Long id_usuario, Long id_evidencia,Long id_modelo);
     List<AsignaProjection> listarAsigEvidencia();
+    Asignacion_Evidencia fechaactividades(Long id_evidencia,Long id_modelo);
 }

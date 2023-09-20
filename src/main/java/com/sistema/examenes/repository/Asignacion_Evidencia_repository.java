@@ -18,8 +18,12 @@ public interface Asignacion_Evidencia_repository extends JpaRepository<Asignacio
             "AND mo.id_modelo = (SELECT MAX(id_modelo) FROM modelo) \n" +
             "WHERE ae.visible=true ORDER BY ae.usuario_id,ae.evidencia_id_evidencia;",nativeQuery = true)
     List<Asignacion_Evidencia> listarAsignacionEvidencia();
-    @Query(value = "SELECT ae.id_asignacion_evidencia AS idevid, e.id_evidencia AS ideviden, cri.nombre AS crite,s.nombre AS subcrite,i.nombre AS indi,pe.primer_nombre||' '||pe.primer_apellido AS respon,\n" +
-            "e.descripcion AS descev FROM asignacion_evidencia ae JOIN evidencia e ON e.id_evidencia=ae.evidencia_id_evidencia AND ae.visible =true\n" +
+    @Query(value = "SELECT * FROM asignacion_evidencia " +
+            "WHERE evidencia_id_evidencia=:id_evidencia AND visible=true AND id_modelo=:id_modelo ",nativeQuery = true)
+    Asignacion_Evidencia fechaactividades(Long id_evidencia,Long id_modelo);
+    @Query(value = "SELECT ae.id_asignacion_evidencia AS idevid, e.id_evidencia AS ideviden, cri.nombre AS crite,s.nombre AS subcrite,i.nombre AS indi, " +
+            "pe.primer_nombre||' '||pe.primer_apellido AS respon, e.descripcion AS descev,ae.fecha_inicio AS ini, ae.fecha_fin AS fini " +
+            "FROM asignacion_evidencia ae JOIN evidencia e ON e.id_evidencia=ae.evidencia_id_evidencia AND ae.visible =true\n" +
             "JOIN usuarios u ON u.id=ae.usuario_id \n" +
             "JOIN persona pe ON pe.id_persona=u.persona_id_persona \n" +
             "JOIN indicador i ON e.indicador_id_indicador = i.id_indicador \n" +

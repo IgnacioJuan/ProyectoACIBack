@@ -42,15 +42,13 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
         // " WHERE ur.rol_rolid = 3 AND u.visible=true", nativeQuery = true)
         // public List<Usuario> listaResponsablesAdmin();
 
-        @Query(value = "SELECT *\n" +
-                        "FROM usuarios u\n" +
+        @Query(value = "SELECT * FROM usuarios u\n" +
                         "JOIN asignacion_evidencia ae ON u.id = ae.usuario_id\n" +
                         "JOIN persona p  ON u.persona_id_persona = p.id_persona\n" +
                         "WHERE u.visible = true AND ae.visible = true;", nativeQuery = true)
         public List<Usuario> listaResponsablesDatos();
 
-        @Query(value = "SELECT u.* " +
-                        "FROM usuarios u " +
+        @Query(value = "SELECT u.* FROM usuarios u " +
                         "JOIN usuariorol ur ON u.id = ur.usuario_id " +
                         "LEFT JOIN asignacion_evidencia ae ON u.id = ae.usuario_id " +
                         "WHERE ur.rol_rolid = 3 AND ae.id_asignacion_evidencia IS NULL AND u.visible=true", nativeQuery = true)
@@ -64,6 +62,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
                 "  JOIN asignacion_indicador po_inner ON po_inner.indicador_id_indicador = i_inner.id_indicador\n" +
                 "  JOIN (SELECT MAX(id_modelo) AS max_id_modelo FROM modelo) max_mo ON po_inner.modelo_id_modelo = max_mo.max_id_modelo\n" +
                 "  WHERE ae_inner.visible = true GROUP BY usuario_id) ae ON u.id = ae.usuario_id\n" +
+                "WHERE ur.rol_rolid !=4 GROUP BY u.id, per.primer_nombre, per.primer_apellido, u.username, ae.count_evidencias;", nativeQuery = true)
+        public List<ResponsableProjection> responsables();
+        @Query(value = "SELECT u.* FROM public.usuarios u\n" +
                 "WHERE ur.rol_rolid = 3 GROUP BY u.id, per.primer_nombre, per.primer_apellido, u.username, ae.count_evidencias;", nativeQuery = true)
         public List<ResponsableProjection> responsables();*/
         @Query(value = "SELECT\n" +
@@ -128,16 +129,14 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
         @Query(value = "SELECT u.*\n" +
                         "FROM public.usuarios u\n" +
                         "JOIN public.usuariorol ur ON ur.usuario_id = u.id\n" +
-                        "WHERE ur.rol_rolid = 1\n" +
-                        "AND u.visible=true;", nativeQuery = true)
+                        "WHERE ur.rol_rolid = 1 AND u.visible=true;", nativeQuery = true)
         public List<Usuario> listaAdminDatos();
 
 
-        @Query(value = "SELECT u.*,per.*\n" +
-                "  FROM usuarios u \n" +
-                "  JOIN usuariorol ur ON u.id = ur.usuario_id\n" +
-                "  join persona per on per.id_persona=u.persona_id_persona\n" +
-                " wheRE ur.rol_rolid = 3 AND u.visible=true", nativeQuery = true)
+        @Query(value = "SELECT u.*,per.* FROM usuarios u " +
+                "JOIN usuariorol ur ON u.id = ur.usuario_id " +
+                "JOIN persona per on per.id_persona=u.persona_id_persona " +
+                "WHERE ur.rol_rolid = 3 AND u.visible=true", nativeQuery = true)
         public List<Usuario> listaSOLORESPONSABLES();
 
 

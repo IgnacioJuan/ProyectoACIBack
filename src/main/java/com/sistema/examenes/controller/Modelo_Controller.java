@@ -1,10 +1,12 @@
 package com.sistema.examenes.controller;
 
+import com.sistema.examenes.entity.Evidencia;
 import com.sistema.examenes.entity.Modelo;
 import com.sistema.examenes.projection.ModelIndiProjection;
 import com.sistema.examenes.projection.ModeloVistaProjection;
 import com.sistema.examenes.projection.SubcriterioIndicadoresProjectionFull;
 import com.sistema.examenes.projection.criteriosdesprojection;
+import com.sistema.examenes.services.Evidencia_Service;
 import com.sistema.examenes.services.Modelo_Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,8 @@ import java.util.List;
 public class  Modelo_Controller {
     @Autowired
     Modelo_Service Service;
+    @Autowired
+    Evidencia_Service serviev;
     /*@PostConstruct
     public void init() throws ParseException {
         Modelo r=new Modelo();
@@ -45,6 +49,7 @@ public class  Modelo_Controller {
     public ResponseEntity<Modelo> crear(@RequestBody Modelo r) {
 
         try {
+
             //Convierto a fecha sql para poder consultar
             java.sql.Date fechaSqli = new java.sql.Date(r.getFecha_inicio().getTime());
             java.sql.Date fechaSqlf = new java.sql.Date(r.getFecha_fin().getTime());
@@ -52,13 +57,33 @@ public class  Modelo_Controller {
             if (existe) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
             }else{
+                List<Evidencia> listae=serviev.listar();
+                if(listae!=null){
+                    for (Evidencia evid:listae) {
+                        editar(evid.getId_evidencia(), evid);
+                    }
+                }
                     r.setVisible(true);
             return new ResponseEntity<>(Service.save(r), HttpStatus.CREATED);}
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<Evidencia> editar(@PathVariable Long id, @RequestBody Evidencia p) {
+        Evidencia a = serviev.findById(id);
+        if (a == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            try {
+                a.setEstado("pendiente");
+                return new ResponseEntity<>(serviev.save(a), HttpStatus.CREATED);
+            } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
 
+        }
+    }
     @GetMapping("/listar")
     public ResponseEntity<List<Modelo>> obtenerLista() {
         try {
@@ -188,6 +213,15 @@ public class  Modelo_Controller {
     public ResponseEntity<List<criteriosdesprojection>> listcritemod(@PathVariable("id_criterio") Long id_criterio,@PathVariable("id_modelo") Long id_modelo) {
         try {
             return new ResponseEntity<>(Service.listcritmodel(id_criterio,id_modelo), HttpStatus.OK);
+        } catch (Exception e) {
+
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/criterespon/{id_modelo}/{id}")
+    public ResponseEntity<List<criteriosdesprojection>> criterioresponsable(@PathVariable("id_modelo") Long id_modelo,@PathVariable("id") Long id) {
+        try {
+            return new ResponseEntity<>(Service.criterioresp(id_modelo,id), HttpStatus.OK);
         } catch (Exception e) {
 
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

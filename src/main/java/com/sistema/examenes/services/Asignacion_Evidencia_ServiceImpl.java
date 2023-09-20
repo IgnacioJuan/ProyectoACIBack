@@ -40,6 +40,11 @@ public class Asignacion_Evidencia_ServiceImpl extends GenericServiceImpl<Asignac
     }
 
     @Override
+    public Asignacion_Evidencia fechaactividades(Long id_evidencia, Long id_modelo) {
+        return repository.fechaactividades(id_evidencia, id_modelo);
+    }
+
+    @Override
     public List<Asignacion_Evidencia> listar() {
         return repository.listarAsignacionEvidencia();
     }

@@ -23,4 +23,5 @@ public interface Modelo_Service extends GenericService<Modelo, Long> {
     List<criteriosdesprojection> criterioadmin(Long id_modelo,Long id);
     Boolean existefecha(String inicio,String fin);
     Boolean fechaeditar(String inicio,String fin);
+    List<criteriosdesprojection> criterioresp(Long id_modelo,Long id);
 }

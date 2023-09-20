@@ -3,10 +3,7 @@ package com.sistema.examenes.controller;
 import com.sistema.examenes.entity.Criterio;
 import com.sistema.examenes.entity.Indicador;
 import com.sistema.examenes.entity.Subcriterio;
-import com.sistema.examenes.projection.CriteProjection;
-import com.sistema.examenes.projection.CriterioSubcriteriosProjection;
-import com.sistema.examenes.projection.IdCriterioProjection;
-import com.sistema.examenes.projection.ValoresProjection;
+import com.sistema.examenes.projection.*;
 import com.sistema.examenes.services.Criterio_Service;
 import com.sistema.examenes.services.Indicador_Service;
 import com.sistema.examenes.services.Subcriterio_Service;
@@ -128,7 +125,14 @@ public class Criterio_Controller {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @GetMapping("/listvalresp/{id_modelo}/{id}")
+    public ResponseEntity<List<ValoresProjection>> listarvalrespo(@PathVariable("id_modelo") Long id_modelo,@PathVariable("id") Long id) {
+        try {
+            return new ResponseEntity<>(Service.listarvalresp(id_modelo,id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/buscar/{id}")
     public ResponseEntity<Criterio> getById(@PathVariable("id") Long id) {
         try {
@@ -138,6 +142,14 @@ public class Criterio_Controller {
         }
     }
 
+    @GetMapping("/correo/{id_modelo}/{id_evidencia}")
+    public ResponseEntity<CorreoProjection> getcorreo(@PathVariable("id_modelo") Long id_modelo, @PathVariable("id_evidencia")Long id_evidencia) {
+        try {
+            return new ResponseEntity<>(Service.getCorreo(id_modelo, id_evidencia), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/idcriterio/{nombre}")
     public ResponseEntity<IdCriterioProjection> getidCrite(@PathVariable("nombre") String nombre) {
         try {
