@@ -12,8 +12,10 @@ public interface Observacion_repository extends JpaRepository<Observacion, Long>
 
     @Query(value = "SELECT * from observacion where visible =true",nativeQuery = true)
     List<Observacion> listarObservacion();
-    @Query(value = "SELECT * FROM observacion WHERE observacion!='Ninguna'\n" +
-            "AND actividad_id_actividad=:id_actividad AND visible=true",nativeQuery = true)
+    @Query(value = "SELECT * FROM observacion WHERE actividad_id_actividad =:id_actividad AND visible = true " +
+            "AND (observacion != 'Ninguna' OR id_observacion = (SELECT MAX(id_observacion) " +
+            "FROM observacion WHERE observacion = 'Ninguna' AND actividad_id_actividad =:id_actividad " +
+            "AND visible = true))",nativeQuery = true)
     List<Observacion> observacionactividad(Long id_actividad);
     @Query(value = "SELECT * from observacion o JOIN usuarios u ON u.id=o.usuario_id " +
             "JOIN actividad ac ON ac.id_actividad=o.actividad_id_actividad WHERE o.visible =true and u.username=:user " +
