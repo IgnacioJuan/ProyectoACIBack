@@ -72,12 +72,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
                 "    per.primer_nombre || ' ' || per.primer_apellido AS nombres,\n" +
                 "    u.username AS usua,\n" +
                 "    r.rolnombre AS rol, \n" +
+                "    a.fecha_inicio, \n" +
+                "    a.fecha_fin,\n" +
                 "    CASE\n" +
                 "        WHEN ae.count_evidencias IS NULL THEN 'Sin evidencias asignadas'\n" +
                 "        ELSE 'Tiene ' || ae.count_evidencias || ' evidencia/s asignada/s'\n" +
-                "    END AS evidencias,\n" +
-                "    a.fecha_inicio AS fecha_inicio_actividad, \n" +
-                "    a.fecha_fin AS fecha_fin_actividad\n" +
+                "    END AS evidencias\n" +
                 "FROM\n" +
                 "    usuarios u\n" +
                 "JOIN\n" +
