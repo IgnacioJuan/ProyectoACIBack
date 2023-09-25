@@ -192,4 +192,29 @@ public interface Indicador_repository extends JpaRepository<Indicador, Long> {
             "FROM asignacion_indicador WHERE modelo_id_modelo =:id_modelo AND visible = true) " +
             "AS total ON 1=1;", nativeQuery = true)
     List<IndiColProjection> indicadorval(Long id_modelo);
+
+    @Query(value = "WITH color_values AS (SELECT 'verde' AS color UNION ALL SELECT 'amarillo' " +
+            "UNION ALL SELECT 'naranja' UNION ALL SELECT 'rojo') " +
+            "SELECT COALESCE(counts.indica, 0) AS indica, cv.color AS color, " +
+            "ROUND(COALESCE(counts.indica, 0) * 100.0 / NULLIF(total.total_count, 0), 2) AS porcentaje " +
+            "FROM color_values cv LEFT JOIN (SELECT CASE " +
+            "WHEN i.porc_obtenido > 75 THEN 'verde' " +
+            "WHEN i.porc_obtenido > 50 AND i.porc_obtenido <= 75 THEN 'amarillo' " +
+            "WHEN i.porc_obtenido > 25 AND i.porc_obtenido <= 50 THEN 'naranja' " +
+            "ELSE 'rojo' END AS color, " +
+            "COUNT(ai.indicador_id_indicador) AS indica FROM asignacion_indicador ai " +
+            "JOIN indicador i ON i.id_indicador = ai.indicador_id_indicador AND ai.visible = true " +
+            "JOIN subcriterio s ON s.id_subcriterio=i.subcriterio_id_subcriterio " +
+            "JOIN criterio cri ON cri.id_criterio=s.id_criterio " +
+            "JOIN asignacion_admin aa ON aa.criterio_id_criterio=cri.id_criterio " +
+            "JOIN modelo mo ON ai.modelo_id_modelo = mo.id_modelo " +
+            "WHERE mo.id_modelo =:id_modelo AND aa.usuario_id=:id AND i.visible = true GROUP BY color) counts " +
+            "ON cv.color = counts.color LEFT JOIN (SELECT COUNT(ai.indicador_id_indicador) AS total_count " +
+            "FROM asignacion_indicador ai JOIN indicador i ON i.id_indicador=ai.indicador_id_indicador " +
+            "JOIN subcriterio s ON s.id_subcriterio=i.subcriterio_id_subcriterio " +
+            "JOIN criterio cri ON cri.id_criterio=s.id_criterio " +
+            "JOIN asignacion_admin aa ON aa.criterio_id_criterio=cri.id_criterio AND aa.visible=true " +
+            "WHERE ai.modelo_id_modelo =:id_modelo AND aa.usuario_id=:id AND ai.visible = true) " +
+            "AS total ON 1=1;", nativeQuery = true)
+    List<IndiColProjection> indicadorvaladmin(Long id_modelo,Long id);
 }

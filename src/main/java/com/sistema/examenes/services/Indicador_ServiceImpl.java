@@ -99,4 +99,9 @@ public class Indicador_ServiceImpl extends GenericServiceImpl<Indicador, Long> i
     public List<IndicadoresProjection> indicadoresresp(Long id_modelo, Long id) {
         return repository.indicadoresresp(id_modelo, id);
     }
+
+    @Override
+    public List<IndiColProjection> indicadorvaladmin(Long id_modelo, Long id) {
+        return repository.indicadorvaladmin(id_modelo, id);
+    }
 }

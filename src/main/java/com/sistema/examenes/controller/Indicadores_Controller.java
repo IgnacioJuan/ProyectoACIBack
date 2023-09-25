@@ -244,6 +244,14 @@ public class Indicadores_Controller {
         }
     }
 
+    @GetMapping("/indicvaladmin/{id_modelo}/{id}")
+    public ResponseEntity<List<IndiColProjection>> indicadorvaladmin(@PathVariable("id_modelo") Long id_modelo,@PathVariable("id") Long id) {
+        try {
+            return new ResponseEntity<>(Service.indicadorvaladmin(id_modelo,id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     /*@GetMapping("/listar")
     public ResponseEntity<List<EvidenciaProjection>> obtenerLista() {
         try {
