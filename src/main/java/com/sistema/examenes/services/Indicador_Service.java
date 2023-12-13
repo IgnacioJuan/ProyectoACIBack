@@ -26,7 +26,7 @@ public interface Indicador_Service extends GenericService<Indicador, Long> {
     List<Indicador> indicadoresPorModelo(Long id_modelo);
     List<IndiColProjection> indicadorval(Long id_modelo);
 
-    List<Indicador> indicadorPorSubcriterio(Long id_subcriterio,Long id_modelo);
+    List<IndicadorResp> indicadorPorSubcriterio(Long id_subcriterio,Long id_modelo);
     List<IndicadoresProjection> indicadoresresp(Long id_modelo,Long id);
     List<IndiColProjection> indicadorvaladmin(Long id_modelo,Long id);
 }
