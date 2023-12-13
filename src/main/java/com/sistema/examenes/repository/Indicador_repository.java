@@ -154,12 +154,33 @@ public interface Indicador_repository extends JpaRepository<Indicador, Long> {
             "AND i.visible = true")
     List<Indicador> indicadoresPorModelo(Long id_modelo);
 
+    @Query(value = "SELECT DISTINCT i.*, COALESCE(per.primer_nombre || ' ' || per.primer_apellido, 'Las evidencias no estan asignadas') AS respon " +
+            "FROM indicador i JOIN subcriterio s ON i.subcriterio_id_subcriterio = s.id_subcriterio " +
+            "JOIN criterio cri ON cri.id_criterio = s.id_criterio JOIN asignacion_indicador ai " +
+            "ON ai.indicador_id_indicador = i.id_indicador AND ai.visible = true " +
+            "LEFT JOIN evidencia e ON e.indicador_id_indicador = i.id_indicador AND e.visible = true " +
+            "LEFT JOIN asignacion_evidencia aa ON aa.evidencia_id_evidencia = e.id_evidencia AND " +
+            "aa.id_modelo = ai.modelo_id_modelo AND aa.visible = true " +
+            "LEFT JOIN usuarios u ON u.id = aa.usuario_id AND u.visible = true " +
+            "LEFT JOIN persona per ON per.id_persona = u.persona_id_persona AND " +
+            "per.visible = true WHERE s.id_subcriterio =:id_subcriterio AND ai.modelo_id_modelo =:id_modelo " +
+            "AND (per.id_persona IS NOT NULL OR NOT EXISTS " +
+            "(SELECT 1 FROM asignacion_indicador ai2 LEFT JOIN evidencia e2 ON " +
+            "e2.indicador_id_indicador = ai2.indicador_id_indicador AND e2.visible = true " +
+            "LEFT JOIN asignacion_evidencia aa2 ON aa2.evidencia_id_evidencia = e2.id_evidencia AND aa2.id_modelo = ai2.modelo_id_modelo AND aa2.visible = true " +
+            "LEFT JOIN usuarios u2 ON u2.id = aa2.usuario_id AND u2.visible = true " +
+            "LEFT JOIN persona per2 ON per2.id_persona = u2.persona_id_persona AND per2.visible = true " +
+            "WHERE ai2.modelo_id_modelo = ai.modelo_id_modelo AND ai2.indicador_id_indicador = ai.indicador_id_indicador " +
+            "AND per2.id_persona IS NOT NULL)) ORDER BY i.id_indicador;", nativeQuery = true)
+    List<IndicadorResp> indicadorPorSubcriterio(Long id_subcriterio,Long id_modelo);
     @Query(value = "SELECT i.* FROM indicador i " +
             "JOIN subcriterio s ON i.subcriterio_id_subcriterio=s.id_subcriterio " +
             "JOIN criterio cri ON cri.id_criterio=s.id_criterio " +
             "JOIN asignacion_indicador ai ON ai.indicador_id_indicador=i.id_indicador AND ai.visible=true " +
             "WHERE s.id_subcriterio=:id_subcriterio AND ai.modelo_id_modelo=:id_modelo ORDER BY i.id_indicador;", nativeQuery = true)
-    List<Indicador> indicadorPorSubcriterio(Long id_subcriterio,Long id_modelo);
+    List<Indicador> indicadorPorSubcriterio2(Long id_subcriterio,Long id_modelo);
+
+
     /*@Query(value = "SELECT COUNT(ai.indicador_id_indicador) AS indica, " +
             "CASE WHEN i.porc_obtenido > 75 THEN 'verde' " +
             "WHEN i.porc_obtenido > 50 AND i.porc_obtenido <= 75 THEN 'amarillo' " +

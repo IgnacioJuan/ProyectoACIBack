@@ -73,7 +73,7 @@ public class Indicadores_Controller {
     }
 
     @GetMapping("/subcritindicador/{id_subcriterio}/{id_modelo}")
-    public ResponseEntity<List<Indicador>> indicadoressub(@PathVariable("id_subcriterio") Long id_subcriterio,@PathVariable("id_modelo") Long id_modelo) {
+    public ResponseEntity<List<IndicadorResp>> indicadoressub(@PathVariable("id_subcriterio") Long id_subcriterio,@PathVariable("id_modelo") Long id_modelo) {
         try {
             return new ResponseEntity<>(Service. indicadorPorSubcriterio(id_subcriterio,id_modelo), HttpStatus.OK);
         } catch (Exception e) {
